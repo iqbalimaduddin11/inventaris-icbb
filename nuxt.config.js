@@ -22,9 +22,7 @@ export default {
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
-    {
-      src: '~/plugins/bootstrap-plugin.js'
-    },
+    
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
@@ -40,7 +38,6 @@ export default {
     component: 'fa',
     // set: '@fontawesome/free-solid-svg-icons',
     icons:{ 
-      reguler: true,
       solid: true,
       brands: true
     }
