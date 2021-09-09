@@ -22,7 +22,12 @@ html, body{
   height: 100%;
 }
 #wrapper{
+  position:relative;
+  min-height: 100%;
+  height: auto !important;
   height: 100%;
+  width: 100%;
+  margin: 0px
 }
 #content-wrapper{
   margin: 0;
