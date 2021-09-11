@@ -20,9 +20,7 @@
           </b-button>
         </div>
       </nav>
-      <div class="container-fluid">
         <Nuxt />
-      </div>
     </div>
     <div class="footer">
       <p><strong>@copy 2021</strong></p>
