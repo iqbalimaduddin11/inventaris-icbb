@@ -16,10 +16,15 @@ module.exports = {
   ],
   // add your custom rules here
   rules: {
+    "indent": "off",
+    "vue/max-attributes-per-line": 'off',
     "eol-last": 0,
     "no-multiple-empty-lines": ["error", {
       "max": 1,
       "maxEOF": 0
     }],
+    "space-before-blocks": "off",
+    "quotes": "off",
+    "no-extra-semi": "off"
   }
 }

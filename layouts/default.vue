@@ -24,8 +24,7 @@ html, body{
 #wrapper{
   position:relative;
   min-height: 100%;
-  height: auto !important;
-  height: 100%;
+  max-height: auto !important;
   width: 100%;
   margin: 0px
 }
