@@ -36,13 +36,13 @@
           <div class="card card-body">
             <ul class="nav nav-pills flex-column mb-auto">
               <li class="nav-item">
-                <a href="" class="nav-link link-light">
+                <a href="/barang/golongan-barang" class="nav-link link-light">
                   <fa :icon="['fas', 'angle-double-right']" />
                   Golongan Barang
                 </a>
               </li>
               <li class="nav-item">
-                <a href="" class="nav-link link-light">
+                <a href="/barang/jenis-barang" class="nav-link link-light">
                     <fa :icon="['fas', 'angle-double-right']" />
                     Jenis Barang
                 </a>
@@ -62,13 +62,13 @@
           <div class="card card-body">
             <ul class="nav nav-pills flex-column mb-auto">
               <li class="nav-item">
-                <a href="" class="nav-link link-light">
+                <a href="/lokasi/divisi" class="nav-link link-light">
                     <fa :icon="['fas', 'angle-double-right']" />
                     Divisi
                 </a>
               </li>
               <li class="nav-item">
-                <a href="" class="nav-link link-light">
+                <a href="/lokasi/area-divisi" class="nav-link link-light">
                     <fa :icon="['fas', 'angle-double-right']" />
                     Area Divisi
                 </a>
@@ -116,7 +116,7 @@
           <div class="card card-body">
             <ul class="nav nav-pills flex-column mb-auto">
               <li class="nav-item">
-                <a href="" class="nav-link link-light">
+                <a href="/inventaris/data-inventaris" class="nav-link link-light">
                     <fa :icon="['fas', 'angle-double-right']" />
                     Data Inventaris
                 </a>
