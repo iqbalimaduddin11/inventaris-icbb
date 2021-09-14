@@ -18,7 +18,7 @@
           Dashboard
         </a>
       </li>
-      <li class="nav-item" @click="rotation">
+      <li class="nav-item">
         <!-- eslint-disable-next-line vue/max-attributes-per-line -->
         <a
           class="nav-link link-light"
@@ -26,7 +26,7 @@
           href="#collapseBarang"
           role="button"
           aria-expanded="false"
-          aria-controls="collapseBarang"
+          aria-controls="collapseBarang" @click="rotation"
         >
           <fa :icon="['fas', 'toolbox']" />
           Manajemen Barang
@@ -51,9 +51,9 @@
           </div>
         </div>
       </li>
-      <li class="nav-item" @click="rotation">
+      <li class="nav-item">
         <a class="nav-link link-light" data-bs-toggle="collapse" href="#collapseLokasi"
-            role="button" aria-expanded="false" aria-controls="collapseLokasi">
+            role="button" aria-expanded="false" aria-controls="collapseLokasi" @click="rotation">
           <fa :icon="['fas', 'map-marker-alt']" />
           Manajemen Lokasi
           <fa :icon="['fas', 'sort-down']" class="float-end arrow" />
@@ -77,9 +77,9 @@
           </div>
         </div>
       </li>
-      <li class="nav-item" @click="rotation">
+      <li class="nav-item">
         <a class="nav-link link-light" data-bs-toggle="collapse" href="#collapsePengguna"
-        role="button" aria-expanded="false" aria-controls="collapsePengguna">
+        role="button" aria-expanded="false" aria-controls="collapsePengguna" @click="rotation">
           <fa :icon="['fas', 'users']" />
           Manajemen Pengguna
           <fa :icon="['fas', 'sort-down']" class="float-end arrow" />
@@ -88,13 +88,13 @@
           <div class="card card-body">
             <ul class="nav nav-pills flex-column mb-auto">
               <li class="nav-item">
-                <a href="" class="nav-link link-light">
+                <a href="/user/ketua-divisi" class="nav-link link-light">
                     <fa :icon="['fas', 'angle-double-right']" />
                     Ketua Divisi
                 </a>
               </li>
               <li class="nav-item">
-                <a href="" class="nav-link link-light">
+                <a href="/user/admin-ruang" class="nav-link link-light">
                     <fa :icon="['fas', 'angle-double-right']" />
                     Admin Ruang
                 </a>
@@ -105,9 +105,9 @@
       </li>
       <hr />
       <p style="color: white">System</p>
-      <li class="nav-item" @click="rotation">
+      <li class="nav-item">
         <a class="nav-link link-light" data-bs-toggle="collapse" href="#collapseInventaris"
-        role="button" aria-expanded="false" aria-controls="collapseInventaris">
+        role="button" aria-expanded="false" aria-controls="collapseInventaris" @click="rotation">
           <fa :icon="['fas', 'users']" />
           Inventaris
           <fa :icon="['fas', 'sort-down']" class="float-end arrow" />
@@ -139,8 +139,12 @@
 export default {
   methods: {
     rotation (event) {
-        const arrow = event.target.childNodes[2]
-        arrow.classList.toggle("rotation-arrow")
+      const arrow = event.target.childNodes[2]
+      if (arrow) {
+          arrow.classList.toggle("rotation-arrow")
+      } else {
+        event.delegateTarget.childNodes[2].classList.toggle("rotation-arrow")
+      }
     }
   }
 }

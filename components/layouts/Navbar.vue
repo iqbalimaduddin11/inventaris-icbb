@@ -7,9 +7,9 @@
                 <fa :icon="['fas', 'sort-down']" class="float-end arrow" />
             </a>
             <ul class="dropdown-menu dropdown-menu-dark bg-dark" aria-labelledby="dropdownMenuLink">
-                <li><p class="dropdown-item">User Name</p></li>
+                <li><p class="dropdown-item"><a href="/profile/data-profile" class="link-light text-decoration-none">User Name</a></p></li>
                 <li><hr class="dropdown-divider"></li>
-                <li><a class="dropdown-item" href="#">Another action</a></li>
+                <li><a class="dropdown-item text-decoration-none" href="#">Keluar</a></li>
             </ul>
         </li>
     </ul>
