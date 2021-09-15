@@ -1,15 +1,20 @@
 <template>
   <div class="container-fluid p-3">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item" aria-current="page"><a href="/">Home</a></li>
+        <li class="breadcrumb-item" aria-current="page">Manajemen Lokasi</li>
+        <li class="breadcrumb-item active" aria-current="page">Area Divisi</li>
+      </ol>
+    <h4 class="ml-3"><strong>Data Area Divisi</strong></h4>
     <div class="row">
-      <div class="card bg-white" style="width: 30%;">
-        <label for="golongan-barang" class="fs-6">Input Jenis Barang</label>
-        <input type="textarea" class="form-control" name="golongan-barang" id="golongan-barang" data-bs-toggle="modal" data-bs-target="#Modal-jenis">
+      <div class="ml-3 mt-4">
+      <button class="btn btn-sm btn-primary" type="button" data-bs-toggle="modal" data-bs-target="#tambahInventarisModal">Tambah Inventaris</button>
 
-        <div class="modal fade" id="Modal-jenis" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal fade" id="tambahInventarisModal" tabindex="-1" aria-labelledby="tambahInventarisModalLabel" aria-hidden="true">
           <div class="modal-dialog">
             <div class="modal-content">
               <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Input Jenis Barang</h5>
+                <h5 class="modal-title" id="tambahInventarisModalLabel">Input Jenis Barang</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
               </div>
               <div class="modal-body">
@@ -30,7 +35,6 @@
             </div>
           </div>
         </div>
-        <button type="submit" class="btn btn-primary mt-2 mb-2" style="width:22%;">Input</button>
       </div>
     </div>
     <div class="row mt-3">

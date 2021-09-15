@@ -1,27 +1,42 @@
 <template>
   <div class="container-fluid p-3">
+    <nav aria-label="breadcrumb" class="mt-4">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item" aria-current="page"><a href="/">Home</a></li>
+        <li class="breadcrumb-item" aria-current="page">Manajemen Barang</li>
+        <li class="breadcrumb-item active" aria-current="page">Jenis Barang</li>
+      </ol>
+    </nav>
+    <h4 class="ml-3"><strong>Data Jenis Barang</strong></h4>
     <div class="row">
-      <div class="card bg-white" style="width: 30%;">
-        <label for="golongan-barang" class="fs-6">Input Jenis Barang</label>
-        <input type="textarea" class="form-control" name="golongan-barang" id="golongan-barang" data-bs-toggle="modal" data-bs-target="#Modal-jenis">
+      <div class="ml-3 mt-4">
+        <button class="btn btn-sm btn-primary" type="button" data-bs-toggle="modal" data-bs-target="#tambahJenisBarangModal">Tambah Jenis Barang</button>
 
-        <div class="modal fade" id="Modal-jenis" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal fade" id="tambahJenisBarangModal" tabindex="-1" aria-labelledby="tambahJenisBarangModalLabel" aria-hidden="true">
           <div class="modal-dialog">
             <div class="modal-content">
               <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Input Jenis Barang</h5>
+                <h5 class="modal-title" id="tambahJenisBarangModalLabel">Input Jenis Barang</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
               </div>
               <div class="modal-body">
-                <label for="nama">Nama Barang</label>
-                <input type="textarea" class="form-control" name="nama" id="nama" data-bs-toggle="modal" data-bs-target="#Modal">
-                <label for="golongan" class="fs-6">Golongan Barang</label>
-                <select class="form-select" aria-label="Default select example" name="golongan" id="nama">
-                  <option selected>Pilih Golongan</option>
-                  <option value="1">Elektronik</option>
-                  <option value="2">ATK</option>
-                  <option value="3">Furniture</option>
-                </select>
+                <form action="" method="post">
+                  <div class="mb-3 row">
+                    <div class="col-sm-10">
+                      <label for="inputBarang" class="col-form-label">Barang</label>
+                      <input type="textarea" class="form-control" name="inputBarang" id="nama">
+                    </div>
+                    <div class="col-sm-10">
+                      <label for="inputGolongan" class="col-form-label">Golongan</label>
+                      <select class="form-select" aria-label="Default select example" name="inputGolongan" id="nama">
+                        <option selected>Pilih Golongan</option>
+                        <option value="1">Elektronik</option>
+                        <option value="2">ATK</option>
+                        <option value="3">Furniture</option>
+                      </select>
+                    </div>
+                  </div>
+                </form>
               </div>
               <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -30,7 +45,6 @@
             </div>
           </div>
         </div>
-        <button type="submit" class="btn btn-primary mt-2 mb-2" style="width:22%;">Input</button>
       </div>
     </div>
     <div class="row mt-3">
