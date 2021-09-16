@@ -14,7 +14,7 @@
           <div class="modal-dialog modal-lg">
             <div class="modal-content">
               <div class="modal-header">
-                <h5 class="modal-title" id="tambahInventarisModalLabel">Input Jenis Barang</h5>
+                <h5 class="modal-title" id="tambahInventarisModalLabel">Tambah Data Inventaris</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
               </div>
               <div class="modal-body">
@@ -46,7 +46,7 @@
                     <div class="mb-3 row">
                         <label for="inputRuang" class="col-sm-2 col-form-label">Ruang</label>
                         <div class="col-sm-10">
-                        <select class="form-select" v-model="ruang" aria-label="Default select example" name="inputRuang" id="nama">
+                        <select class="form-select" v-model="ruang" aria-label="Default select example" id="inputRuang">
                           <option selected>Pilih Ruang</option>
                           <option value="1">Ruang Direksi</option>
                           <option value="2">Ruang Produksi</option>

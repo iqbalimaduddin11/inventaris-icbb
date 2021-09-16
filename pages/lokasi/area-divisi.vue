@@ -16,7 +16,7 @@
           <div class="modal-dialog">
             <div class="modal-content">
               <div class="modal-header">
-                <h5 class="modal-title" id="TambahAreaDivisiModalLabel">Silahkan Input Lokasi Divisi Baru</h5>
+                <h5 class="modal-title" id="TambahAreaDivisiModalLabel">Tambah Area Divisi</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
               </div>
               <div class="modal-body">

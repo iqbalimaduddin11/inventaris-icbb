@@ -11,24 +11,24 @@
         <div class="ml-3 mt-4">
             <b-button v-b-modal.modal-1 class="btn btn-sm" variant="primary">Tambah Ketua</b-button>
 
-            <b-modal id="modal-1" size="lg" ref="modal-admin" title="Tambah Admin Ruang">
+            <b-modal id="modal-1" size="lg" ref="modal-admin" title="Tambah Ketua Ruang">
                 <form action="" method="post" style="margin-bottom: 90px">
                     <div class="mb-3 row">
                         <label for="inputNip" class="col-sm-2 col-form-label">NIP</label>
                         <div class="col-sm-10">
-                        <input type="text" class="form-control" id="inputNip">
+                        <input type="text" class="form-control" v-model="nip" id="inputNip">
                         </div>
                     </div>
                     <div class="mb-3 row">
                         <label for="inputName" class="col-sm-2 col-form-label">Nama</label>
                         <div class="col-sm-10">
-                        <input type="text" class="form-control" id="inputName">
+                        <input type="text" class="form-control" v-model="nama" id="inputName">
                         </div>
                     </div>
                     <div class="mb-3 row">
                         <label for="inputName" class="col-sm-2 col-form-label">Jabatan</label>
                         <div class="col-sm-10">
-                            <b-form-select v-model="selected" :options="jabatan">
+                          <b-form-select v-model="jab" :options="jabatan">
                             <!-- This slot appears above the options from 'options' prop -->
                                 <template #first>
                                     <b-form-select-option :value="null" disabled>-- Pilih Jabatan --</b-form-select-option>
@@ -39,7 +39,7 @@
                     <div class="mb-3 row">
                         <label for="inputName" class="col-sm-2 col-form-label">Divisi</label>
                         <div class="col-sm-10">
-                            <b-form-select v-model="selected" :options="divisi">
+                            <b-form-select v-model="div" :options="divisi">
                             <!-- This slot appears above the options from 'options' prop -->
                                 <template #first>
                                     <b-form-select-option :value="null" disabled>-- Pilih Divisi --</b-form-select-option>
@@ -50,25 +50,25 @@
                     <div class="mb-3 row">
                         <label for="inputHp" class="col-sm-2 col-form-label">Nomor Hp</label>
                         <div class="col-sm-10">
-                            <input type="text" class="form-control" id="inputHp">
+                            <input type="text" class="form-control" v-model="nomor" id="inputHp">
                         </div>
                     </div>
                     <div class="mb-3 row">
                         <label for="inputAlamat" class="col-sm-2 col-form-label">Alamat</label>
                         <div class="col-sm-10">
-                            <textarea class="form-control" id="inputAlamat" rows="3"></textarea>
+                            <textarea class="form-control" v-model="alamat" id="inputAlamat" rows="3"></textarea>
                         </div>
                     </div>
                     <div class="mb-3 row">
                         <label for="staticEmail" class="col-sm-2 col-form-label">Email</label>
                         <div class="col-sm-10">
-                        <input type="email" class="form-control" id="staticEmail">
+                        <input type="email" class="form-control" v-model="email" id="staticEmail">
                         </div>
                     </div>
                     <div class="mb-3 row">
                         <label for="inputPassword" class="col-sm-2 col-form-label">Password</label>
                         <div class="col-sm-10">
-                        <input type="password" class="form-control" id="inputPassword">
+                        <input type="password" class="form-control" v-model="password" id="inputPassword">
                         </div>
                     </div>
                 </form>
@@ -96,7 +96,7 @@
           { value: 'B', text: 'Option B (from options prop)' }
         ],
         divisi: [
-          { value: 'A', text: 'Option A (from options prop)' },
+          { value: 'A', text: 'Option A (from opselectedtions prop)' },
           { value: 'B', text: 'Option B (from options prop)' }
         ],
         header: ['age', 'first_name'],
@@ -105,7 +105,15 @@
         //   { age: 21, first_name: 'Larsen', last_name: 'Shaw' },
         //   { age: 89, first_name: 'Geneva', last_name: 'Wilson' },
         //   { age: 38, first_name: 'Jami', last_name: 'Carney' }
-        ]
+        ],
+        nip: '',
+        nama: '',
+        jab: '',
+        div: '',
+        nomor: '',
+        alamat: '',
+        email: '',
+        password: ''
       }
     },
     methods: {
@@ -113,6 +121,7 @@
             this.$refs['modal-admin'].hide()
             const date = new Date()
             console.log(this.$moment(date).format('YYYY-M-D'))
+            console.log(this.nama)
         }
     }
   }

@@ -14,22 +14,34 @@
           <div class="modal-dialog">
             <div class="modal-content">
               <div class="modal-header">
-                <h5 class="modal-title" id="inputPengecekanLabel">Input Pengecekan</h5>
+                <h5 class="modal-title" id="inputPengecekanLabel">Tambah Pengecekan</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
               </div>
               <div class="modal-body">
                 <form action="" method="post">
                   <div class="mb-3 row">
-                    <label for="inputPengecekan" class="col-form-label">Tanggal Pengecekan</label>
-                    <input type="textarea" v-model="pengecekan" class="form-control" id="inputPengecekan">
+                            <label for="tanggal" class="col-sm-2 col-form-label">Tanggal</label>
+                          <div class="col-sm-10">
+                            <b-form-datepicker id="tanggal" v-model="date" class="mb-2"></b-form-datepicker>
+                          </div>
                   </div>
                   <div class="mb-3 row">
-                    <label for="inputKondisiBarang" class="col-form-label">Kondisi Barang</label>
-                    <input type="textarea" class="form-control" v-model="barang" id="inputKondisiBarang">
+                        <label for="kondisi" class="col-sm-2 col-form-label">Kondisi</label>
+                        <div class="col-sm-10">
+                        <select class="form-select" v-model="kondisi" aria-label="Default select example" id="kondisi">
+                          <option selected>Pilih Ruang</option>
+                          <option value="1">Baik</option>
+                          <option value="2">Cukup</option>
+                          <option value="2">Kurang Baik</option>
+                          <option value="2">Rusak</option>
+                        </select>
+                        </div>
                   </div>
                   <div class="mb-3 row">
-                    <label for="InputPengecek" class="col-form-label">Nama Pengecek</label>
-                    <input type="textarea" class="form-control" v-model="pengecekan" id="InputPengecek">
+                    <label for="InputPengecek" class="col-sm-2 col-form-label">Pengecek</label>
+                    <div class="col-sm-10">
+                      <input type="textarea" class="form-control" v-model="pengecekan" id="InputPengecek">
+                    </div>
                   </div>
                 </form>
               </div>
@@ -81,9 +93,9 @@
 export default {
   data () {
     return {
-      pengecekan: '',
-      barang: '',
-      pengecek: ''
+      date: '',
+      kondisi: '',
+      pengecekan: ''
     }
   }
 }
