@@ -44,7 +44,8 @@ export default {
   buildModules: [
     // https://go.nuxtjs.dev/eslint
     '@nuxtjs/eslint-module',
-    '@nuxtjs/fontawesome'
+    '@nuxtjs/fontawesome',
+    '@nuxtjs/moment'
   ],
   fontawesome: {
     component: 'fa',
@@ -53,6 +54,10 @@ export default {
       solid: true,
       brands: true
     }
+  },
+  moment: {
+    locales: ['id'],
+    timezone: true
   },
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: [
