@@ -24,11 +24,11 @@
                   <div class="mb-3 row">
                     <div class="col-sm-10">
                       <label for="inputBarang" class="col-form-label">Barang</label>
-                      <input type="textarea" class="form-control" name="inputBarang" id="nama">
+                      <input type="textarea" class="form-control" v-model="barang" id="inputBarang">
                     </div>
                     <div class="col-sm-10">
                       <label for="inputGolongan" class="col-form-label">Golongan</label>
-                      <select class="form-select" aria-label="Default select example" name="inputGolongan" id="nama">
+                      <select class="form-select" aria-label="Default select example"  v-model="golongan" id="inputGolongan">
                         <option selected>Pilih Golongan</option>
                         <option value="1">Elektronik</option>
                         <option value="2">ATK</option>
@@ -78,4 +78,15 @@
   margin-left: 0;
   margin-right: 0;
 }
+
 </style>
+<script>
+export default {
+  data () {
+    return {
+      barang: '',
+      golongan: ''
+    }
+  }
+}
+</script>

@@ -24,7 +24,7 @@
                 <div class="mb-3 row">
                   <div class="col-sm-12">
                     <label for="divisi" class="col-form-label">Divisi</label>
-                    <input type="text" class="form-control" name="divisi" id="divisi">
+                    <input type="text" class="form-control" v-model="divisi" id="divisi">
                   </div>
                 </div>
               </form>
@@ -68,3 +68,14 @@
   margin-right: 0;
 }
 </style>
+
+<script>
+export default {
+  data () {
+    return {
+      ruang: '',
+      divisi: ''
+    }
+  }
+}
+</script>

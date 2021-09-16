@@ -22,16 +22,18 @@
               <div class="modal-body">
                 <form action="" method="post">
                   <div class="mb-3 row">
-                    <div class="col-sm-10">
-                      <label for="divisi" class="fs-6">Nama Divisi</label>
-                      <input type="textarea" class="form-control" name="divisi" id="divisi">
+                      <label for="areaRuang" class="fs-6">Nama Ruang</label>
+                      <div class="col-sm-10">
+                        <input type="textarea" class="form-control" v-model="ruang" id="areaRuang">
+                      </div>
                       <label for="divisi" class="fs-6">Divisi</label>
-                      <select class="form-select" aria-label="Default select example" name="divisi" id="nama">
-                        <option selected>Pilih Divisi</option>
-                        <option value="1">CMC</option>
-                        <option value="2">Unit Usaha</option>
-                        <option value="3">Sarpras</option>
-                      </select>
+                      <div class="col-sm-10">
+                        <select class="form-select" aria-label="Default select example" v-model="divisi" id="divisi">
+                          <option selected>Pilih Divisi</option>
+                          <option value="1">CMC</option>
+                          <option value="2">Unit Usaha</option>
+                          <option value="3">Sarpras</option>
+                        </select>
                     </div>
                   </div>
                 </form>
@@ -77,3 +79,14 @@
   margin-right: 0;
 }
 </style>
+
+<script>
+export default {
+  data () {
+    return {
+      ruang: '',
+      divisi: ''
+    }
+  }
+}
+</script>

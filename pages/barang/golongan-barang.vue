@@ -22,9 +22,9 @@
                   <div class="modal-body">
                       <form action="" method="post">
                           <div class="mb-3 row">
-                              <div class="col-sm-10">
                               <label for="inputGolonganBarang" class="col-form-label">Golongan Barang</label>
-                              <input type="text" class="form-control" id="inputGolonganBarang">
+                              <div class="col-sm-10">
+                              <input type="text" class="form-control" v-model="golongan" id="inputGolonganBarang">
                               </div>
                           </div>
                       </form>
@@ -68,3 +68,13 @@
   margin-right: 0;
 }
 </style>
+
+<script>
+export default {
+  data () {
+    return {
+      golongan: ''
+    }
+  }
+}
+</script>

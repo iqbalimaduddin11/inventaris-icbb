@@ -3,30 +3,35 @@
        <ol class="breadcrumb">
         <li class="breadcrumb-item" aria-current="page"><a href="/">Home</a></li>
         <li class="breadcrumb-item" aria-current="page">Manajemen Inventaris</li>
-        <li class="breadcrumb-item active" aria-current="page">Inventaris</li>
+        <li class="breadcrumb-item active" aria-current="page">Pengecekan</li>
       </ol>
-    <h4 class="ml-3"><strong>Data Inventaris</strong></h4>
+    <h4 class="ml-3"><strong>Data Pengecekan</strong></h4>
     <div class="row">
       <div class="ml-3 mt-4">
-        <button class="btn btn-sm btn-primary" type="button" data-bs-toggle="modal" data-bs-target="#tambahInventarisModal">Tambah Inventaris</button>
+        <button class="btn btn-sm btn-primary" type="button" data-bs-toggle="modal" data-bs-target="#inputPengecekan">Tambah Pengecekan</button>
 
-        <div class="modal fade" id="tambahInventarisModal" tabindex="-1" aria-labelledby="tambahInventarisModalLabel" aria-hidden="true">
+        <div class="modal fade" id="inputPengecekan" tabindex="-1" aria-labelledby="inputPengecekanLabel" aria-hidden="true">
           <div class="modal-dialog">
             <div class="modal-content">
               <div class="modal-header">
-                <h5 class="modal-title" id="tambahInventarisModalLabel">Input Jenis Barang</h5>
+                <h5 class="modal-title" id="inputPengecekanLabel">Input Pengecekan</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
               </div>
               <div class="modal-body">
-                <label for="nama">Nama Barang</label>
-                <input type="textarea" class="form-control" name="nama" id="nama" data-bs-toggle="modal" data-bs-target="#Modal">
-                <label for="golongan" class="fs-6">Golongan Barang</label>
-                <select class="form-select" aria-label="Default select example" name="golongan" id="nama">
-                  <option selected>Pilih Golongan</option>
-                  <option value="1">Elektronik</option>
-                  <option value="2">ATK</option>
-                  <option value="3">Furniture</option>
-                </select>
+                <form action="" method="post">
+                  <div class="mb-3 row">
+                    <label for="inputPengecekan" class="col-form-label">Tanggal Pengecekan</label>
+                    <input type="textarea" v-model="pengecekan" class="form-control" id="inputPengecekan">
+                  </div>
+                  <div class="mb-3 row">
+                    <label for="inputKondisiBarang" class="col-form-label">Kondisi Barang</label>
+                    <input type="textarea" class="form-control" v-model="barang" id="inputKondisiBarang">
+                  </div>
+                  <div class="mb-3 row">
+                    <label for="InputPengecek" class="col-form-label">Nama Pengecek</label>
+                    <input type="textarea" class="form-control" v-model="pengecekan" id="InputPengecek">
+                  </div>
+                </form>
               </div>
               <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -35,7 +40,6 @@
             </div>
           </div>
         </div>
-        <button type="submit" class="btn btn-primary mt-2 mb-2" style="width:22%;">Input</button>
       </div>
     </div>
     <div class="row mt-3">
@@ -43,7 +47,7 @@
         <thead class="table table-dark table-bordered border-white">
           <tr>
             <th>Kode Inventaris</th>
-            <th>Tanggal Pengcekan</th>
+            <th>Tanggal Pengecekan</th>
             <th>Kondisi Barang</th>
             <th>Pengecek</th>
             <th>aksi</th>
@@ -72,3 +76,15 @@
   margin-right: 0;
 }
 </style>
+
+<script>
+export default {
+  data () {
+    return {
+      pengecekan: '',
+      barang: '',
+      pengecek: ''
+    }
+  }
+}
+</script>

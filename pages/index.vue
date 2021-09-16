@@ -72,3 +72,14 @@
   margin-right: 0;
 }
 </style>
+
+<script>
+export default {
+  data () {
+    return {
+      ruang: '',
+      divisi: ''
+    }
+  }
+}
+</script>
