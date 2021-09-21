@@ -2,40 +2,66 @@
   <div class="container-fluid p-3">
     <nav aria-label="breadcrumb" class="mt-4">
       <ol class="breadcrumb">
-        <li class="breadcrumb-item" aria-current="page"><a href="/">Home</a></li>
+        <li class="breadcrumb-item" aria-current="page">
+          <a href="/">Home</a>
+        </li>
         <li class="breadcrumb-item" aria-current="page">Dashboard</li>
       </ol>
     </nav>
     <h4 class="ml-3"><strong>Dashboard</strong></h4>
     <div class="row">
-      <div class="card mr-2 ml-2 bg-danger text-light" style="width:31%;">
+      <div class="card mr-2 ml-2 bg-danger text-light" style="width: 31%">
         <div class="card-body">
           <h5 class="card-title">3</h5>
           <p class="card-text">Data Ruang</p>
-        <a href="/ruang" class="btn btn-info btn-light" role="button" data-bs-toggle="button">Detail</a>
+          <a
+            href="/ruang"
+            class="btn btn-info btn-light"
+            role="button"
+            data-bs-toggle="button"
+            >Detail</a
+          >
         </div>
       </div>
-      <div class="card mr-2 ml-2 bg-success text-light" style="width:31%">
+      <div class="card mr-2 ml-2 bg-success text-light" style="width: 31%">
         <div class="card-body">
           <h5 class="card-title">3</h5>
           <p class="card-text">Data Divisi</p>
-        <a href="/divisi" class="btn btn-info btn-light" role="button" data-bs-toggle="button">Detail</a>
+          <a
+            href="/divisi"
+            class="btn btn-info btn-light"
+            role="button"
+            data-bs-toggle="button"
+            >Detail</a
+          >
         </div>
       </div>
-      <div class="card mr-2 ml-2 bg-warning text-light" style="width:31%">
+      <div class="card mr-2 ml-2 bg-warning text-light" style="width: 31%">
         <div class="card-body">
-          <h5 class="card-title">3</h5>
+          <h5 class="card-title">{{ karyawan }}</h5>
           <p class="card-text">Karyawan</p>
-        <a href="/karyawan" class="btn btn-info btn-light" role="button" data-bs-toggle="button">Detail</a>
+          <a
+            href="/karyawan"
+            class="btn btn-info btn-light"
+            role="button"
+            data-bs-toggle="button"
+            >Detail</a
+          >
         </div>
       </div>
     </div>
     <div class="row mt-3">
-      <div class="card mr-2 ml-2 bg-secondary text-light" style="width:31%">
+      <div class="card mr-2 ml-2 bg-secondary text-light" style="width: 31%">
         <div class="card-body">
           <h5 class="card-title">3</h5>
           <p class="card-text">Data Inventaris</p>
-          <a href="/inventaris" class="btn btn-info btn-light" role="button" data-bs-toggle="button">Detail</a>
+          <a
+            href="/inventaris"
+            class="btn btn-info btn-light"
+            role="button"
+            data-bs-toggle="button"
+            >Detail</a
+          >
         </div>
       </div>
     </div>
@@ -56,7 +82,13 @@
               <th>CMC</th>
               <th>M Fadlan Syakir</th>
               <th>
-                <a href="/inventaris" class="btn btn-primary" role="button" data-bs-toggle="button">Detail</a>
+                <a
+                  href="/inventaris"
+                  class="btn btn-primary"
+                  role="button"
+                  data-bs-toggle="button"
+                  >Detail</a
+                >
               </th>
             </tr>
           </tbody>
@@ -66,8 +98,34 @@
   </div>
 </template>
 
+<script>
+export default {
+  data () {
+    return {
+      karyawan: "",
+    };
+  },
+  created() {
+    this.getUser();
+  },
+  methods: {
+    async getUser() {
+      await this.$axios
+        .get("https://inventaris-yayasan.herokuapp.com/user",{
+          "Accept": "application/json, text/plain, */*",
+          'Content-Type' : 'application/x-www-form-urlencoded; charset=UTF-8'
+        })
+        .then(response => {
+          console.log(response.data.data);
+          this.karyawan = response.data.data.length;
+        });
+    },
+  },
+};
+</script>
+
 <style>
-.row{
+.row {
   margin-left: 0;
   margin-right: 0;
 }

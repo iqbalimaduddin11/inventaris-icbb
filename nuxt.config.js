@@ -43,7 +43,6 @@ export default {
   // Modules for dev and build (recommended): https://go.nuxtjs.dev/config-modules
   buildModules: [
     // https://go.nuxtjs.dev/eslint
-    '@nuxtjs/eslint-module',
     '@nuxtjs/fontawesome',
     '@nuxtjs/moment'
   ],
@@ -64,12 +63,45 @@ export default {
     // https://go.nuxtjs.dev/bootstrap
     'bootstrap-vue/nuxt',
     // https://go.nuxtjs.dev/axios
-    '@nuxtjs/axios'
+    '@nuxtjs/axios',
+    '@nuxtjs/proxy',
+    '@nuxtjs/auth',
+    '@nuxtjs/dotenv',
+    [
+      "nuxt-vuex-localstorage",
+      {
+        mode: "debug",
+        localStorage: ['user']
+      }
+    ],
   ],
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
-  axios: {},
-
+  axios: {
+    baseURL: 'https://inventaris-yayasan.herokuapp.com',
+    proxy: true,
+    proxyHeaders: false,
+    credentials: false
+  },
+  auth: {
+    strategies: {
+      local: {
+        endpoints: {
+          login: {
+            url: 'https://inventaris-yayasan.herokuapp.com/user/login',
+            method: 'post',
+            propertyName: 'data'
+          },
+          user: {
+            url: 'https://inventaris-yayasan.herokuapp.com/user',
+            method: 'get',
+            propertyName: 'data'
+          },
+          logout: false
+        }
+      }
+    }
+  },
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
   }

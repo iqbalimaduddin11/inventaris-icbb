@@ -7,13 +7,36 @@
                 <fa :icon="['fas', 'sort-down']" class="float-end arrow" />
             </a>
             <ul class="dropdown-menu dropdown-menu-dark bg-dark" aria-labelledby="dropdownMenuLink">
-                <li><p class="dropdown-item"><a href="/profile/data-profile" class="link-light text-decoration-none">User Name</a></p></li>
+                <li><p class="dropdown-item"><a href="/profile/data-profile" class="link-light text-decoration-none">{{ username }}</a></p></li>
                 <li><hr class="dropdown-divider"></li>
-                <li><a class="dropdown-item text-decoration-none" href="#">Keluar</a></li>
+                <li><a class="dropdown-item text-decoration-none" @click="logout">Keluar</a></li>
             </ul>
         </li>
     </ul>
 </template>
+
+<script>
+import cookie from 'js-cookie'
+export default {
+    data(){
+        return{
+            
+        }
+    },
+    props: [
+        'username'
+    ],
+    methods: {
+        logout(){
+            localStorage.removeItem('user')
+            cookie.remove('access_token')
+            cookie.remove('user')
+            this.username = ''
+            this.$bvModal.show('modal-login')
+        }
+    }
+}
+</script>
 
 <style>
 .rotation-arrow{

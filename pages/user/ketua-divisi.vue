@@ -9,9 +9,9 @@
         </nav>
         <h4 class="ml-3"><strong>Data Ketua Divisi</strong></h4>
         <div class="ml-3 mt-4">
-            <b-button v-b-modal.modal-1 class="btn btn-sm" variant="primary">Tambah Ketua</b-button>
+            <b-button v-b-modal.modal-1 class="btn btn-sm" variant="primary" @click="setTitleModal('Tambah Ketua Divisi')">Tambah Ketua</b-button>
 
-            <b-modal id="modal-1" size="lg" ref="modal-admin" title="Tambah Admin Ruang">
+            <b-modal id="modal-1" size="lg" ref="modal-admin" :title="judulModal">
                 <form action="" method="post" style="margin-bottom: 90px">
                     <div class="mb-3 row">
                         <label for="inputNip" class="col-sm-2 col-form-label">NIP</label>
@@ -105,14 +105,22 @@
         //   { age: 21, first_name: 'Larsen', last_name: 'Shaw' },
         //   { age: 89, first_name: 'Geneva', last_name: 'Wilson' },
         //   { age: 38, first_name: 'Jami', last_name: 'Carney' }
-        ]
+        ],
+        judulModal: ''
       }
     },
     methods: {
         simpan () {
-            this.$refs['modal-admin'].hide()
             const date = new Date()
             console.log(this.$moment(date).format('YYYY-M-D'))
+            const cek = false
+            if (cek) {
+                this.$refs['modal-admin'].show()
+            }
+        },
+        setTitleModal (title) {
+            this.judulModal = title
+            console.log(title)
         }
     }
   }

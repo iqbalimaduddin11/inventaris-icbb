@@ -110,13 +110,12 @@
     },
     methods: {
         simpan () {
-            // const btn = document.getElementById('exampleModal')
-            // btn.modal = 'hide'
-            // const myModal = new bootstrap.Modal(document.getElementById("tambahKetuaModal"), {})
-            // document.onreadystatechange = function () {
-            //     myModal.hide()
-            // }
-            this.$refs['modal-admin'].hide()
+            const date = new Date()
+            console.log(this.$moment(date).format('YYYY-M-D'))
+            const cek = false
+            if (cek) {
+                this.$refs['modal-admin'].hide()
+            }
         }
     }
   }
