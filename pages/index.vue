@@ -2,7 +2,9 @@
   <div class="container-fluid p-3">
     <nav aria-label="breadcrumb" class="mt-4">
       <ol class="breadcrumb">
-        <li class="breadcrumb-item" aria-current="page"><a href="/">Home</a></li>
+        <li class="breadcrumb-item" aria-current="page">
+          <a href="/">Home</a>
+        </li>
         <li class="breadcrumb-item" aria-current="page">Dashboard</li>
       </ol>
     </nav>
@@ -66,8 +68,31 @@
   </div>
 </template>
 
+<script>
+export default {
+  data () {
+    return {
+      karyawan: ""
+    }
+  },
+  created () {
+    this.getUser()
+  },
+  methods: {
+    async getUser () {
+      await this.$axios
+        .get("https://inventaris-yayasan.herokuapp.com/user")
+        .then(response => {
+          console.log(response.data.data)
+          this.karyawan = response.data.data.length
+        })
+    }
+  }
+}
+</script>
+
 <style>
-.row{
+.row {
   margin-left: 0;
   margin-right: 0;
 }

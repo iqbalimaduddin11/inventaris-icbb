@@ -132,11 +132,16 @@
         </div>
       </li>
     </ul>
-  </div>
+  </div> 
 </template>
 
 <script>
 export default {
+  data () {
+    return {
+      
+    }
+  },
   methods: {
     rotation (event) {
       const arrow = event.target.childNodes[2]
