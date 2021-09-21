@@ -122,7 +122,7 @@
                 </a>
               </li>
               <li class="nav-item">
-                <a href="" class="nav-link link-light">
+                <a href="/inventaris/pengecekan" class="nav-link link-light">
                     <fa :icon="['fas', 'angle-double-right']" />
                     Pengecekan
                 </a>
