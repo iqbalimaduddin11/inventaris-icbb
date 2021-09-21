@@ -113,7 +113,7 @@
         nomor: '',
         alamat: '',
         email: '',
-        password: ''
+        password: '',
         judulModal: ''
       }
     },
