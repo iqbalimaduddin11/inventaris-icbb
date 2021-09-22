@@ -40,7 +40,7 @@
               <div class="mb-3 row">
                 <label for="InputPengecek" class="col-sm-2 col-form-label">Pengecek</label>
                 <div class="col-sm-10">
-                  <input type="textarea" class="form-control" v-model="pengecekan" id="InputPengecek">
+                  <input type="textarea" class="form-control" v-model="pengecek" id="InputPengecek">
                 </div>
               </div>
           </form>
