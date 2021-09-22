@@ -86,9 +86,10 @@
                 <h5
                  class="text-center"><strong>Data Tidak Ditemukan</strong></h5>
             </template>
-            <template #cell(Aksi)>
+            <template #cell(action)="data">
                 <b-button variant="danger">Delete</b-button>
-                <b-button variant="primary" href="/">Detail</b-button>
+                <b-button variant="primary" @click="detailData(data.item)">Detail</b-button> 
+                <p>{{detail}}</p>
             </template>
         </b-table>
       </div>
@@ -112,10 +113,13 @@
         header: [
           { key: 'nik', label: 'NIK' },
           { key: 'nama', label: 'Nama' },
+          { key: 'divisi', label: 'Divisi' },
           { key: 'action', label: 'Action' },
         ],
         items: [
-          { nik: '14045', nama: 'M. Syakir Fadlan', divisi: 'CMC'}
+          { nik: '14045', nama: 'M. Syakir Fadlan', divisi: 'CMC'},
+          { nik: '14045', nama: 'Ahmad Ilahana', divisi: 'CMC'},
+          { nik: '14045', nama: 'Arif Ilahana', divisi: 'CMC'}
         ],
         nip: '',
         nama: '',
@@ -125,7 +129,8 @@
         alamat: '',
         email: '',
         password: '',
-        judulModal: ''
+        judulModal: '',
+        detail: {}
       }
     },
     methods: {
@@ -137,6 +142,9 @@
             if (cek) {
                 this.$refs['modal-admin'].show()
             }
+        },
+        detailData(data){
+            this.detail=data
         }
     }
   }

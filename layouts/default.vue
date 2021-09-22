@@ -38,8 +38,8 @@ export default {
   data() {
     return {
       login: {
-        email: 'rahmad@gmail.com',
-        password: 'rahmad'
+        email: 'rahmadnasution@gmail.com',
+        password: 'rahmadnet'
       },
       errors: '',
       username: ''
@@ -48,7 +48,6 @@ export default {
   mounted() {
     // const token = this.$cookies.get('token', { signed: true })
     const token = cookie.get('access_token')
-    console.log(token)
     if (typeof token === 'undefined') {
       console.log('tidak ada token')
       this.$bvModal.show('modal-login')
@@ -111,8 +110,7 @@ html, body{
 }
 #wrapper{
   position:relative;
-  min-height: 100%;
-  max-height: auto;
+  height: 100%;
   width: 100%;
   margin: 0px
 }
