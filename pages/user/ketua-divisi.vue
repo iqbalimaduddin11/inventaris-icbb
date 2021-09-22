@@ -10,27 +10,46 @@
     <h4 class="ml-3"><strong>Data Ketua Divisi</strong></h4>
     <div class="row">
       <div class="ml-3 mt-4">
+<<<<<<< HEAD
           <b-button v-b-modal.modal-1 class="btn btn-sm" variant="primary" @click="setTitleModal('Tambah Ketua Divisi')">Tambah Ketua</b-button>
 
           <b-modal id="modal-1" size="lg" ref="modal-admin" :title="judulModal">
+=======
+          <b-button v-b-modal.modal-1 class="btn btn-sm" variant="primary">Tambah Ketua</b-button>
+
+          <b-modal id="modal-1" size="lg" ref="modal-admin" title="Tambah Ketua Divisi">
+>>>>>>> 3b5f6ca15d9700b0160c70e983a89e89fb8ffee0
               <form action="" method="post" style="margin-bottom: 90px">
                   <div class="mb-3 row">
                       <label for="inputNip" class="col-sm-2 col-form-label">NIP</label>
                       <div class="col-sm-10">
+<<<<<<< HEAD
                         <input type="text" class="form-control" v-model="nip" id="inputNip">
+=======
+                      <input type="text" class="form-control" v-model="nip" id="inputNip">
+>>>>>>> 3b5f6ca15d9700b0160c70e983a89e89fb8ffee0
                       </div>
                   </div>
                   <div class="mb-3 row">
                       <label for="inputName" class="col-sm-2 col-form-label">Nama</label>
                       <div class="col-sm-10">
+<<<<<<< HEAD
                         <input type="text" class="form-control" v-model="nama" id="inputName">
+=======
+                      <input type="text" class="form-control" v-model="nama" id="inputName">
+>>>>>>> 3b5f6ca15d9700b0160c70e983a89e89fb8ffee0
                       </div>
                   </div>
                   <div class="mb-3 row">
                       <label for="inputName" class="col-sm-2 col-form-label">Jabatan</label>
                       <div class="col-sm-10">
+<<<<<<< HEAD
                           <b-form-select v-model="selected" :options="jabatan">
                             <!-- This slot appears above the options from 'options' prop -->
+=======
+                        <b-form-select v-model="jabatan1" :options="jabatan">
+                          <!-- This slot appears above the options from 'options' prop -->
+>>>>>>> 3b5f6ca15d9700b0160c70e983a89e89fb8ffee0
                               <template #first>
                                   <b-form-select-option :value="null" disabled>-- Pilih Jabatan --</b-form-select-option>
                               </template>
@@ -40,8 +59,13 @@
                   <div class="mb-3 row">
                       <label for="inputName" class="col-sm-2 col-form-label">Divisi</label>
                       <div class="col-sm-10">
+<<<<<<< HEAD
                           <b-form-select v-model="selected" :options="divisi">
                             <!-- This slot appears above the options from 'options' prop -->
+=======
+                          <b-form-select v-model="div" :options="divisi">
+                          <!-- This slot appears above the options from 'options' prop -->
+>>>>>>> 3b5f6ca15d9700b0160c70e983a89e89fb8ffee0
                               <template #first>
                                   <b-form-select-option :value="null" disabled>-- Pilih Divisi --</b-form-select-option>
                               </template>
@@ -51,7 +75,11 @@
                   <div class="mb-3 row">
                       <label for="inputHp" class="col-sm-2 col-form-label">Nomor Hp</label>
                       <div class="col-sm-10">
+<<<<<<< HEAD
                           <input type="text" class="form-control" v-model="nomer" id="inputHp">
+=======
+                          <input type="text" class="form-control" v-model="nomor" id="inputHp">
+>>>>>>> 3b5f6ca15d9700b0160c70e983a89e89fb8ffee0
                       </div>
                   </div>
                   <div class="mb-3 row">
@@ -63,13 +91,21 @@
                   <div class="mb-3 row">
                       <label for="staticEmail" class="col-sm-2 col-form-label">Email</label>
                       <div class="col-sm-10">
+<<<<<<< HEAD
                         <input type="email" class="form-control" v-model="email" id="staticEmail">
+=======
+                      <input type="email" class="form-control" v-model="email" id="staticEmail">
+>>>>>>> 3b5f6ca15d9700b0160c70e983a89e89fb8ffee0
                       </div>
                   </div>
                   <div class="mb-3 row">
                       <label for="inputPassword" class="col-sm-2 col-form-label">Password</label>
                       <div class="col-sm-10">
+<<<<<<< HEAD
                         <input type="password" class="form-control" v-model="password" id="inputPassword">
+=======
+                      <input type="password" class="form-control" v-model="password" id="inputPassword">
+>>>>>>> 3b5f6ca15d9700b0160c70e983a89e89fb8ffee0
                       </div>
                   </div>
               </form>
@@ -81,6 +117,7 @@
     </div>
     <div class="row">
       <div class="mt-4">
+<<<<<<< HEAD
         <b-table-simple>
           <b-thead head-variant="dark">
             <b-tr>
@@ -204,6 +241,18 @@
             </b-tr>
           </b-tbody>
         </b-table-simple>
+=======
+        <b-table outlined no-border-collapse :fields="header" :items="items" show-empty class="mt-4">
+            <template #empty>
+                <h5
+                 class="text-center"><strong>Data Tidak Ditemukan</strong></h5>
+            </template>
+            <template #cell(Aksi)>
+                <b-button variant="danger">Delete</b-button>
+                <b-button variant="primary" href="/">Detail</b-button>
+            </template>
+        </b-table>
+>>>>>>> 3b5f6ca15d9700b0160c70e983a89e89fb8ffee0
       </div>
     </div>
   </div>
@@ -222,12 +271,13 @@
           { value: 'A', text: 'Option A (from opselectedtions prop)' },
           { value: 'B', text: 'Option B (from options prop)' }
         ],
-        header: ['age', 'first_name'],
+        header: [
+          { key: 'nik', label: 'NIK' },
+          { key: 'nama', label: 'Nama' },
+          { key: 'action', label: 'Action' },
+        ],
         items: [
-        //   { age: 40, first_name: 'Dickerson', last_name: 'Macdonald' },
-        //   { age: 21, first_name: 'Larsen', last_name: 'Shaw' },
-        //   { age: 89, first_name: 'Geneva', last_name: 'Wilson' },
-        //   { age: 38, first_name: 'Jami', last_name: 'Carney' }
+          { nik: '14045', nama: 'M. Syakir Fadlan', divisi: 'CMC'}
         ],
         nip: '',
         nama: '',
@@ -249,6 +299,7 @@
             if (cek) {
                 this.$refs['modal-admin'].show()
             }
+<<<<<<< HEAD
         },
         setTitleModal (title) {
             this.judulModal = title
@@ -264,6 +315,8 @@
         },
         deletedData(data){
           console.log(data)
+=======
+>>>>>>> 3b5f6ca15d9700b0160c70e983a89e89fb8ffee0
         }
     }
   }

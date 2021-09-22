@@ -33,6 +33,7 @@ export default {
             cookie.remove('user')
             this.username = ''
             this.$bvModal.show('modal-login')
+            location.reload(true)
         }
     }
 }
