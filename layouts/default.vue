@@ -65,21 +65,30 @@ export default {
   methods: {
     async userLogin() {
       // this.$axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
+      console.log('user login')
       try {
-        let response = await this.$auth.loginWith('local', { data: this.login })
-        console.log(response)
-        // this.$bvModal.hide('modal-login')
-        this.$store.commit("user/SET_TOKEN", response.data.token);
-        this.$store.commit("user/SET_USER", response.data.user);
-        this.$store.commit("user/SET_ISADMIN", response.data.user.role);
-        this.username = response.data.user.nama
-        cookie.set('access_token', response.data.token)
-        cookie.set('user', response.data.user)
-        // console.log(JSON.parse(localStorage.getItem('user')).token)
-        this.$bvModal.hide('modal-login')
+        const data = JSON.stringify(this.login)
+          // console.log(data)
+        await this.$axios.post("https://inventaris-yayasan.herokuapp.com/user/login", data, {
+          headers: {
+            "content-type": "application/json; charset=utf-8"
+          }
+        })
+        .then(response => {
+          // this.$bvModal.hide('modal-login')
+          this.$store.commit("user/SET_TOKEN", response.data.token);
+          this.$store.commit("user/SET_USER", response.data.user);
+          this.$store.commit("user/SET_ISADMIN", response.data.user.role);
+          this.username = response.data.user.nama
+          cookie.set('access_token', response.data.token)
+          cookie.set('user', response.data.user)
+          // console.log(JSON.parse(localStorage.getItem('user')).token)
+          location.reload(true)
+          this.$bvModal.hide('modal-login')
+        })
       } catch (err) {
         if (typeof err.response !== "undefined") {
-          console.log(err.response.status)
+          console.log(err.response)
           if (err.response.status === 401) {
             this.errors = "Email dan password kosong"
           }else{
@@ -100,15 +109,15 @@ html, body{
 #__nuxt, #__layout{
   height: 100%;
 }
-#content{
-  height: 100%;
-}
 #wrapper{
   position:relative;
   min-height: 100%;
-  max-height: auto !important;
+  max-height: auto;
   width: 100%;
   margin: 0px
+}
+#content{
+  height: 100%;
 }
 #content-wrapper{
   margin: 0;

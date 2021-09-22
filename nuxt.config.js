@@ -92,11 +92,6 @@ export default {
             method: 'post',
             propertyName: 'data'
           },
-          user: {
-            url: 'https://inventaris-yayasan.herokuapp.com/user',
-            method: 'get',
-            propertyName: 'data'
-          },
           logout: false
         }
       }

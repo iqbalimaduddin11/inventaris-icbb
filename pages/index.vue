@@ -12,22 +12,22 @@
     <div class="row">
       <b-card class="mr-2 ml-2" bg-variant="primary" style="width: 31%">
         <div class="card-body">
-          <h2 class="card-title">3</h2>
-          <b-card-text>Data Ruang</b-card-text>
+          <h2 class="card-title text-light">{{ ruang }}</h2>
+          <b-card-text class="text-light">Data Ruang</b-card-text>
           <b-button variant="light">Detail</b-button>
         </div>
       </b-card>
       <b-card class="mr-2 ml-2" bg-variant="warning" style="width: 31%">
         <div class="card-body">
-          <h2 class="card-title">3</h2>
-          <b-card-text>Data Divisi</b-card-text>
+          <h2 class="card-title text-light">{{ divisi }}</h2>
+          <b-card-text class="text-light">Data Divisi</b-card-text>
           <b-button variant="light">Detail</b-button>
         </div>
       </b-card>
       <b-card class="mr-2 ml-2" bg-variant="danger" style="width: 31%">
         <div class="card-body">
-          <h2 class="card-title">{{ karyawan }}</h2>
-          <b-card-text>Data Karyawan</b-card-text>
+          <h2 class="card-title text-light">{{ karyawan }}</h2>
+          <b-card-text class="text-light">Data Karyawan</b-card-text>
           <b-button variant="light">Detail</b-button>
         </div>
       </b-card>
@@ -35,8 +35,8 @@
     <div class="row mt-3">
       <b-card class="mr-2 ml-2" bg-variant="success" style="width: 31%">
         <div class="card-body">
-          <h2 class="card-title">3</h2>
-          <b-card-text>Data Inventaris</b-card-text>
+          <h2 class="card-title text-light">3</h2>
+          <b-card-text class="text-light">Data Inventaris</b-card-text>
           <b-button variant="light">Detail</b-button>
         </div>
       </b-card>
@@ -69,29 +69,50 @@
 </template>
 
 <script>
+import cookie from 'js-cookie'
 export default {
   data () {
     return {
       karyawan: "",
-    };
+      ruang: '',
+      divisi: ''
+    }
   },
-  created() {
-    this.getUser();
+  created () {
+    this.getUser()
   },
   methods: {
-    async getUser() {
+    async getUser () {
+      console.log('getuser')
       await this.$axios
-        .get("https://inventaris-yayasan.herokuapp.com/user",{
-          "Accept": "application/json, text/plain, */*",
-          'Content-Type' : 'application/x-www-form-urlencoded; charset=UTF-8'
+        .get("https://inventaris-yayasan.herokuapp.com/user")
+        .then(response => {
+          console.log(response.data.data)
+          this.karyawan = response.data.data.length
+        })
+      await this.$axios
+        .get("https://inventaris-yayasan.herokuapp.com/divisi", {
+          headers: {
+            'Authorization': 'Bearer ' + cookie.get('access_token')
+          }
         })
         .then(response => {
-          console.log(response.data.data);
-          this.karyawan = response.data.data.length;
-        });
-    },
-  },
-};
+          console.log(response.data.data)
+          this.divisi = response.data.data.length
+        })
+      await this.$axios
+        .get("https://inventaris-yayasan.herokuapp.com/ruang", {
+          headers: {
+            'Authorization': 'Bearer ' + cookie.get('access_token')
+          }
+        })
+        .then(response => {
+          console.log(response.data.data)
+          this.ruang = response.data.data.length
+        })
+    }
+  }
+}
 </script>
 
 <style>
@@ -100,14 +121,3 @@ export default {
   margin-right: 0;
 }
 </style>
-
-<script>
-export default {
-  data () {
-    return {
-      ruang: '',
-      divisi: ''
-    }
-  }
-}
-</script>
