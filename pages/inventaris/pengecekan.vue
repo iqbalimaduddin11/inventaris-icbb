@@ -15,22 +15,27 @@
         <b-modal id="modal-1" size='lg' ref="modal-pengecekan" title="Tambah Pengecekan">
           <form action="" method="post" style="margin-bottom: 90px">
               <div class="mb-3 row">
-                        <label for="tanggal" class="col-sm-2 col-form-label">Tanggal</label>
-                      <div class="col-sm-10">
-                        <b-form-datepicker id="tanggal" v-model="date" class="mb-2"></b-form-datepicker>
-                      </div>
+                <label for="tanggal" class="col-sm-2 col-form-label">Tanggal</label>
+                <div class="col-sm-10">
+                  <b-form-datepicker id="tanggal" v-model="date" class="mb-2"></b-form-datepicker>
+                </div>
               </div>
               <div class="mb-3 row">
-                    <label for="kondisi" class="col-sm-2 col-form-label">Kondisi</label>
-                    <div class="col-sm-10">
-                    <select class="form-select" v-model="kondisi" aria-label="Default select example" id="kondisi">
-                      <option selected>Pilih Ruang</option>
-                      <option value="1">Baik</option>
-                      <option value="2">Cukup</option>
-                      <option value="2">Kurang Baik</option>
-                      <option value="2">Rusak</option>
-                    </select>
-                    </div>
+                <label for="inputBarang" class="col-sm-2 col-form-label">Barang</label>
+                <div class="col-sm-10">
+                  <input type="text" class="form-control" id="inputBarang" v-model="barang">
+                </div>
+              </div>
+              <div class="mb-3 row">
+                <label for="inputName" class="col-sm-2 col-form-label">Kondisi</label>
+                <div class="col-sm-10">
+                    <b-form-select v-model="selected" :options="kondisi">
+                    <!-- This slot appears above the options from 'options' prop -->
+                        <template #first>
+                            <b-form-select-option :value="null" disabled>-- Pilih Kondisi --</b-form-select-option>
+                        </template>
+                    </b-form-select>
+                </div>
               </div>
               <div class="mb-3 row">
                 <label for="InputPengecek" class="col-sm-2 col-form-label">Pengecek</label>
@@ -47,29 +52,76 @@
     </div>
     <div class="row">
       <div class="mt-4">
-        <b-table-simple>
-          <b-thead head-variant="dark">
-            <b-tr>
-              <b-th>Kode Inventaris</b-th>
-              <b-th>Tanggal Pengecekan</b-th>
-              <b-th>Kondisi Barang</b-th>
-              <b-th>Pengecek</b-th>
-              <b-th>aksi</b-th>
-            </b-tr>
-          </b-thead>
-          <b-tbody>
-            <b-tr>
-              <b-th>1.</b-th>
-              <b-th>13-09-2021</b-th>
-              <b-th>Baik</b-th>
-              <b-th>Raihan Khusna</b-th>
-              <b-th>
-                <a href="/" class="btn btn-danger" role="button" data-bs-toggle="button">Delete</a>
-                <a href="/" class="btn btn-primary" role="button" data-bs-toggle="button">Edit</a>
-              </b-th>
-            </b-tr>
-          </b-tbody>
-        </b-table-simple>
+        <b-table outlined no-border-collapse :fields="header" :items="items" show-empty class="mt-4">
+            <template #empty>
+                <h5
+                 class="text-center"><strong>Data Tidak Ditemukan</strong></h5>
+            </template>
+            <template #cell(action)="data">
+              <b-button class="btn btn-sm" variant="danger" @click="deletedData('tombol delete')">Delete</b-button>
+              <b-button v-b-modal.modal-2 class="btn btn-sm" variant="primary" @click="detailData(data.item)">Detail</b-button>
+            </template>
+        </b-table>
+          <b-modal id="modal-2" size="lg" ref="modal-detail" title="Detail">
+            <form action="" method="">
+              <div class="mb-3 row">
+                <p class="col-3">Tanggal</p>
+                <p class="col-4">: {{detail.tanggal}}</p>
+              </div>
+              <div class="mb-3 row">
+                <p class="col-3">Barang</p>
+                <p class="col-4">: {{detail.barang}}</p>
+              </div>
+              <div class="mb-3 row">
+                <p class="col-3">Kondisi</p>
+                <p class="col-4">: {{detail.kondisi}}</p>
+              </div>
+              <div class="mb-5 row">
+                <p class="col-3">Pengecek</p>
+                <p class="col-4">: {{detail.pengecek}}</p>
+              </div>
+            </form>
+            <template #modal-footer>
+              <b-button v-b-modal.modal-3 class="btn btn-sm" variant="primary">Edit</b-button>
+
+              <b-modal id="modal-3" size="lg" ref="modal-admin" title="Edit">
+                  <form action="" method="post" style="margin-bottom: 90px">
+                      <div class="mb-3 row">
+                        <label for="example-datepicker" class="col-sm-2 col-form-label">Tanggal</label>
+                        <div class="col-sm-10">
+                          <b-form-datepicker id="tanggal" v-model="date" class="mb-2"></b-form-datepicker>
+                        </div>
+                      </div>
+                      <div class="mb-3 row">
+                        <label for="inputName" class="col-sm-2 col-form-label">Barang</label>
+                        <div class="col-sm-10">
+                          <input type="text" class="form-control" id="inputName">
+                        </div>
+                      </div>
+                      <div class="mb-3 row">
+                        <label for="inputName" class="col-sm-2 col-form-label">Kondisi</label>
+                        <div class="col-sm-10">
+                            <b-form-select v-model="selected" :options="kondisi">
+                            <!-- This slot appears above the options from 'options' prop -->
+                                <template #first>
+                                    <b-form-select-option :value="null" disabled>-- Pilih Kondisi --</b-form-select-option>
+                                </template>
+                            </b-form-select>
+                        </div>
+                      </div>
+                      <div class="mb-3 row">
+                          <label for="inputPengecek" class="col-sm-2 col-form-label">Pengecek</label>
+                          <div class="col-sm-10">
+                            <input type="password" class="form-control" id="inputPengecek" v-model="pengecek">
+                          </div>
+                      </div>
+                  </form>
+                  <template #modal-footer>
+                      <b-button @click="simpan" variant="primary">Simpan</b-button>
+                  </template>
+              </b-modal>
+            </template>
+          </b-modal>
       </div>
     </div>
   </div>
@@ -79,9 +131,43 @@
   export default {
     data () {
       return {
+        kondisi: [
+          { value: 'A', text: 'Option A (from options prop)' },
+          { value: 'B', text: 'Option B (from options prop)' }
+        ],
+        header: [
+          { key: 'tanggal', label: 'Tanggal' },
+          { key: 'barang', label: 'Barang' },
+          { key: 'kondisi', label: 'Kondisi' },
+          { key: 'pengecek', label: 'Pengecek' },
+          { key: 'action', label: 'Action' }
+        ],
+        items: [
+          { tanggal: '2021', barang: 'TV', kondisi: 'Baik', pengecek: 'Abdul'},
+          { tanggal: '2021', barang: 'Monitor', kondisi: 'Rusak', pengecek: 'Aziz'},
+          { tanggal: '2021', barang: 'Laptop', kondisi: 'Baik', pengecek: 'Fadhil'},
+        ],
         date: '',
-        kondisi: '',
-        pengecekan: ''
+        barang: '',
+        pengecek: '',
+        detail: {}
+      }
+    },
+    methods: {
+      simpan () {
+        const date = new Date()
+        console.log(this.$moment(date).format('YYYY-M-D'))
+        console.log(this.nama)
+        const cek = false
+        if (cek) {
+            this.$refs['modal-admin'].show()
+        }
+      },
+      detailData(data){
+        this.detail = data
+      },
+      deletedData(data){
+        console.log(data)
       }
     }
   }

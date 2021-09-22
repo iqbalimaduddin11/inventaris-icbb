@@ -15,14 +15,14 @@
           <b-modal id="modal-1" size='lg' ref="modal-jenis" title="Tambah Jenis Barang">
             <form action="" method="post" style="margin-bottom: 90px">
                 <div class="mb-3 row">
-                    <label for="inputJenisBarang" class="col-sm-2 col-form-label">Barang</label>
-                    <div class="col-sm-10">
+                    <label for="inputJenisBarang" class="col-sm-3 col-form-label">Nama Barang</label>
+                    <div class="col-sm-9">
                       <input type="text" class="form-control" v-model="jenis" id="inputJenisBarang">
                     </div>
                 </div>
                 <div class="mb-3 row">
-                    <label for="inputGolongan" class="col-sm-2 col-form-label">Golongan</label>
-                    <div class="col-sm-10">
+                    <label for="inputGolongan" class="col-sm-3 col-form-label">Golongan Barang</label>
+                    <div class="col-sm-9">
                       <b-form-select v-model="golongan" :options="golongan">
                         <!-- This slot appears above the options from 'options' prop -->
                             <template #first>
@@ -40,27 +40,56 @@
     </div>
     <div class="row">
       <div class="mt-4">
-        <b-table-simple>
-          <b-thead head-variant="dark">
-            <b-tr>
-              <b-th>No</b-th>
-              <b-th>Nama Barang</b-th>
-              <b-th>Golongangan</b-th>
-              <b-th>aksi</b-th>
-            </b-tr>
-          </b-thead>
-          <b-tbody>
-            <b-tr>
-              <b-th>1.</b-th>
-              <b-th>TV</b-th>
-              <b-th>Elektronik</b-th>
-              <b-th>
-                <b-button variant="danger">Delete</b-button>
-                <b-button variant="primary" href="/">Detail</b-button>
-              </b-th>
-            </b-tr>
-          </b-tbody>
-        </b-table-simple>
+        <b-table outlined no-border-collapse :fields="header" :items="items" show-empty class="mt-4">
+            <template #empty>
+                <h5
+                 class="text-center"><strong>Data Tidak Ditemukan</strong></h5>
+            </template>
+            <template #cell(action)="data">
+              <b-button class="btn btn-sm" variant="danger" @click="deletedData('tombol delete')">Delete</b-button>
+              <b-button v-b-modal.modal-2 class="btn btn-sm" variant="primary" @click="detailData(data.item)">Detail</b-button>
+            </template>
+        </b-table>
+          <b-modal id="modal-2" size="lg" ref="modal-detail" title="Detail">
+            <form action="" method="">
+              <div class="mb-3 row">
+                <p class="col-3">Nama Barang</p>
+                <p class="col-4">: {{detail.jenis}}</p>
+              </div>
+              <div class="mb-5 row">
+                <p class="col-3">Golongan Barang</p>
+                <p class="col-4">: {{detail.golongan}}</p>
+              </div>
+            </form>
+            <template #modal-footer>
+              <b-button v-b-modal.modal-3 class="btn btn-sm" variant="primary">Edit</b-button>
+
+              <b-modal id="modal-3" size="lg" ref="modal-admin" title="Edit">
+                  <form action="" method="post" style="margin-bottom: 90px">
+                    <div class="mb-3 row">
+                        <label for="inputNamaBarang" class="col-sm-3 col-form-label">Nama Barang</label>
+                        <div class="col-sm-9">
+                          <input type="text" class="form-control" v-model="jenis" id="inputNamaBarang">
+                        </div>
+                    </div>
+                    <div class="mb-3 row">
+                        <label for="inputName" class="col-sm-3 col-form-label">Golongan Barang</label>
+                        <div class="col-sm-9">
+                            <b-form-select v-model="selected" :options="golongan">
+                            <!-- This slot appears above the options from 'options' prop -->
+                                <template #first>
+                                    <b-form-select-option :value="null" disabled>-- Pilih Golongan Barang --</b-form-select-option>
+                                </template>
+                            </b-form-select>
+                        </div>
+                      </div>
+                  </form>
+                  <template #modal-footer>
+                      <b-button @click="simpan" variant="primary">Simpan</b-button>
+                  </template>
+              </b-modal>
+            </template>
+          </b-modal>
       </div>
     </div>
   </div>
@@ -76,13 +105,29 @@
   export default {
     data () {
       return {
-        selected: null,
         golongan: [
           { value: 'A', text: 'Option A (from options prop)' },
           { value: 'B', text: 'Option B (from options prop)' }
         ],
-        barang: ''
+        header: [
+          { key: 'jenis', label: 'Nama Barang' },
+          { key: 'golongan', label: 'Golongan Barang' },
+          { key: 'action', label: 'Action' }
+        ],
+        items: [
+          {jenis: 'TV', golongan: 'Elektronik'}
+        ],
+        jenis: '',
+        detail: {}
       }
-    }
+    },
+    methods: {
+      detailData(data){
+        this.detail = data
+      },
+      deletedData(data){
+        console.log(data)
+      }
+    },
 }
 </script>

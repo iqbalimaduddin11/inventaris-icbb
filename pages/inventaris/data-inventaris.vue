@@ -110,179 +110,160 @@
     </div>
     <div class="row">
       <div class="mt-4">
-        <b-table-simple>
-          <b-thead head-variant="dark">
-            <b-tr>
-              <b-th>Kode Inventaris</b-th>
-              <b-th>Tanggal Masuk</b-th>
-              <b-th>Barang</b-th>
-              <b-th>Donatur</b-th>
-              <b-th>Ruang</b-th>
-              <b-th>Divisi</b-th>
-              <b-th>aksi</b-th>
-            </b-tr>
-          </b-thead>
-          <b-tbody>
-            <b-tr>
-              <b-th>1.</b-th>
-              <b-th>13-09-2021</b-th>
-              <b-th>TV</b-th>
-              <b-th>PT. Kusuma Bangsa</b-th>
-              <b-th>Ruang Meeting</b-th>
-              <b-th>CMC</b-th>
-              <b-th>
-                <b-button class="btn btn-sm" variant="danger" @click="deletedData('tombol delete')">Delete</b-button>
-                <b-button v-b-modal.modal-2 class="btn btn-sm" variant="primary" @click="setTitleModal('Detail Ketua Divisi')">Detail</b-button>
+        <b-table outlined no-border-collapse :fields="header" :items="items" show-empty class="mt-4">
+            <template #empty>
+                <h5 class="text-center"><strong>Data Tidak Ditemukan</strong></h5>
+            </template>
+            <template #cell(action)="data">
+              <b-button class="btn btn-sm" variant="danger" @click="deletedData('tombol delete')">Delete</b-button>
+              <b-button v-b-modal.modal-2 class="btn btn-sm" variant="primary" @click="detailData(data.item)">Detail</b-button>
+            </template>
+        </b-table>
+            <b-modal id="modal-2" size="lg" ref="modal-detail" title="Detail">
+                <form action="" method="">
+                  <div class="mb-3 row">
+                      <p class="col-3">Tanggal</p>
+                      <p class="col-4">: {{detail.tanggal}}</p>
+                  </div>
+                  <div class="mb-3 row">
+                      <p class="col-3">Barang</p>
+                      <p class="col-4">: {{detail.barang}}</p>
+                  </div>
+                  <div class="mb-3 row">
+                      <p class="col-3">Harga</p>
+                      <p class="col-4">: {{detail.harga}}</p>
+                  </div>
+                  <div class="mb-3 row">
+                      <p class="col-3">Donatur</p>
+                      <p class="col-4">: {{detail.donatur}}</p>
+                  </div>
+                  <div class="mb-3 row">
+                      <p class="col-3">Ruang</p>
+                      <p class="col-4">: {{detail.ruang}}</p>
+                  </div>
+                  <div class="mb-3 row">
+                      <p class="col-3">Divisi</p>
+                      <p class="col-4">: {{detail.divisi}}</p>
+                  </div>
+                  <div class="mb-3 row">
+                      <p class="col-3">Kepemilikan</p>
+                      <p class="col-4">: {{detail.kepemilikan}}</p>
+                  </div>
+                  <div class="mb-3 row">
+                      <p class="col-3">Kondisi</p>
+                      <p class="col-4">: {{detail.kondisi}}</p>
+                  </div>
+                  <div class="mb-3 row">
+                      <p class="col-3">Status</p>
+                      <p class="col-4">: {{detail.status}}</p>
+                  </div>
+                  <div class="mb-3 row">
+                      <p class="col-3">Dokumen</p>
+                      <p class="col-4">: {{detail.dokumen}}</p>
+                  </div>
+                  <div class="mb-5 row">
+                      <p class="col-3">Pencatat</p>
+                      <p class="col-4">: {{detail.pencatat}}</p>
+                  </div>
+                </form>
+                <template #modal-footer>
+                  <b-button v-b-modal.modal-3 class="btn btn-sm" variant="primary">Edit</b-button>
 
-                <b-modal id="modal-2" size="lg" ref="modal-detail" :title="judulModal">
-                  <form action="" method="">
-                    <div class="mb-3 row">
-                        <p class="col-3">Tanggal</p>
-                        <p class="col-4">: 2021</p>
-                    </div>
-                    <div class="mb-3 row">
-                        <p class="col-3">Barang</p>
-                        <p class="col-4">: Monitor</p>
-                    </div>
-                    <div class="mb-3 row">
-                        <p class="col-3">Harga</p>
-                        <p class="col-4">: 15000000</p>
-                    </div>
-                    <div class="mb-3 row">
-                        <p class="col-3">Donatur</p>
-                        <p class="col-4">: PT. Techno Indonesia</p>
-                    </div>
-                    <div class="mb-3 row">
-                        <p class="col-3">Ruang</p>
-                        <p class="col-4">: Produksi</p>
-                    </div>
-                    <div class="mb-3 row">
-                        <p class="col-3">Divisi</p>
-                        <p class="col-4">: CMC</p>
-                    </div>
-                    <div class="mb-3 row">
-                        <p class="col-3">Kepemilikan</p>
-                        <p class="col-4">: Sarana Dan Prasarana</p>
-                    </div>
-                    <div class="mb-3 row">
-                        <p class="col-3">Kondisi</p>
-                        <p class="col-4">: Baru</p>
-                    </div>
-                    <div class="mb-3 row">
-                        <p class="col-3">Status</p>
-                        <p class="col-4">: -</p>
-                    </div>
-                    <div class="mb-3 row">
-                        <p class="col-3">Dokumen</p>
-                        <p class="col-4">: Nota.docs</p>
-                    </div>
-                    <div class="mb-5 row">
-                        <p class="col-3">Pencatat</p>
-                        <p class="col-4">: Ahmad Zulfan</p>
-                    </div>
-                  </form>
-                  <template #modal-footer>
-                    <b-button v-b-modal.modal-3 class="btn btn-sm" variant="primary" @click="setTitleModal('Edit Ketua Divisi')">Edit</b-button>
-
-                    <b-modal id="modal-3" size="lg" ref="modal-admin" :title="judulModal">
-                        <form action="" method="post" style="margin-bottom: 90px">
-                            <div class="mb-3 row">
-                              <label for="example-datepicker" class="col-sm-2 col-form-label">Tanggal</label>
-                              <div class="col-sm-10">
-                                <b-form-datepicker id="tanggal" v-model="date" class="mb-2"></b-form-datepicker>
-                              </div>
+                  <b-modal id="modal-3" size="lg" ref="modal-admin" title="Edit">
+                      <form action="" method="post" style="margin-bottom: 90px">
+                          <div class="mb-3 row">
+                            <label for="example-datepicker" class="col-sm-2 col-form-label">Tanggal</label>
+                            <div class="col-sm-10">
+                              <b-form-datepicker id="tanggal" v-model="date" class="mb-2"></b-form-datepicker>
                             </div>
-                            <div class="mb-3 row">
-                              <label for="inputName" class="col-sm-2 col-form-label">Barang</label>
-                              <div class="col-sm-10">
-                                <input type="text" class="form-control" id="inputName">
-                              </div>
+                          </div>
+                          <div class="mb-3 row">
+                            <label for="inputName" class="col-sm-2 col-form-label">Barang</label>
+                            <div class="col-sm-10">
+                              <input type="text" class="form-control" id="inputName">
                             </div>
-                            <div class="mb-3 row">
-                              <label for="inputName" class="col-sm-2 col-form-label">Harga</label>
-                              <div class="col-sm-10">
-                                <input type="text" class="form-control" id="inputName">
-                              </div>
+                          </div>
+                          <div class="mb-3 row">
+                            <label for="inputName" class="col-sm-2 col-form-label">Harga</label>
+                            <div class="col-sm-10">
+                              <input type="text" class="form-control" id="inputName">
                             </div>
-                            <div class="mb-3 row">
-                              <label for="inputName" class="col-sm-2 col-form-label">Donatur</label>
-                              <div class="col-sm-10">
-                                <input type="text" class="form-control" id="inputName">
-                              </div>
+                          </div>
+                          <div class="mb-3 row">
+                            <label for="inputName" class="col-sm-2 col-form-label">Donatur</label>
+                            <div class="col-sm-10">
+                              <input type="text" class="form-control" id="inputName">
                             </div>
-                            <div class="mb-3 row">
-                              <label for="inputName" class="col-sm-2 col-form-label">Ruang</label>
+                          </div>
+                          <div class="mb-3 row">
+                            <label for="inputName" class="col-sm-2 col-form-label">Ruang</label>
+                            <div class="col-sm-10">
+                                <b-form-select v-model="selected" :options="ruang">
+                                <!-- This slot appears above the options from 'options' prop -->
+                                    <template #first>
+                                        <b-form-select-option :value="null" disabled>-- Pilih Ruang --</b-form-select-option>
+                                    </template>
+                                </b-form-select>
+                            </div>
+                          </div>
+                          <div class="mb-3 row">
+                              <label for="inputName" class="col-sm-2 col-form-label">Divisi</label>
                               <div class="col-sm-10">
-                                  <b-form-select v-model="selected" :options="ruang">
+                                  <b-form-select v-model="selected" :options="divisi">
                                   <!-- This slot appears above the options from 'options' prop -->
                                       <template #first>
-                                          <b-form-select-option :value="null" disabled>-- Pilih Ruang --</b-form-select-option>
+                                          <b-form-select-option :value="null" disabled>-- Pilih Divisi --</b-form-select-option>
                                       </template>
                                   </b-form-select>
                               </div>
-                            </div>
-                            <div class="mb-3 row">
-                                <label for="inputName" class="col-sm-2 col-form-label">Divisi</label>
-                                <div class="col-sm-10">
-                                    <b-form-select v-model="selected" :options="divisi">
-                                    <!-- This slot appears above the options from 'options' prop -->
-                                        <template #first>
-                                            <b-form-select-option :value="null" disabled>-- Pilih Divisi --</b-form-select-option>
-                                        </template>
-                                    </b-form-select>
-                                </div>
-                            </div>
-                            <div class="mb-3 row">
-                                <label for="inputKepemilikan" class="col-sm-2 col-form-label">Kepemilikan</label>
-                                <div class="col-sm-10">
-                                  <input class="form-control" v-model="kepemilikan" id="inputKepemilikan"></input>
-                                </div>
-                            </div>
-                            <div class="mb-3 row">
-                              <label for="inputName" class="col-sm-2 col-form-label">Kondisi</label>
+                          </div>
+                          <div class="mb-3 row">
+                              <label for="inputKepemilikan" class="col-sm-2 col-form-label">Kepemilikan</label>
                               <div class="col-sm-10">
-                                  <b-form-select v-model="selected" :options="kondisi">
+                                <input class="form-control" v-model="kepemilikan" id="inputKepemilikan"></input>
+                              </div>
+                          </div>
+                          <div class="mb-3 row">
+                            <label for="inputName" class="col-sm-2 col-form-label">Kondisi</label>
+                            <div class="col-sm-10">
+                                <b-form-select v-model="selected" :options="kondisi">
+                                <!-- This slot appears above the options from 'options' prop -->
+                                    <template #first>
+                                        <b-form-select-option :value="null" disabled>-- Pilih Kondisi --</b-form-select-option>
+                                    </template>
+                                </b-form-select>
+                            </div>
+                          </div>
+                          <div class="mb-3 row">
+                            <label for="inputName" class="col-sm-2 col-form-label">Status</label>
+                            <div class="col-sm-10">
+                                <b-form-select v-model="selected" :options="status">
                                   <!-- This slot appears above the options from 'options' prop -->
-                                      <template #first>
-                                          <b-form-select-option :value="null" disabled>-- Pilih Kondisi --</b-form-select-option>
-                                      </template>
-                                  </b-form-select>
-                              </div>
+                                    <template #first>
+                                        <b-form-select-option :value="null" disabled>-- Pilih Status --</b-form-select-option>
+                                    </template>
+                                </b-form-select>
                             </div>
-                            <div class="mb-3 row">
-                              <label for="inputName" class="col-sm-2 col-form-label">Status</label>
+                          </div>
+                          <div class="mb-3 row">
+                              <label for="inputDokumen" class="col-sm-2 col-form-label">Dokumen</label>
                               <div class="col-sm-10">
-                                  <b-form-select v-model="selected" :options="status">
-                                    <!-- This slot appears above the options from 'options' prop -->
-                                      <template #first>
-                                          <b-form-select-option :value="null" disabled>-- Pilih Status --</b-form-select-option>
-                                      </template>
-                                  </b-form-select>
+                                <b-form-file v-model="dokumen" id="inputDokumen"></b-form-file>
                               </div>
-                            </div>
-                            <div class="mb-3 row">
-                                <label for="inputDokumen" class="col-sm-2 col-form-label">Dokumen</label>
-                                <div class="col-sm-10">
-                                  <b-form-file v-model="dokumen" id="inputDokumen"></b-form-file>
-                                </div>
-                            </div>
-                            <div class="mb-3 row">
-                                <label for="inputPencatat" class="col-sm-2 col-form-label">Pencatat</label>
-                                <div class="col-sm-10">
-                                <input type="password" class="form-control" id="inputPencatat">
-                                </div>
-                            </div>
-                        </form>
-                        <template #modal-footer>
-                            <b-button @click="simpan" variant="primary">Simpan</b-button>
-                        </template>
-                    </b-modal>
-                  </template>
-                </b-modal>
-              </b-th>
-            </b-tr>
-          </b-tbody>
-        </b-table-simple>
+                          </div>
+                          <div class="mb-3 row">
+                              <label for="inputPencatat" class="col-sm-2 col-form-label">Pencatat</label>
+                              <div class="col-sm-10">
+                              <input type="password" class="form-control" id="inputPencatat">
+                              </div>
+                          </div>
+                      </form>
+                      <template #modal-footer>
+                          <b-button @click="simpan" variant="primary">Simpan</b-button>
+                      </template>
+                  </b-modal>
+                </template>
+            </b-modal>
       </div>
     </div>
   </div>
@@ -309,6 +290,19 @@
           { value: 'A', text: 'Option A (from options prop)' },
           { value: 'B', text: 'Option B (from options prop)' }
         ],
+        header: [
+          { key: 'tanggal', label: 'Tanggal' },
+          { key: 'barang', label: 'Barang' },
+          { key: 'donatur', label: 'Donatur' },
+          { key: 'ruang', label: 'Ruang' },
+          { key: 'divisi', label: 'Divisi' },
+          { key: 'action', label: 'Action' },
+        ],
+        items: [
+          { tanggal: '2020', barang: 'TV', harga: '5000000', donatur: 'PT Pelita Bakti', ruang: 'Produksi', divisi: 'CMC', kepemilikan: 'SARPRAS', kondisi: 'Baik', status: 'Baru', dokumen: 'Nota.docs', pencatat: 'Aziz'},
+          { tanggal: '2020', barang: 'Monitor', harga: '15000000', donatur: 'PT Techno Indonesia Bakti', ruang: 'Meeting', divisi: 'CMC', kepemilikan: 'SARPRAS', kondisi: 'Baik', status: 'Baru', dokumen: 'Nota.docs', pencatat: 'Aziz'},
+          { tanggal: '2020', barang: 'Kamera', harga: '2000000', donatur: 'PT Media Bangsa', ruang: 'Studio', divisi: 'CMC', kepemilikan: 'SARPRAS', kondisi: 'Baik', status: 'Baru', dokumen: 'Nota.docs', pencatat: 'Aziz'}
+        ],
         date: '',
         barang: '',
         harga: '',
@@ -316,34 +310,26 @@
         kepemilikan: '',
         dokumen: '',
         pencatat: '',
-        judulModal: ''
+        judulModal: '',
+        detail: {}
       }
     },
-        methods: {
-        simpan () {
-            const date = new Date()
-            console.log(this.$moment(date).format('YYYY-M-D'))
-            console.log(this.nama)
-            const cek = false
-            if (cek) {
-                this.$refs['modal-admin'].show()
-            }
-        },
-        setTitleModal (title) {
-            this.judulModal = title
-            console.log(title)
-        },
-        setTitleModal (title) {
-            this.judulModal = title
-            console.log(title)
-        },
-        setTitleModal (title) {
-            this.judulModal = title
-            console.log(title)
-        },
-        deletedData(data){
-          console.log(data)
+    methods: {
+      simpan () {
+        const date = new Date()
+        console.log(this.$moment(date).format('YYYY-M-D'))
+        console.log(this.nama)
+        const cek = false
+        if (cek) {
+            this.$refs['modal-admin'].show()
         }
+      },
+      detailData(data){
+        this.detail = data
+      },
+      deletedData(data){
+        console.log(data)
+      }
     }
   }
 </script>
