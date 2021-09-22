@@ -1,7 +1,7 @@
 <template>
   <div
     class="col d-flex flex-column flex-shrink-0 p-3 bg-dark"
-    style="max-width: 280px; min-height: 100%; max-height: auto"
+    style="max-width: 280px; height: 100%;"
   >
     <a
       href="/"
@@ -132,14 +132,14 @@
         </div>
       </li>
     </ul>
-  </div> 
+  </div>
 </template>
 
 <script>
 export default {
   data () {
     return {
-      
+
     }
   },
   methods: {

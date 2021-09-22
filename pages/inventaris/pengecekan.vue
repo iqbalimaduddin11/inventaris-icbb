@@ -1,5 +1,5 @@
 <template>
-  <div class="container-fluid p-3">
+  <div class="container-fluid">
     <nav aria-label="breadcrumb" class="mt-4">
       <ol class="breadcrumb">
         <li class="breadcrumb-item" aria-current="page"><a href="/">Home</a></li>
@@ -46,48 +46,43 @@
       </div>
     </div>
     <div class="row">
-      <table class="table">
-        <thead class="table table-dark table-bordered border-white">
-          <tr>
-            <th>Kode Inventaris</th>
-            <th>Tanggal Pengecekan</th>
-            <th>Kondisi Barang</th>
-            <th>Pengecek</th>
-            <th>aksi</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <th>1.</th>
-            <th>13-09-2021</th>
-            <th>Baik</th>
-            <th>Raihan Khusna</th>
-            <th>
-              <a href="/" class="btn btn-danger" role="button" data-bs-toggle="button">Delete</a>
-              <a href="/" class="btn btn-primary" role="button" data-bs-toggle="button">Edit</a>
-            </th>
-          </tr>
-        </tbody>
-      </table>
+      <div class="mt-4">
+        <b-table-simple>
+          <b-thead head-variant="dark">
+            <b-tr>
+              <b-th>Kode Inventaris</b-th>
+              <b-th>Tanggal Pengecekan</b-th>
+              <b-th>Kondisi Barang</b-th>
+              <b-th>Pengecek</b-th>
+              <b-th>aksi</b-th>
+            </b-tr>
+          </b-thead>
+          <b-tbody>
+            <b-tr>
+              <b-th>1.</b-th>
+              <b-th>13-09-2021</b-th>
+              <b-th>Baik</b-th>
+              <b-th>Raihan Khusna</b-th>
+              <b-th>
+                <a href="/" class="btn btn-danger" role="button" data-bs-toggle="button">Delete</a>
+                <a href="/" class="btn btn-primary" role="button" data-bs-toggle="button">Edit</a>
+              </b-th>
+            </b-tr>
+          </b-tbody>
+        </b-table-simple>
+      </div>
     </div>
   </div>
 </template>
 
-<style>
-.row{
-  margin-left: 0;
-  margin-right: 0;
-}
-</style>
-
 <script>
-export default {
-  data () {
-    return {
-      date: '',
-      kondisi: '',
-      pengecekan: ''
+  export default {
+    data () {
+      return {
+        date: '',
+        kondisi: '',
+        pengecekan: ''
+      }
     }
   }
-}
 </script>

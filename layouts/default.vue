@@ -24,7 +24,7 @@
           <div class="form-group">
             <label for="password">Password</label>
             <input type="password" v-model="login.password" class="form-control"  placeholder="Password">
-          </div> 
+          </div>
             <button type="submit" class="btn btn-primary">Login</button>
         </form>
       </b-modal>
@@ -100,18 +100,17 @@ html, body{
 #__nuxt, #__layout{
   height: 100%;
 }
-#content{
-  height: 100%;
-}
 #wrapper{
   position:relative;
-  min-height: 100%;
-  max-height: auto !important;
+  height: 100%;
   width: 100%;
   margin: 0px
 }
 #content-wrapper{
   margin: 0;
   padding: 0
+}
+#content{
+  height: 100%;
 }
 </style>
