@@ -16,19 +16,40 @@
             <form action="" method="post" style="margin-bottom: 90px">
                 <div class="mb-3 row">
                     <label for="inputAreaDivisi" class="col-sm-2 col-form-label">Area Divisi</label>
-                    <div class="col-sm-10">
-                      <input type="text" class="form-control" v-model="jenis" id="inputAreaDivisi">
+                    <div class="col-sm-10 ml-1 row">
+                      <b-form-select v-model="ruang" class="col-8 mr-1" :options="ruang">
+                        <!-- This slot appears above the options from 'options' prop -->
+                            <template #first>
+                                <b-form-select-option :value="null" disabled>-- Pilih Area --</b-form-select-option>
+                            </template>
+                      </b-form-select>
+                      <b-button v-b-modal.modal-4 class="btn btn-sm col-3" variant="primary">
+                      <fa :icon="['fas', 'plus']" /> Tambah</b-button>
+
+                      <b-modal id="modal-4" size='lg' ref="modal-area" title="Tambah Area Divisi">
+                        <form action="" method="post" style="margin-bottom: 90px">
+                            <div class="mb-3 row">
+                              <label for="inputAreaDivisi" class="col-sm-2 col-form-label">Area Divisi</label>
+                              <div class="col-sm-10">
+                                  <input type="text" class="form-control" v-model="ruang" id="inputAreaDivisi">
+                              </div>
+                            </div>
+                        </form>
+                        <template #modal-footer>
+                            <b-button @click="simpan" variant="primary">Simpan</b-button>
+                        </template>
+                      </b-modal>
                     </div>
                 </div>
                 <div class="mb-3 row">
                     <label for="inputDivisi" class="col-sm-2 col-form-label">Divisi</label>
-                    <div class="col-sm-10">
+                    <div class="col-sm-10 ml-1 row">
                       <b-form-select v-model="divisi" :options="divisi">
                         <!-- This slot appears above the options from 'options' prop -->
                             <template #first>
                                 <b-form-select-option :value="null" disabled>-- Pilih Divisi --</b-form-select-option>
                             </template>
-                        </b-form-select>
+                      </b-form-select>
                     </div>
                 </div>
             </form>
@@ -67,10 +88,15 @@
               <b-modal id="modal-3" size="lg" ref="modal-admin" title="Edit">
                   <form action="" method="post" style="margin-bottom: 90px">
                     <div class="mb-3 row">
-                        <label for="inputAreaDivisi" class="col-sm-2 col-form-label">Area Divisi</label>
-                        <div class="col-sm-10">
-                          <input type="text" class="form-control" v-model="golongan" id="inputAreaDivisi">
-                        </div>
+                      <label for="inputAreaDivisi" class="col-sm-2 col-form-label">Area Divisi</label>
+                      <div class="col-sm-10">
+                        <b-form-select v-model="ruang" :options="ruang">
+                          <!-- This slot appears above the options from 'options' prop -->
+                              <template #first>
+                                  <b-form-select-option :value="null" disabled>-- Pilih Area --</b-form-select-option>
+                              </template>
+                        </b-form-select>
+                      </div>
                     </div>
                     <div class="mb-3 row">
                         <label for="inputDivisi" class="col-sm-2 col-form-label">Divisi</label>
