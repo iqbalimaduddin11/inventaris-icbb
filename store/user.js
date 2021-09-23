@@ -12,9 +12,7 @@ export const mutations = {
         state.user = payload;
     },
     SET_ISADMIN(state, payload) {
-        if (payload === "super admin") {
-            state.isAdmin = 1;
-        }
+        state.isAdmin = payload;
     },
 }
 

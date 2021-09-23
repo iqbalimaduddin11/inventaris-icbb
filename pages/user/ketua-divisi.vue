@@ -229,6 +229,7 @@
         alamat: '',
         email: '',
         password: '',
+        judulModal: '',
         detail: {}
       }
     },
@@ -245,6 +246,9 @@
       detailData(data){
         this.detail = data
       },
+      deletedData(date){
+        console.log(data)
+      }
     }
   }
 </script>
