@@ -13,27 +13,27 @@
         <div class="container mt-4 pl-4">
             <div class="row">
                 <p class="col-3">NIP</p>
-                <p class="col-4">: NIP</p>
+                <p class="col-4">: {{user.nip}}</p>
             </div>
             <div class="row">
                 <p class="col-3">Nama</p>
-                <p class="col-4">: Nama</p>
+                <p class="col-4">: {{user.nama}}</p>
             </div>
             <div class="row">
                 <p class="col-3">Divisi</p>
-                <p class="col-4">: Divisi</p>
+                <p class="col-4">: {{user.divisi}}</p>
             </div>
             <div class="row">
                 <p class="col-3">Jabatan</p>
-                <p class="col-4">: Jabatan</p>
+                <p class="col-4">: {{user.jabatan}}</p>
             </div>
             <div class="row">
                 <p class="col-3">Nomor Hp</p>
-                <p class="col-4">: Nomor Hp</p>
+                <p class="col-4">: {{user.no_hp}}</p>
             </div>
             <div class="row">
                 <p class="col-3">Alamat</p>
-                <p class="col-4">: Alamat</p>
+                <p class="col-4">: {{user.alamat}}</p>
             </div>
         </div>
         <div class="d-flex justify-content-between border-bottom border-top border-dark pt-3 pb-3 mt-4" style="height: auto">
@@ -47,11 +47,11 @@
         <div class="container mt-4 pl-4">
             <div class="row">
                 <p class="col-3">Email</p>
-                <p class="col-4">: Email</p>
+                <p class="col-4">: {{user.email}}</p>
             </div>
             <div class="row">
                 <p class="col-3">Password</p>
-                <p class="col-4">: Password</p>
+                <p class="col-4">: {{user.nip}}</p>
             </div>
         </div>
     </div>
@@ -64,11 +64,14 @@ export default {
             user: {}
         }
     },
-    created () {
-
+    mounted () {
+        this.getUser()
     },
     methods: {
-        
+        getUser (){
+            this.user = JSON.parse(JSON.parse(localStorage.getItem('user')).user)
+            console.log(this.user)
+        }
     }
 }
 </script>
