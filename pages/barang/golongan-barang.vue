@@ -43,7 +43,7 @@
             <form action="" method="">
               <div class="mb-5 row">
                 <p class="col-3">Golongan Barang</p>
-                <p class="col-4">: {{detail.golongan}}</p>
+                <p class="col-4">: {{detail.nama}}</p>
               </div>
             </form>
             <template #modal-footer>
@@ -70,21 +70,34 @@
 </template>
 
 <script>
+  import cookie from 'js-cookie'
   export default {
     data () {
       return {
         header: [
-          { key: 'golongan', label: 'Golongan Barang' },
+          { key: 'nama', label: 'Golongan Barang' },
           { key: 'action', label: 'Action' }
         ],
-        items: [
-          { golongan: 'Elektronik'},
-        ],
+        items: [],
         golongan: '',
         detail: {}
       }
     },
+    mounted() {
+      this.getData()
+    },
     methods: {
+      async getData() {
+        await this.$axios.get('https://inventaris-yayasan.herokuapp.com/barang-golongan', {
+          headers: {
+            'Authorization': 'Bearer ' + cookie.get('access_token')
+          }
+        })
+        .then(response => {
+          console.log(response)
+          this.items = response.data.data
+        })
+      },
       detailData(data){
         this.detail = data
       },

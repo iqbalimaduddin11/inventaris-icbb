@@ -54,7 +54,7 @@
             <form action="" method="">
               <div class="mb-3 row">
                 <p class="col-3">Nama Barang</p>
-                <p class="col-4">: {{detail.jenis}}</p>
+                <p class="col-4">: {{detail.nama}}</p>
               </div>
               <div class="mb-5 row">
                 <p class="col-3">Golongan Barang</p>
@@ -95,13 +95,8 @@
   </div>
 </template>
 
-<style>
-.row{
-  margin-left: 0;
-  margin-right: 0;
-}
-</style>
 <script>
+  import cookie from 'js-cookie'
   export default {
     data () {
       return {
@@ -110,18 +105,30 @@
           { value: 'B', text: 'Option B (from options prop)' }
         ],
         header: [
-          { key: 'jenis', label: 'Nama Barang' },
+          { key: 'nama', label: 'Nama Barang' },
           { key: 'golongan', label: 'Golongan Barang' },
           { key: 'action', label: 'Action' }
         ],
-        items: [
-          {jenis: 'TV', golongan: 'Elektronik'}
-        ],
+        items: [],
         jenis: '',
         detail: {}
       }
     },
+    mounted() {
+      this.getData()
+    },
     methods: {
+      async getData() {
+        await this.$axios.get('https://inventaris-yayasan.herokuapp.com/barang', {
+          headers: {
+            'Authorization': 'Bearer ' + cookie.get('access_token')
+          }
+        })
+        .then(response => {
+          console.log(response)
+          this.items = response.data.data
+        })
+      },
       detailData(data){
         this.detail = data
       },
