@@ -70,7 +70,7 @@
               </div>
               <div class="mb-3 row">
                 <p class="col-3">Barang</p>
-                <p class="col-4">: {{detail.barang}}</p>
+                <p class="col-4">: {{detail.inventaris}}</p>
               </div>
               <div class="mb-3 row">
                 <p class="col-3">Kondisi</p>
@@ -78,7 +78,7 @@
               </div>
               <div class="mb-5 row">
                 <p class="col-3">Pengecek</p>
-                <p class="col-4">: {{detail.pengecek}}</p>
+                <p class="col-4">: {{detail.person_pengecek}}</p>
               </div>
             </form>
             <template #modal-footer>
@@ -128,6 +128,7 @@
 </template>
 
 <script>
+  import cookie from 'js-cookie'
   export default {
     data () {
       return {
@@ -137,23 +138,33 @@
         ],
         header: [
           { key: 'tanggal', label: 'Tanggal' },
-          { key: 'barang', label: 'Barang' },
+          { key: 'inventaris', label: 'Barang' },
           { key: 'kondisi', label: 'Kondisi' },
-          { key: 'pengecek', label: 'Pengecek' },
+          { key: 'person_pengecek', label: 'Pengecek' },
           { key: 'action', label: 'Action' }
         ],
-        items: [
-          { tanggal: '2021', barang: 'TV', kondisi: 'Baik', pengecek: 'Abdul'},
-          { tanggal: '2021', barang: 'Monitor', kondisi: 'Rusak', pengecek: 'Aziz'},
-          { tanggal: '2021', barang: 'Laptop', kondisi: 'Baik', pengecek: 'Fadhil'},
-        ],
+        items: [],
         date: '',
         barang: '',
         pengecek: '',
         detail: {}
       }
     },
+    mounted() {
+      this.getData()
+    },
     methods: {
+      async getData() {
+        await this.$axios.get('https://inventaris-yayasan.herokuapp.com/pengecekan', {
+          headers: {
+            'Authorization': 'Bearer ' + cookie.get('access_token')
+          }
+        })
+        .then(response => {
+          console.log(response)
+          this.items = response.data.data
+        })
+      },
       simpan () {
         const date = new Date()
         console.log(this.$moment(date).format('YYYY-M-D'))

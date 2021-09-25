@@ -123,7 +123,7 @@
                 <form action="" method="">
                   <div class="mb-3 row">
                       <p class="col-3">Tanggal</p>
-                      <p class="col-4">: {{detail.tanggal}}</p>
+                      <p class="col-4">: {{detail.tanggal_masuk}}</p>
                   </div>
                   <div class="mb-3 row">
                       <p class="col-3">Barang</p>
@@ -135,7 +135,7 @@
                   </div>
                   <div class="mb-3 row">
                       <p class="col-3">Donatur</p>
-                      <p class="col-4">: {{detail.donatur}}</p>
+                      <p class="col-4">: {{detail.person_donatur}}</p>
                   </div>
                   <div class="mb-3 row">
                       <p class="col-3">Ruang</p>
@@ -155,7 +155,7 @@
                   </div>
                   <div class="mb-3 row">
                       <p class="col-3">Status</p>
-                      <p class="col-4">: {{detail.status}}</p>
+                      <p class="col-4">: {{detail.status_lokasi}}</p>
                   </div>
                   <div class="mb-3 row">
                       <p class="col-3">Dokumen</p>
@@ -163,7 +163,7 @@
                   </div>
                   <div class="mb-5 row">
                       <p class="col-3">Pencatat</p>
-                      <p class="col-4">: {{detail.pencatat}}</p>
+                      <p class="col-4">: {{detail.person_pencatat}}</p>
                   </div>
                 </form>
                 <template #modal-footer>
@@ -270,6 +270,7 @@
 </template>
 
 <script>
+  import cookie from 'js-cookie'
   export default {
     data () {
       return {
@@ -291,18 +292,14 @@
           { value: 'B', text: 'Option B (from options prop)' }
         ],
         header: [
-          { key: 'tanggal', label: 'Tanggal' },
+          { key: 'tanggal_masuk', label: 'Tanggal' },
           { key: 'barang', label: 'Barang' },
-          { key: 'donatur', label: 'Donatur' },
+          { key: 'person_donatur', label: 'Donatur' },
           { key: 'ruang', label: 'Ruang' },
           { key: 'divisi', label: 'Divisi' },
           { key: 'action', label: 'Action' },
         ],
-        items: [
-          { tanggal: '2020', barang: 'TV', harga: '5000000', donatur: 'PT Pelita Bakti', ruang: 'Produksi', divisi: 'CMC', kepemilikan: 'SARPRAS', kondisi: 'Baik', status: 'Baru', dokumen: 'Nota.docs', pencatat: 'Aziz'},
-          { tanggal: '2020', barang: 'Monitor', harga: '15000000', donatur: 'PT Techno Indonesia Bakti', ruang: 'Meeting', divisi: 'CMC', kepemilikan: 'SARPRAS', kondisi: 'Baik', status: 'Baru', dokumen: 'Nota.docs', pencatat: 'Aziz'},
-          { tanggal: '2020', barang: 'Kamera', harga: '2000000', donatur: 'PT Media Bangsa', ruang: 'Studio', divisi: 'CMC', kepemilikan: 'SARPRAS', kondisi: 'Baik', status: 'Baru', dokumen: 'Nota.docs', pencatat: 'Aziz'}
-        ],
+        items: [],
         date: '',
         barang: '',
         harga: '',
@@ -314,7 +311,21 @@
         detail: {}
       }
     },
+    mounted() {
+      this.getData()
+    },
     methods: {
+      async getData() {
+        await this.$axios.get('https://inventaris-yayasan.herokuapp.com/inventaris', {
+          headers: {
+            'Authorization': 'Bearer ' + cookie.get('access_token')
+          }
+        })
+        .then(response => {
+          console.log(response)
+          this.items = response.data.data
+        })
+      },
       simpan () {
         const date = new Date()
         console.log(this.$moment(date).format('YYYY-M-D'))

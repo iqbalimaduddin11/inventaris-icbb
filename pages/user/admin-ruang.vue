@@ -15,9 +15,9 @@
           <b-modal id="modal-1" size="lg" ref="modal-admin" title="Tambah Admin Ruang">
               <form action="" method="post" style="margin-bottom: 90px">
                   <div class="mb-3 row">
-                      <label for="inputNip" class="col-sm-2 col-form-label">NIK</label>
+                      <label for="inputNip" class="col-sm-2 col-form-label">NIP</label>
                       <div class="col-sm-10">
-                      <input type="text" class="form-control" v-model="nik" id="inputNip">
+                      <input type="text" class="form-control" v-model="nip" id="inputNip">
                       </div>
                   </div>
                   <div class="mb-3 row">
@@ -104,8 +104,8 @@
           <b-modal id="modal-2" size="lg" ref="modal-detail" title="Detail Admin Ruang">
             <form action="" method="post">
               <div class="mb-3 row">
-                  <p class="col-3">NIK</p>
-                  <p class="col-4">: {{detail.nik}}</p>
+                  <p class="col-3">NIP</p>
+                  <p class="col-4">: {{detail.nip}}</p>
               </div>
               <div class="mb-3 row">
                   <p class="col-3">Nama</p>
@@ -117,19 +117,19 @@
               </div>
               <div class="mb-3 row">
                   <p class="col-3">Divisi</p>
-                  <p class="col-4">: CMC</p>
+                  <p class="col-4">: {{detail.divisi}}</p>
               </div>
               <div class="mb-3 row">
                   <p class="col-3">Nomor Hp</p>
-                  <p class="col-4">: 09123789231</p>
+                  <p class="col-4">: {{detail.no_hp}}</p>
               </div>
               <div class="mb-3 row">
                   <p class="col-3">Alamat</p>
-                  <p class="col-4">: Jakarta</p>
+                  <p class="col-4">: {{detail.alamat}}</p>
               </div>
               <div class="mb-5 row">
                   <p class="col-3">Email</p>
-                  <p class="col-4">: Fadlan123@gmail.com</p>
+                  <p class="col-4">: {{detail.email}}</p>
               </div>
             </form>
             <template #modal-footer>
@@ -138,7 +138,7 @@
               <b-modal id="modal-3" size="lg" ref="modal-admin" title="Edit Admin Ruang">
                   <form action="" method="post" style="margin-bottom: 90px">
                       <div class="mb-3 row">
-                          <label for="inputNip" class="col-sm-2 col-form-label">NIK</label>
+                          <label for="inputNip" class="col-sm-2 col-form-label">NIP</label>
                           <div class="col-sm-10">
                           <input type="text" class="form-control" id="inputNip">
                           </div>
@@ -208,6 +208,7 @@
 </template>
 
 <script>
+  import cookie from 'js-cookie'
   export default {
     data () {
       return {
@@ -225,17 +226,13 @@
           { value: 'B', text: 'Option B (from options prop)' }
         ],
         header: [
-          { key: 'nik', label: 'NIK' },
+          { key: 'nip', label: 'NIP' },
           { key: 'nama', label: 'Nama' },
           { key: 'divisi', label: 'Divisi' },
           { key: 'action', label: 'Action' },
         ],
-        items: [
-          { nik: '22114', nama: 'Muhammad', divisi: 'SARPRAS', jabatan: 'Admin Ruang', nomor: '08213212333', alamat: 'Papua', email: 'Muhammad@gmail.com'},
-          { nik: '12223', nama: 'Syakir', divisi: 'SARPRAS', jabatan: 'Admin Ruang', nomor: '09212883212', alamat: 'Ambon', email: 'Syakir@gmail.com'},
-          { nik: '55331', nama: 'Fadlan', divisi: 'SARPRAS', jabatan: 'Admin Ruang', nomor: '02123432221', alamat: 'NTT', email: 'Fadlan@gmail.com'}
-        ],
-        nik: '',
+        items: [],
+        nip: '',
         nama: '',
         jabatan1: '',
         ruang1: '',
@@ -248,7 +245,21 @@
 
       }
     },
+    mounted() {
+      this.getData()
+    },
     methods: {
+      async getData() {
+        await this.$axios.get('https://inventaris-yayasan.herokuapp.com/user', {
+          headers: {
+            'Authorization': 'Bearer ' + cookie.get('access_token')
+          }
+        })
+        .then(response => {
+          console.log(response)
+          this.items = response.data.data
+        })
+      },
       simpan () {
         const date = new Date()
         console.log(this.$moment(date).format('YYYY-M-D'))

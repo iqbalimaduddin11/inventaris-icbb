@@ -43,7 +43,7 @@
             <form action="" method="">
               <div class="mb-5 row">
                 <p class="col-3">Divisi</p>
-                <p class="col-4">: {{detail.divisi}}</p>
+                <p class="col-4">: {{detail.nama}}</p>
               </div>
             </form>
             <template #modal-footer>
@@ -70,23 +70,34 @@
 </template>
 
 <script>
+  import cookie from 'js-cookie'
   export default {
     data () {
       return {
         header:[
-          { key: 'divisi', label: 'Divisi' },
+          { key: 'nama', label: 'Divisi' },
           { key: 'action', label: 'Action' }
         ],
-        items: [
-          { divisi: 'CMC'},
-          { divisi: 'Unit Usaha'},
-          { divisi: 'SARPRAS'}
-        ],
+        items: [],
         divisi: '',
         detail: {}
       }
     },
+    mounted() {
+      this.getData()
+    },
     methods: {
+      async getData(){
+        await this.$axios.get('https://inventaris-yayasan.herokuapp.com/divisi', {
+          headers: {
+            'Authorization': 'Bearer ' + cookie.get('access_token')
+          }
+        })
+        .then(response => {
+          console.log(response)
+          this.items = response.data.data
+        })
+      },
       detailData(data){
         this.detail = data
       },

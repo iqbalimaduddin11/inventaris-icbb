@@ -75,11 +75,11 @@
             <form action="" method="">
               <div class="mb-3 row">
                 <p class="col-3">Area Divisi</p>
-                <p class="col-4">: {{detail.ruang}}</p>
+                <p class="col-4">: {{detail.data_ruangs.length}}</p>
               </div>
               <div class="mb-5 row">
                 <p class="col-3">Divisi</p>
-                <p class="col-4">: {{detail.divisi}}</p>
+                <p class="col-4">: {{detail.nama}}</p>
               </div>
             </form>
             <template #modal-footer>
@@ -98,7 +98,7 @@
                         </b-form-select>
                       </div>
                     </div>
-                    <div class="mb-3 row">
+                    <div class="mb-3 row">ruang
                         <label for="inputDivisi" class="col-sm-2 col-form-label">Divisi</label>
                         <div class="col-sm-10">
                             <b-form-select v-model="selected" :options="divisi">
@@ -122,6 +122,7 @@
 </template>
 
 <script>
+  import cookie from 'js-cookie'
   export default {
     data () {
       return {
@@ -130,20 +131,30 @@
           { value: 'B', text: 'Option B (from options prop)' }
         ],
         header:[
-          { key: 'ruang', label: 'Area' },
-          { key: 'divisi', label: 'Divisi' },
+          { key: 'nama', label: 'Divisi' },
+          { key: 'data_ruangs.length', label: 'Area' },
           { key: 'action', label: 'Action' }
         ],
-        items: [
-          { ruang: 'Meeting', divisi: 'CMC'},
-          { ruang: 'Bisnis', divisi: 'Unit Usaha'},
-          { ruang: 'Gudang', divisi: 'SARPRAS'}
-        ],
+        items: [],
         ruang: '',
-        detail: ''
+        detail: {}
       }
     },
+    mounted() {
+      this.getData()
+    },
     methods: {
+      async getData() {
+        await this.$axios.get('https://inventaris-yayasan.herokuapp.com/divisi-ruang', {
+          headers: {
+            'Authorization': 'Bearer ' + cookie.get('access_token')
+          }
+        })
+        .then(response => {
+          console.log(response)
+          this.items = response.data.data
+        })
+      },
       detailData(data){
         this.detail = data
       },
