@@ -97,6 +97,7 @@ export default {
       itemsDivisi: [],
       itemsDetailRuang: [],
       detailDivisi: []
+      
     }
   },
   created () {
@@ -105,35 +106,69 @@ export default {
   methods: {
     async getUser () {
       this.loading = true
-      await this.$axios
-        .get("https://inventaris-yayasan.herokuapp.com/user")
-        .then(response => {
-          console.log(response.data.data)
-          this.karyawan = response.data.data.length
-        })
-      await this.$axios
-        .get("https://inventaris-yayasan.herokuapp.com/divisi-ruang", {
-          headers: {
-            'Authorization': 'Bearer ' + cookie.get('access_token')
+        await this.$axios
+          .get("https://inventaris-yayasan.herokuapp.com/user")
+          .then(response => {
+            console.log(response.data.data)
+            this.karyawan = response.data.data.length
+          })
+      try {
+        await this.$axios
+          .get("https://inventaris-yayasan.herokuapp.com/divisi-ruang", {
+            headers: {
+              'Authorization': 'Bearer ' + cookie.get('access_token')
+            }
+          })
+          .then(response => {
+            console.log(response.data.data)
+            this.divisi = response.data.data.length
+            this.itemsDivisi = response.data.data
+            console.log(this.itemsDivisi)
+          })
+        await this.$axios
+          .get("https://inventaris-yayasan.herokuapp.com/ruang", {
+            headers: {
+              'Authorization': 'Bearer ' + cookie.get('access_token')
+            }
+          })
+          .then(response => {
+            console.log(response.data.data)
+            this.ruang = response.data.data.length
+          })
+      } catch (err) {
+        if (typeof err.response !== "undefined") {
+          const token = cookie.get('access_token')
+          const user = cookie.get('user')
+          if (err.response.status === 404) {
+            if (typeof token !== "undefined") { 
+              const login = {
+                email: JSON.parse(user).email,
+                password: JSON.parse(user).password
+              }
+              console.log(login)
+              const data = JSON.stringify(this.login)
+              await this.$axios.post("https://inventaris-yayasan.herokuapp.com/user/login", data, {
+                headers: {
+                  "content-type": "application/json; charset=utf-8"
+                }
+              })
+              .then(response => {
+                // this.$bvModal.hide('modal-login')
+                // console.log(response)
+                this.$store.commit("user/SET_TOKEN", response.data.token);
+                this.$store.commit("user/SET_USER", response.data.user[0]);
+                this.$store.commit("user/SET_ISADMIN", response.data.user[0].role);
+                this.username = response.data.user[0].nama
+                cookie.set('access_token', response.data.token)
+                cookie.set('user', response.data.user[0])
+                // console.log(JSON.parse(localStorage.getItem('user')).user)
+                location.reload(true)
+                this.$bvModal.hide('modal-login')
+              })
+            }
           }
-        })
-        .then(response => {
-          console.log(response.data.data)
-          this.divisi = response.data.data.length
-          this.itemsDivisi = response.data.data
-          console.log(this.itemsDivisi)
-        })
-      await this.$axios
-        .get("https://inventaris-yayasan.herokuapp.com/ruang", {
-          headers: {
-            'Authorization': 'Bearer ' + cookie.get('access_token')
-          }
-        })
-        .then(response => {
-          console.log(response.data.data)
-          this.ruang = response.data.data.length
-        })
-      
+        }
+      }
       this.loading = false
     },
     modalDetailDivisi(data){

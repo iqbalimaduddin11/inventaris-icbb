@@ -4,7 +4,7 @@
     <div id="content-wrapper" class="col d-flex flex-column">
       <div id="content">
         <LayoutsNavbar :username="username" />
-        <Nuxt/>
+        <Nuxt @loginUlang="relogin()" />
         <LayoutsFooter />
       </div>
     </div>
@@ -38,8 +38,8 @@ export default {
   data() {
     return {
       login: {
-        email: 'rahmadnasution@gmail.com',
-        password: 'rahmadnet'
+        email: 'rahmad@gmail.com',
+        password: 'rahmad'
       },
       errors: '',
       username: ''
@@ -75,13 +75,14 @@ export default {
         })
         .then(response => {
           // this.$bvModal.hide('modal-login')
+          // console.log(response)
           this.$store.commit("user/SET_TOKEN", response.data.token);
-          this.$store.commit("user/SET_USER", response.data.user);
-          this.$store.commit("user/SET_ISADMIN", response.data.user.role);
-          this.username = response.data.user.nama
+          this.$store.commit("user/SET_USER", response.data.user[0]);
+          this.$store.commit("user/SET_ISADMIN", response.data.user[0].role);
+          this.username = response.data.user[0].nama
           cookie.set('access_token', response.data.token)
-          cookie.set('user', response.data.user)
-          // console.log(JSON.parse(localStorage.getItem('user')).token)
+          cookie.set('user', response.data.user[0])
+          // console.log(JSON.parse(localStorage.getItem('user')).user)
           location.reload(true)
           this.$bvModal.hide('modal-login')
         })
@@ -95,9 +96,15 @@ export default {
           }
         }
       }
-      // this.$router.push('/');
+    },
+    relogin() {
+      console.log('relogin')
+      // const user = JSON.parse(JSON.parse(localStorage.getItem('user')).user)
+      // this.login.email = user.email
+      // this.login.password = user.password
+      // this.userLogin()
     }
-  }
+  },
 }
 </script>
 
