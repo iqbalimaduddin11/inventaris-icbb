@@ -38,8 +38,8 @@ export default {
   data() {
     return {
       login: {
-        email: 'rahmad@gmail.com',
-        password: 'rahmad'
+        email: '',
+        password: ''
       },
       errors: '',
       username: ''
@@ -75,13 +75,13 @@ export default {
         })
         .then(response => {
           // this.$bvModal.hide('modal-login')
-          // console.log(response)
-          this.$store.commit("user/SET_TOKEN", response.data.token);
-          this.$store.commit("user/SET_USER", response.data.user[0]);
-          this.$store.commit("user/SET_ISADMIN", response.data.user[0].role);
-          this.username = response.data.user[0].nama
+          console.log(response)
           cookie.set('access_token', response.data.token)
-          cookie.set('user', response.data.user[0])
+          cookie.set('user', response.data.login)
+          this.$store.commit("user/SET_TOKEN", response.data.token);
+          this.$store.commit("user/SET_USER", response.data.login);
+          this.$store.commit("user/SET_ISADMIN", response.data.login.role);
+          this.username = response.data.login.nama
           // console.log(JSON.parse(localStorage.getItem('user')).user)
           location.reload(true)
           this.$bvModal.hide('modal-login')

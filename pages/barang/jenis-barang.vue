@@ -1,5 +1,5 @@
 <template>
-  <div class="container-fluid p-3">
+  <div class="container-fluid p-3 mb-5">
     <nav aria-label="breadcrumb" class="mt-4">
       <ol class="breadcrumb">
         <li class="breadcrumb-item" aria-current="page"><a href="/">Home</a></li>
@@ -106,7 +106,7 @@
         ],
         header: [
           { key: 'nama', label: 'Nama Barang' },
-          { key: 'golongan', label: 'Golongan Barang' },
+          { key: 'data_barang_golongan.nama', label: 'Golongan Barang' },
           { key: 'action', label: 'Action' }
         ],
         items: [],
