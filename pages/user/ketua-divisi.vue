@@ -87,7 +87,7 @@
                  class="text-center"><strong>Data Tidak Ditemukan</strong></h5>
             </template>
             <template #cell(action)="data">
-              <b-button class="btn btn-sm" variant="danger" @click="deletedData('tombol delete')">Delete</b-button>
+              <b-button class="btn btn-sm" variant="danger" @click="deletedData(data.item)">Delete</b-button>
               <b-button v-b-modal.modal-2 class="btn btn-sm" variant="primary" @click="detailData(data.item)">Detail</b-button>
             </template>
         </b-table>
@@ -256,6 +256,17 @@
       detailData(data){
         this.detail = data
       },
+      async deletedData(data){
+        await this.$axios.delete('https://inventaris-yayasan.herokuapp.com/user/' + data.kode, {
+          headers: {
+            'Authorization': 'Bearer ' + cookie.get('access_token')
+          }
+        })
+        .then(response => {
+          console.log(response)
+          this.items = response.data.data
+        })
+      }
     }
   }
 </script>

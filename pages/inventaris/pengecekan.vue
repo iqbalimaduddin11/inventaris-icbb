@@ -132,6 +132,7 @@
   export default {
     data () {
       return {
+        selected: null,
         kondisi: [
           { value: 'A', text: 'Option A (from options prop)' },
           { value: 'B', text: 'Option B (from options prop)' }
