@@ -1,6 +1,6 @@
 <template>
-  <div class="container-fluid p-3">
-  <nav aria-label="breadcrumb" class="mt-4">
+  <div class="container-fluid p-3 mb-5">
+    <nav aria-label="breadcrumb" class="mt-4">
       <ol class="breadcrumb">
         <li class="breadcrumb-item" aria-current="page"><a href="/">Home</a></li>
         <li class="breadcrumb-item" aria-current="page">Manajemen Barang</li>

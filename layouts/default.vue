@@ -4,7 +4,7 @@
     <div id="content-wrapper" class="col d-flex flex-column">
       <div id="content">
         <LayoutsNavbar :username="username" />
-        <Nuxt/>
+        <Nuxt @loginUlang="relogin()" />
         <LayoutsFooter />
       </div>
     </div>
@@ -38,8 +38,8 @@ export default {
   data() {
     return {
       login: {
-        email: 'rahmad@gmail.com',
-        password: 'rahmad'
+        email: '',
+        password: ''
       },
       errors: '',
       username: ''
@@ -48,7 +48,6 @@ export default {
   mounted() {
     // const token = this.$cookies.get('token', { signed: true })
     const token = cookie.get('access_token')
-    console.log(token)
     if (typeof token === 'undefined') {
       console.log('tidak ada token')
       this.$bvModal.show('modal-login')
@@ -76,13 +75,14 @@ export default {
         })
         .then(response => {
           // this.$bvModal.hide('modal-login')
-          this.$store.commit("user/SET_TOKEN", response.data.token);
-          this.$store.commit("user/SET_USER", response.data.user);
-          this.$store.commit("user/SET_ISADMIN", response.data.user.role);
-          this.username = response.data.user.nama
+          console.log(response)
           cookie.set('access_token', response.data.token)
-          cookie.set('user', response.data.user)
-          // console.log(JSON.parse(localStorage.getItem('user')).token)
+          cookie.set('user', response.data.login)
+          this.$store.commit("user/SET_TOKEN", response.data.token);
+          this.$store.commit("user/SET_USER", response.data.login);
+          this.$store.commit("user/SET_ISADMIN", response.data.login.role);
+          this.username = response.data.login.nama
+          // console.log(JSON.parse(localStorage.getItem('user')).user)
           location.reload(true)
           this.$bvModal.hide('modal-login')
         })
@@ -96,9 +96,15 @@ export default {
           }
         }
       }
-      // this.$router.push('/');
+    },
+    relogin() {
+      console.log('relogin')
+      // const user = JSON.parse(JSON.parse(localStorage.getItem('user')).user)
+      // this.login.email = user.email
+      // this.login.password = user.password
+      // this.userLogin()
     }
-  }
+  },
 }
 </script>
 

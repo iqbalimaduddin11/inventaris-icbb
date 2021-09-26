@@ -226,6 +226,7 @@
         alamat: '',
         email: '',
         password: '',
+        judulModal: '',
         detail: {}
       }
     },
