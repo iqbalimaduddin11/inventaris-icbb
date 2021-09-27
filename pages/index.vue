@@ -137,35 +137,8 @@ export default {
           })
       } catch (err) {
         if (typeof err.response !== "undefined") {
-          const token = cookie.get('access_token')
-          const user = cookie.get('user')
           if (err.response.status === 404) {
-            if (typeof token !== "undefined") { 
-              const login = {
-                email: JSON.parse(user).email,
-                password: JSON.parse(user).password
-              }
-              console.log(login)
-              const data = JSON.stringify(this.login)
-              await this.$axios.post("https://inventaris-yayasan.herokuapp.com/user/login", data, {
-                headers: {
-                  "content-type": "application/json; charset=utf-8"
-                }
-              })
-              .then(response => {
-                // this.$bvModal.hide('modal-login')
-                // console.log(response)
-                this.$store.commit("user/SET_TOKEN", response.data.token);
-                this.$store.commit("user/SET_USER", response.data.user[0]);
-                this.$store.commit("user/SET_ISADMIN", response.data.user[0].role);
-                this.username = response.data.user[0].nama
-                cookie.set('access_token', response.data.token)
-                cookie.set('user', response.data.user[0])
-                // console.log(JSON.parse(localStorage.getItem('user')).user)
-                location.reload(true)
-                this.$bvModal.hide('modal-login')
-              })
-            }
+            this.$bvModal.show('modal-login')
           }
         }
       }
