@@ -156,8 +156,10 @@
           "kode": kode,
           "code": this.code,
           "nama": this.jenis,
-          "golongan": this.golongan,
+          "golongan": this.selectedGolongan,
         }
+        const data = JSON.stringify(dataJenisBarang)
+        console.log(data)
         await this.$axios.post("https://inventaris-yayasan.herokuapp.com/barang", data, {
           headers: {
             "content-type": "application/json; charset=utf-8",
