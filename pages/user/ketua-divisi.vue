@@ -1,5 +1,5 @@
 <template>
-  <div class="container-fluid">
+  <div class="container-fluid mb-5">
     <nav aria-label="breadcrumb" class="mt-4">
         <ol class="breadcrumb">
             <li class="breadcrumb-item" aria-current="page"><a href="/">Home</a></li>
@@ -241,8 +241,14 @@
           }
         })
         .then(response => {
-          console.log(response)
-          this.items = response.data.data
+          const dataUser = response.data.data
+          const admin = []
+          dataUser.forEach(item => {
+              if (item.role === 3) {
+                  admin.push(item)
+              }
+          });
+          this.items = admin
         }).catch(err => {
           if (typeof err.response !== "undefined") {
             if (err.response.status === 404) {
