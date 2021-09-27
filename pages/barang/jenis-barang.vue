@@ -23,7 +23,7 @@
                 <div class="mb-3 row">
                     <label for="inputGolongan" class="col-sm-3 col-form-label">Golongan Barang</label>
                     <div class="col-sm-9">
-                      <b-form-select v-model="golongan" :options="golongan">
+                      <b-form-select v-model="selectedGolongan" :options="golongan">
                         <!-- This slot appears above the options from 'options' prop -->
                             <template #first>
                                 <b-form-select-option :value="null" disabled>-- Pilih Golongan Barang --</b-form-select-option>
@@ -33,7 +33,7 @@
                 </div>
             </form>
             <template #modal-footer>
-                <b-button @click="simpan" variant="primary">Simpan</b-button>
+                <b-button @click="addData" variant="primary">Simpan</b-button>
             </template>
           </b-modal>
       </div>
@@ -75,17 +75,17 @@
                     <div class="mb-3 row">
                         <label for="inputName" class="col-sm-3 col-form-label">Golongan Barang</label>
                         <div class="col-sm-9">
-                            <b-form-select v-model="selected" :options="golongan">
+                            <b-form-select v-model="selectedGolongan" :options="golongan">
                             <!-- This slot appears above the options from 'options' prop -->
                                 <template #first>
-                                    <b-form-select-option :value="null" disabled>-- Pilih Golongan Barang --</b-form-select-option>
+                                    <b-form-select-option :value="null" disabled>-- Pilih Divisi --</b-form-select-option>
                                 </template>
                             </b-form-select>
                         </div>
                       </div>
                   </form>
                   <template #modal-footer>
-                      <b-button @click="simpan" variant="primary">Simpan</b-button>
+                      <b-button variant="primary">Simpan</b-button>
                   </template>
               </b-modal>
             </template>
@@ -100,10 +100,8 @@
   export default {
     data () {
       return {
-        golongan: [
-          { value: 'A', text: 'Option A (from options prop)' },
-          { value: 'B', text: 'Option B (from options prop)' }
-        ],
+        golongan: [],
+        selectedGolongan: '',
         header: [
           { key: 'nama', label: 'Nama Barang' },
           { key: 'data_barang_golongan.nama', label: 'Golongan Barang' },
@@ -128,9 +126,40 @@
           console.log(response)
           this.items = response.data.data
         })
+        await this.$axios.get('https://inventaris-yayasan.herokuapp.com/barang-golongan', {
+          headers: {
+            'Authorization': 'Bearer ' + cookie.get('access_token')
+          }
+        })
+        .then(response => {
+          const data = {}
+          response.data.data.forEach(function callback(item, index) {
+              data[index] = {value: item.kode, text: item.nama}
+          });
+          this.golongan = data
+          console.log(this.golongan)
+        })
       },
       detailData(data){
         this.detail = data
+      },
+      async addData(){
+        const kode = this.items.length + 1
+        console.log(kode)
+        const dataJenisBarang = {
+          "kode": kode,
+          "code": this.code,
+          "nama": this.jenis,
+          "golongan": this.golongan,
+        }
+        await this.$axios.post("https://inventaris-yayasan.herokuapp.com/barang", data, {
+          headers: {
+            "content-type": "application/json; charset=utf-8",
+            'Authorization': 'Bearer ' + cookie.get('access_token')
+          }
+        })
+        this.getData()
+        this.$bvModal.hide('modal-1')
       },
       async deletedData(data){
         await this.$axios.delete('https://inventaris-yayasan.herokuapp.com/barang/' + data.kode, {

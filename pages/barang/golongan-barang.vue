@@ -22,7 +22,7 @@
                 </div>
             </form>
             <template #modal-footer>
-                <b-button @click="simpan" variant="primary">Simpan</b-button>
+                <b-button @click="addData" variant="primary">Simpan</b-button>
             </template>
           </b-modal>
       </div>
@@ -98,6 +98,24 @@
           this.items = response.data.data
         })
       },
+      async addData(){
+        const kode = this.items.length + 1
+        console.log(kode)
+        const dataGolonganBarang = {
+          "kode": kode,
+          "code": this.code,
+          "nama": this.golongan,
+        }
+        const data = JSON.stringify(dataGolonganBarang)
+        await this.$axios.post("https://inventaris-yayasan.herokuapp.com/barang-golongan", data, {
+          headers: {
+            "content-type": "application/json; charset=utf-8",
+            'Authorization': 'Bearer ' + cookie.get('access_token')
+          }
+        })
+        this.getData()
+        this.$bvModal.hide('modal-1')
+      },
       async deletedData(data){
         await this.$axios.delete('https://inventaris-yayasan.herokuapp.com/barang-golongan/' + data.kode, {
           headers: {
@@ -108,6 +126,7 @@
           console.log(response)
           this.items = response.data.data
         })
+        this.getData()
       }
     },
   }
