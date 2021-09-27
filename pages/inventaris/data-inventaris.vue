@@ -304,6 +304,12 @@
         .then(response => {
           console.log(response)
           this.items = response.data.data
+        }).catch(err => {
+          if (typeof err.response !== "undefined") {
+            if (err.response.status === 404) {
+              this.$bvModal.show('modal-login')
+            }
+          }
         })
       },
       simpan () {

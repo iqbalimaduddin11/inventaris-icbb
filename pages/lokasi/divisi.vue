@@ -68,7 +68,7 @@
             </div>
             <div class="mb-5 row">
               <p class="col-3">Akhir Pengecekan Inventaris</p>
-              <p class="col-4">: {{detail.batas_pengecekan_akhir}}</p>
+              <p class="col-4">: {{ setTanggal(detail.batas_pengecekan_akhir)}}</p>
             </div>
             <template #modal-footer>
               <b-button v-b-modal.modal-3 class="btn btn-sm" @click="editData" variant="primary">Edit</b-button>
@@ -97,7 +97,7 @@
                     </div>
                   </form>
                   <template #modal-footer>
-                      <b-button @click="simpan" variant="primary">Simpan</b-button>
+                      <b-button @click="postEdit(edit.kode)" variant="primary">Simpan</b-button>
                   </template>
               </b-modal>
             </template>
@@ -131,8 +131,8 @@
     },
     methods: {
       setTanggal(date){
-        console.log(this.$moment(date).format('DD-M-YYYY'))
-        return this.$moment(date).format('DD-M-YYYY')
+        // console.log(this.$moment(date).format('DD-M-YYYY'))
+        return this.$moment(date).format('dddd, D MMMM YYYY')
       },
       async getData(){
         await this.$axios.get('https://inventaris-yayasan.herokuapp.com/divisi', {
@@ -143,6 +143,12 @@
         .then(response => {
           console.log(response)
           this.items = response.data.data
+        }).catch(err => {
+          if (typeof err.response !== "undefined") {
+            if (err.response.status === 404) {
+              this.$bvModal.show('modal-login')
+            }
+          }
         })
       },
       detailData(data){
@@ -178,6 +184,29 @@
       },
       editData(){
         this.edit = this.detail
+      },
+      async postEdit(id){
+        const dataDivisi = {
+          "code": this.edit.code,
+          "nama": this.edit.nama,
+          "batas_pengecekan_awal": this.edit.batas_pengecekan_awal,
+          "batas_pengecekan_akhir": this.edit.batas_pengecekan_akhir,
+        }
+        console.log(dataDivisi)
+        await this.$axios.patch("https://inventaris-yayasan.herokuapp.com/divisi/" + id, dataDivisi, {
+          headers: {
+            'Authorization': 'Bearer ' + cookie.get('access_token')
+          }
+        }).then(response => {
+          this.detail = {
+            "kode": id,  
+            "code": dataDivisi.code,
+            "nama": dataDivisi.nama,
+            "batas_pengecekan_awal": dataDivisi.batas_pengecekan_awal,
+            "batas_pengecekan_akhir": dataDivisi.batas_pengecekan_akhir,
+          }
+          this.$bvModal.hide('modal-3')
+        })
       }
     }
   }
