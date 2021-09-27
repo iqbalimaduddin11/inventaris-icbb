@@ -1,5 +1,5 @@
 <template>
-  <div class="container-fluid">
+  <div class="container-fluid mb-5">
     <nav aria-label="breadcrumb" class="mt-4">
         <ol class="breadcrumb">
             <li class="breadcrumb-item" aria-current="page"><a href="/">Home</a></li>
@@ -27,16 +27,32 @@
                       </div>
                   </div>
                   <div class="mb-3 row">
-                      <label for="inputJabatan" class="col-sm-2 col-form-label">Jabatan</label>
-                      <div class="col-sm-10">
-                          <b-form-select v-model="jabatan1" :options="jabatan">
-                          <!-- This slot appears above the options from 'options' prop -->
-                              <template #first>
-                                  <b-form-select-option :value="null" disabled>-- Pilih Jabatan --</b-form-select-option>
-                              </template>
-                          </b-form-select>
-                      </div>
-                  </div>
+                        <label for="inputJabatan" class="col-sm-2 col-form-label">Jabatan</label>
+                        <div class="col-sm-10 row" style="margin-left: 0">
+                            <b-form-select v-model="ruang" class="col-9" :options="ruang">
+                                <!-- This slot appears above the options from 'options' prop -->
+                                    <template #first>
+                                        <b-form-select-option :value="null" disabled>-- Pilih Area --</b-form-select-option>
+                                    </template>
+                            </b-form-select>
+                            <b-button v-b-modal.modal-4 class="btn btn-sm col-3" variant="primary">
+                            <fa :icon="['fas', 'plus']" /> Tambah</b-button>
+
+                            <b-modal id="modal-4" size='lg' ref="modal-area" title="Tambah Jabatan">
+                                <form action="" method="post" style="margin-bottom: 90px">
+                                    <div class="mb-3 row">
+                                    <label for="inputAreaDivisi" class="col-sm-2 col-form-label">Jabatan</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" class="form-control" v-model="tambahJabatan" id="inputAreaDivisi">
+                                    </div>
+                                    </div>
+                                </form>
+                                <template #modal-footer>
+                                    <b-button @click="simpan" variant="primary">Simpan</b-button>
+                                </template>
+                            </b-modal>
+                        </div>
+                    </div>
                     <div class="mb-3 row">
                       <label for="inputRuang" class="col-sm-2 col-form-label">Ruang</label>
                       <div class="col-sm-10">
@@ -256,8 +272,16 @@
           }
         })
         .then(response => {
-          console.log(response)
-          this.items = response.data.data
+        //   console.log(response)
+          const dataUser = response.data.data
+          const ketua = []
+          dataUser.forEach(item => {
+              if (item.role === 3) {
+                  ketua.push(item)
+              }
+          });
+        // console.log(ketua)
+          this.items = ketua
         }).catch(err => {
           if (typeof err.response !== "undefined") {
             if (err.response.status === 404) {

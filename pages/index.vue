@@ -124,9 +124,9 @@ export default {
             }
           })
           .then(response => {
-            console.log(response.data.data)
-            this.divisi = response.data.data.length
-            this.itemsDivisi = response.data.data
+            console.log(response)
+            this.divisi = response.data.divisi.length
+            this.itemsDivisi = response.data.divisi
             console.log(this.itemsDivisi)
           })
         await this.$axios

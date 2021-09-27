@@ -17,7 +17,7 @@
                 <div class="mb-3 row">
                     <label for="inputAreaDivisi" class="col-sm-2 col-form-label">Area Divisi</label>
                     <div class="col-sm-10 ml-1 row">
-                      <b-form-select v-model="ruang" class="col-8 mr-1" :options="ruang">
+                      <b-form-select v-model="ruang" class="col-9" :options="ruang">
                         <!-- This slot appears above the options from 'options' prop -->
                             <template #first>
                                 <b-form-select-option :value="null" disabled>-- Pilih Area --</b-form-select-option>
@@ -128,7 +128,7 @@
         ],
         header:[
           { key: 'nama', label: 'Divisi' },
-          { key: 'data_ruangs.length', label: 'Area' },
+          { key: 'data_ruangs', label: 'Area' },
           { key: 'action', label: 'Action' }
         ],
         headerDetailRuang: [
