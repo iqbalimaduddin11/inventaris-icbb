@@ -138,10 +138,6 @@
                       <p class="col-4">: {{detail.person_donatur}}</p>
                   </div>
                   <div class="mb-3 row">
-                      <p class="col-3">Ruang</p>
-                      <p class="col-4">: {{detail.ruang}}</p>
-                  </div>
-                  <div class="mb-3 row">
                       <p class="col-3">Divisi</p>
                       <p class="col-4">: {{detail.divisi}}</p>
                   </div>
@@ -152,10 +148,6 @@
                   <div class="mb-3 row">
                       <p class="col-3">Kondisi</p>
                       <p class="col-4">: {{detail.kondisi}}</p>
-                  </div>
-                  <div class="mb-3 row">
-                      <p class="col-3">Status</p>
-                      <p class="col-4">: {{detail.status_lokasi}}</p>
                   </div>
                   <div class="mb-3 row">
                       <p class="col-3">Dokumen</p>
@@ -193,17 +185,6 @@
                             <label for="inputName" class="col-sm-2 col-form-label">Donatur</label>
                             <div class="col-sm-10">
                               <input type="text" class="form-control" id="inputName">
-                            </div>
-                          </div>
-                          <div class="mb-3 row">
-                            <label for="inputName" class="col-sm-2 col-form-label">Ruang</label>
-                            <div class="col-sm-10">
-                                <b-form-select v-model="selected" :options="ruang">
-                                <!-- This slot appears above the options from 'options' prop -->
-                                    <template #first>
-                                        <b-form-select-option :value="null" disabled>-- Pilih Ruang --</b-form-select-option>
-                                    </template>
-                                </b-form-select>
                             </div>
                           </div>
                           <div class="mb-3 row">
@@ -295,7 +276,6 @@
           { key: 'tanggal_masuk', label: 'Tanggal' },
           { key: 'barang', label: 'Barang' },
           { key: 'person_donatur', label: 'Donatur' },
-          { key: 'ruang', label: 'Ruang' },
           { key: 'divisi', label: 'Divisi' },
           { key: 'action', label: 'Action' },
         ],
@@ -339,7 +319,7 @@
         this.detail = data
       },
       async deletedData(data){
-        await this.$axios.get('https://inventaris-yayasan.herokuapp.com/inventaris/' + data.kode, {
+        await this.$axios.delete('https://inventaris-yayasan.herokuapp.com/inventaris/' + data.kode, {
           headers: {
             'Authorization': 'Bearer ' + cookie.get('access_token')
           }

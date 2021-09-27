@@ -59,7 +59,7 @@
               </template>
               <template #cell(action)="data">
                   <b-button variant="danger">Delete</b-button>
-                  <b-button v-b-modal.detailRuang variant="primary" @click="modalDetailDivisi(data.item.data_ruangs)">Detail</b-button> 
+                  <b-button v-b-modal.detailRuang variant="primary" @click="modalDetailDivisi(data.item.data_ruangs)">Detail</b-button>
               </template>
           </b-table>
           <b-modal id="detailRuang" hide-footer title="Detail Ruang">
@@ -97,7 +97,7 @@ export default {
       itemsDivisi: [],
       itemsDetailRuang: [],
       detailDivisi: []
-      
+
     }
   },
   created () {
@@ -107,7 +107,11 @@ export default {
     async getUser () {
       this.loading = true
         await this.$axios
-          .get("https://inventaris-yayasan.herokuapp.com/user")
+          .get("https://inventaris-yayasan.herokuapp.com/user", {
+            headers: {
+              'Authorization': 'Bearer ' + cookie.get('access_token')
+            }
+          })
           .then(response => {
             console.log(response.data.data)
             this.karyawan = response.data.data.length
@@ -140,7 +144,7 @@ export default {
           const token = cookie.get('access_token')
           const user = cookie.get('user')
           if (err.response.status === 404) {
-            if (typeof token !== "undefined") { 
+            if (typeof token !== "undefined") {
               const login = {
                 email: JSON.parse(user).email,
                 password: JSON.parse(user).password
