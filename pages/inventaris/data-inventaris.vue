@@ -21,9 +21,14 @@
                 </div>
               </div>
               <div class="mb-3 row">
-                  <label for="inputBarang" class="col-sm-2 col-form-label">Barang</label>
+                  <label for="inputName" class="col-sm-2 col-form-label">Barang</label>
                   <div class="col-sm-10">
-                    <input type="text" class="form-control" id="inputBarang" v-model="barang">
+                      <b-form-select v-model="selectedBarang" :options="barang">
+                      <!-- This slot appears above the options from 'options' prop -->
+                          <template #first>
+                              <b-form-select-option :value="null" disabled>-- Pilih Barang --</b-form-select-option>
+                          </template>
+                      </b-form-select>
                   </div>
               </div>
               <div class="mb-3 row">
@@ -33,9 +38,14 @@
                   </div>
               </div>
               <div class="mb-3 row">
-                  <label for="inputDonatur" class="col-sm-2 col-form-label">Donatur</label>
+                  <label for="inputName" class="col-sm-2 col-form-label">Donatur</label>
                   <div class="col-sm-10">
-                  <input type="text" class="form-control" id="inputDonatur" v-model="donatur">
+                      <b-form-select v-model="selectedDonatur" :options="donatur">
+                      <!-- This slot appears above the options from 'options' prop -->
+                          <template #first>
+                              <b-form-select-option :value="null" disabled>-- Pilih Donatur --</b-form-select-option>
+                          </template>
+                      </b-form-select>
                   </div>
               </div>
               <div class="mb-3 row">
@@ -45,6 +55,17 @@
                       <!-- This slot appears above the options from 'options' prop -->
                           <template #first>
                               <b-form-select-option :value="null" disabled>-- Pilih Divisi --</b-form-select-option>
+                          </template>
+                      </b-form-select>
+                  </div>
+              </div>
+              <div class="mb-3 row">
+                  <label for="inputName" class="col-sm-2 col-form-label">Lokasi</label>
+                  <div class="col-sm-10">
+                      <b-form-select v-model="selectedLokasi" :options="lokasi">
+                      <!-- This slot appears above the options from 'options' prop -->
+                          <template #first>
+                              <b-form-select-option :value="null" disabled>-- Pilih Lokasi --</b-form-select-option>
                           </template>
                       </b-form-select>
                   </div>
@@ -64,17 +85,6 @@
                               <b-form-select-option :value="null" disabled>-- Pilih Kondisi --</b-form-select-option>
                           </template>
                       </b-form-select>
-                  </div>
-              </div>
-              <div class="mb-3 row">
-                  <label for="inputName" class="col-sm-2 col-form-label">Status</label>
-                  <div class="col-sm-10">
-                    <b-form-select v-model="selectedStatus" :options="status">
-                        <!-- This slot appears above the options from 'options' prop -->
-                        <template #first>
-                          <b-form-select-option :value="null" disabled>-- Pilih Status --</b-form-select-option>
-                        </template>
-                    </b-form-select>
                   </div>
               </div>
               <div class="mb-3 row">
@@ -179,7 +189,7 @@
                           <div class="mb-3 row">
                               <label for="inputName" class="col-sm-2 col-form-label">Divisi</label>
                               <div class="col-sm-10">
-                                  <b-form-select v-model="selected" :options="divisi">
+                                  <b-form-select v-model="selectedDivisi" :options="divisi">
                                   <!-- This slot appears above the options from 'options' prop -->
                                       <template #first>
                                           <b-form-select-option :value="null" disabled>-- Pilih Divisi --</b-form-select-option>
@@ -245,8 +255,14 @@
     data () {
       return {
       selected: null,
+        barang: [],
+        donatur: [],
         divisi: [],
+        lokasi: [],
+        selectedBarang: '',
+        selectedDonatur: '',
         selectedDivisi: '',
+        selectedLokasi: '',
         selectedKondisi: '',
         kondisi: [
           { value: 'A', text: 'Bagus' },
@@ -264,9 +280,7 @@
         kode: '',
         date: '',
         kepemilikan: '',
-        barang: '',
         harga: '',
-        donatur: '',
         dokumen: '',
         pencatat: '',
         judulModal: '',
@@ -293,6 +307,44 @@
             }
           }
         })
+        await this.$axios.get('https://inventaris-yayasan.herokuapp.com/barang', {
+          headers: {
+            'Authorization': 'Bearer ' + cookie.get('access_token')
+          }
+        })
+        .then(response => {
+          const data = {}
+          response.data.data.forEach(function callback(item, index) {
+              data[index] = {value: item.kode, text: item.nama}
+          });
+          this.barang = data
+          console.log(this.barang)
+        }).catch(err => {
+          if (typeof err.response !== "undefined") {
+            if (err.response.status === 404) {
+              this.$bvModal.show('modal-login')
+            }
+          }
+        })
+        await this.$axios.get('https://inventaris-yayasan.herokuapp.com/person', {
+          headers: {
+            'Authorization': 'Bearer ' + cookie.get('access_token')
+          }
+        })
+        .then(response => {
+          const data = {}
+          response.data.data.forEach(function callback(item, index) {
+              data[index] = {value: item.kode, text: item.nama}
+          });
+          this.donatur = data
+          console.log(this.donatur)
+        }).catch(err => {
+          if (typeof err.response !== "undefined") {
+            if (err.response.status === 404) {
+              this.$bvModal.show('modal-login')
+            }
+          }
+        })
         await this.$axios.get('https://inventaris-yayasan.herokuapp.com/divisi', {
           headers: {
             'Authorization': 'Bearer ' + cookie.get('access_token')
@@ -305,6 +357,25 @@
           });
           this.divisi = data
           console.log(this.divisi)
+        }).catch(err => {
+          if (typeof err.response !== "undefined") {
+            if (err.response.status === 404) {
+              this.$bvModal.show('modal-login')
+            }
+          }
+        })
+        await this.$axios.get('https://inventaris-yayasan.herokuapp.com/divisi-ruang', {
+          headers: {
+            'Authorization': 'Bearer ' + cookie.get('access_token')
+          }
+        })
+        .then(response => {
+          const data = {}
+          response.data.data.forEach(function callback(item, index) {
+              data[index] = {value: item.kode, text: item.data_divisi.nama + "-" + item.data_ruang.nama}
+          });
+          this.lokasi = data
+          console.log(this.lokasi)
         }).catch(err => {
           if (typeof err.response !== "undefined") {
             if (err.response.status === 404) {
@@ -338,11 +409,11 @@
         const dataInventaris = {
           "kode": this.kode,
           "code": this.code,
-          "barang": this.barang,
+          "barang": this.selectedBarang,
           "harga": this.harga,
-          "person_donatur": this.donatur,
+          "person_donatur": this.selectedDonatur,
           "divisi": this.selectedDivisi,
-          "lokasi": this.lokasi,
+          "lokasi": this.selectedLokasi,
           "kepemilikan": this.kepemilikan,
           "kondisi": this.selectedKondisi,
           "dokumen": this.dokumen,
@@ -370,6 +441,7 @@
           console.log(response)
           this.items = response.data.data
         })
+        this.getData()
       }
     }
   }
