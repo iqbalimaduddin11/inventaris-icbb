@@ -39,20 +39,9 @@
                   </div>
               </div>
               <div class="mb-3 row">
-                  <label for="inputName" class="col-sm-2 col-form-label">Ruang</label>
-                  <div class="col-sm-10">
-                      <b-form-select v-model="selected" :options="ruang">
-                      <!-- This slot appears above the options from 'options' prop -->
-                          <template #first>
-                              <b-form-select-option :value="null" disabled>-- Pilih Ruang --</b-form-select-option>
-                          </template>
-                      </b-form-select>
-                  </div>
-              </div>
-              <div class="mb-3 row">
                   <label for="inputName" class="col-sm-2 col-form-label">Divisi</label>
                   <div class="col-sm-10">
-                      <b-form-select v-model="selected" :options="divisi">
+                      <b-form-select v-model="selectedDivisi" :options="divisi">
                       <!-- This slot appears above the options from 'options' prop -->
                           <template #first>
                               <b-form-select-option :value="null" disabled>-- Pilih Divisi --</b-form-select-option>
@@ -69,8 +58,8 @@
               <div class="mb-3 row">
                   <label for="inputName" class="col-sm-2 col-form-label">Kondisi</label>
                   <div class="col-sm-10">
-                      <b-form-select v-model="selected" :options="kondisi">
-                      <!-- This slot appears above the options from 'options' prop -->
+                      <b-form-select v-model="selectedKondisi" :options="kondisi">
+                          <!-- This slot appears above the options from 'options' prop -->
                           <template #first>
                               <b-form-select-option :value="null" disabled>-- Pilih Kondisi --</b-form-select-option>
                           </template>
@@ -80,12 +69,12 @@
               <div class="mb-3 row">
                   <label for="inputName" class="col-sm-2 col-form-label">Status</label>
                   <div class="col-sm-10">
-                      <b-form-select v-model="selected" :options="status">
-                      <!-- This slot appears above the options from 'options' prop -->
-                          <template #first>
-                              <b-form-select-option :value="null" disabled>-- Pilih Status --</b-form-select-option>
-                          </template>
-                      </b-form-select>
+                    <b-form-select v-model="selectedStatus" :options="status">
+                        <!-- This slot appears above the options from 'options' prop -->
+                        <template #first>
+                          <b-form-select-option :value="null" disabled>-- Pilih Status --</b-form-select-option>
+                        </template>
+                    </b-form-select>
                   </div>
               </div>
               <div class="mb-3 row">
@@ -103,7 +92,7 @@
             </form>
             <!-- eslint-disable -->
             <template #modal-footer>
-                <b-button @click="simpan" variant="primary">Simpan</b-button>
+                <b-button @click="addData" variant="primary">Simpan</b-button>
             </template>
           </b-modal>
         </div>
@@ -201,13 +190,13 @@
                           <div class="mb-3 row">
                               <label for="inputKepemilikan" class="col-sm-2 col-form-label">Kepemilikan</label>
                               <div class="col-sm-10">
-                                <input class="form-control" v-model="kepemilikan" id="inputKepemilikan"></input>
+                                <input type="password" class="form-control" id="inputKepemilikan">
                               </div>
                           </div>
                           <div class="mb-3 row">
                             <label for="inputName" class="col-sm-2 col-form-label">Kondisi</label>
                             <div class="col-sm-10">
-                                <b-form-select v-model="selected" :options="kondisi">
+                                <b-form-select v-model="selectedKondisi" :options="kondisi">
                                 <!-- This slot appears above the options from 'options' prop -->
                                     <template #first>
                                         <b-form-select-option :value="null" disabled>-- Pilih Kondisi --</b-form-select-option>
@@ -256,35 +245,28 @@
     data () {
       return {
       selected: null,
-        ruang: [
-          { value: 'A', text: 'Option A (from options prop)' },
-          { value: 'B', text: 'Option B (from options prop)' }
-        ],
-        divisi: [
-          { value: 'A', text: 'Option A (from options prop)' },
-          { value: 'B', text: 'Option B (from options prop)' }
-        ],
+        divisi: [],
+        selectedDivisi: '',
+        selectedKondisi: '',
         kondisi: [
-          { value: 'A', text: 'Option A (from options prop)' },
-          { value: 'B', text: 'Option B (from options prop)' }
-        ],
-        status: [
-          { value: 'A', text: 'Option A (from options prop)' },
-          { value: 'B', text: 'Option B (from options prop)' }
+          { value: 'A', text: 'Bagus' },
+          { value: 'B', text: 'Kurang Bagus' },
+          { value: 'C', text: 'Rusak' }
         ],
         header: [
           { key: 'tanggal_masuk', label: 'Tanggal' },
           { key: 'barang', label: 'Barang' },
           { key: 'person_donatur', label: 'Donatur' },
           { key: 'divisi', label: 'Divisi' },
-          { key: 'action', label: 'Action' },
+          { key: 'action', label: 'Action' }
         ],
         items: [],
+        kode: '',
         date: '',
+        kepemilikan: '',
         barang: '',
         harga: '',
         donatur: '',
-        kepemilikan: '',
         dokumen: '',
         pencatat: '',
         judulModal: '',
@@ -311,6 +293,25 @@
             }
           }
         })
+        await this.$axios.get('https://inventaris-yayasan.herokuapp.com/divisi', {
+          headers: {
+            'Authorization': 'Bearer ' + cookie.get('access_token')
+          }
+        })
+        .then(response => {
+          const data = {}
+          response.data.data.forEach(function callback(item, index) {
+              data[index] = {value: item.kode, text: item.nama}
+          });
+          this.divisi = data
+          console.log(this.divisi)
+        }).catch(err => {
+          if (typeof err.response !== "undefined") {
+            if (err.response.status === 404) {
+              this.$bvModal.show('modal-login')
+            }
+          }
+        })
       },
       simpan () {
         const date = new Date()
@@ -323,6 +324,41 @@
       },
       detailData(data){
         this.detail = data
+      },
+      async addData(){
+        await this.$axios.get('https://inventaris-yayasan.herokuapp.com/user', {
+          headers: {
+            'Authorization': 'Bearer ' + cookie.get('access_token')
+          }
+        })
+        .then(response => {
+          this.kode = response.data.data.length + 1
+        })
+        console.log(this.kode)
+        const dataInventaris = {
+          "kode": this.kode,
+          "code": this.code,
+          "barang": this.barang,
+          "harga": this.harga,
+          "person_donatur": this.donatur,
+          "divisi": this.selectedDivisi,
+          "lokasi": this.lokasi,
+          "kepemilikan": this.kepemilikan,
+          "kondisi": this.selectedKondisi,
+          "dokumen": this.dokumen,
+          "person_pencatat": this.pencatat,
+          "tanggal_masuk": this.date
+        }
+        const data = JSON.stringify(dataInventaris)
+        console.log(data)
+        await this.$axios.post("https://inventaris-yayasan.herokuapp.com/inventaris", data, {
+          headers: {
+            "content-type": "application/json; charset=utf-8",
+            'Authorization': 'Bearer ' + cookie.get('access_token')
+          }
+        })
+        this.getData()
+        this.$bvModal.hide('modal-1')
       },
       async deletedData(data){
         await this.$axios.delete('https://inventaris-yayasan.herokuapp.com/inventaris/' + data.kode, {

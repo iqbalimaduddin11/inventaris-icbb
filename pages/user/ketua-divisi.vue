@@ -213,15 +213,16 @@
           { key: 'action', label: 'Action' }
         ],
         items: [],
+        kode: '',
         nip: '',
         nama: '',
         div: '',
-        nomor: '',
+        nomer: '',
         alamat: '',
         email: '',
         password: '',
         judulModal: '',
-        role: 2,
+        role: '2',
         detail: {}
       }
     },
@@ -237,13 +238,15 @@
         })
         .then(response => {
           const dataUser = response.data.data
-          const admin = []
+          const ketua = []
           dataUser.forEach(item => {
-              if (item.role === 3) {
-                  admin.push(item)
+            console.log(item.role)
+              if (item.role === 2) {
+                  ketua.push(item)
               }
-          });
-          this.items = admin
+          })
+          console.log(dataUser)
+          this.items = ketua
         }).catch(err => {
           if (typeof err.response !== "undefined") {
             if (err.response.status === 404) {
@@ -303,10 +306,17 @@
         this.detail = data
       },
       async addData(){
-        const kode = this.items.length + 1
-        console.log(kode)
+        await this.$axios.get('https://inventaris-yayasan.herokuapp.com/user', {
+          headers: {
+            'Authorization': 'Bearer ' + cookie.get('access_token')
+          }
+        })
+        .then(response => {
+          this.kode = response.data.data.length + 1
+        })
+        console.log(this.kode)
         const dataKetua = {
-          "kode": kode,
+          "kode": this.kode,
           "nip": this.nip,
           "nama": this.nama,
           "jabatan": this.selectedJabatan,
@@ -316,6 +326,7 @@
           "password": this.password,
           "alamat": this.alamat,
           "code": this.code,
+          "role": this.role
         }
         const data = JSON.stringify(dataKetua)
         console.log(data)
