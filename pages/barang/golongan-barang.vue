@@ -22,7 +22,7 @@
                 </div>
             </form>
             <template #modal-footer>
-                <b-button @click="simpan" variant="primary">Simpan</b-button>
+                <b-button @click="addData" variant="primary">Simpan</b-button>
             </template>
           </b-modal>
       </div>
@@ -35,7 +35,7 @@
                  class="text-center"><strong>Data Tidak Ditemukan</strong></h5>
             </template>
             <template #cell(action)="data">
-              <b-button class="btn btn-sm" variant="danger" @click="deletedData('tombol delete')">Delete</b-button>
+              <b-button class="btn btn-sm" variant="danger" @click="deletedData(data.item)">Delete</b-button>
               <b-button v-b-modal.modal-2 class="btn btn-sm" variant="primary" @click="detailData(data.item)">Detail</b-button>
             </template>
         </b-table>
@@ -104,11 +104,35 @@
           }
         })
       },
-      detailData(data){
-        this.detail = data
+      async addData(){
+        const kode = this.items.length + 1
+        console.log(kode)
+        const dataGolonganBarang = {
+          "kode": kode,
+          "code": this.code,
+          "nama": this.golongan,
+        }
+        const data = JSON.stringify(dataGolonganBarang)
+        await this.$axios.post("https://inventaris-yayasan.herokuapp.com/barang-golongan", data, {
+          headers: {
+            "content-type": "application/json; charset=utf-8",
+            'Authorization': 'Bearer ' + cookie.get('access_token')
+          }
+        })
+        this.getData()
+        this.$bvModal.hide('modal-1')
       },
-      deletedData(data){
-        console.log(data)
+      async deletedData(data){
+        await this.$axios.delete('https://inventaris-yayasan.herokuapp.com/barang-golongan/' + data.kode, {
+          headers: {
+            'Authorization': 'Bearer ' + cookie.get('access_token')
+          }
+        })
+        .then(response => {
+          console.log(response)
+          this.items = response.data.data
+        })
+        this.getData()
       }
     },
   }

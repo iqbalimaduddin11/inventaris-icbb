@@ -21,15 +21,20 @@
                 </div>
               </div>
               <div class="mb-3 row">
-                <label for="inputBarang" class="col-sm-2 col-form-label">Barang</label>
+                <label for="inputName" class="col-sm-2 col-form-label">Inventaris</label>
                 <div class="col-sm-10">
-                  <input type="text" class="form-control" id="inputBarang" v-model="barang">
+                    <b-form-select v-model="selectedInventaris" :options="inventaris">
+                    <!-- This slot appears above the options from 'options' prop -->
+                        <template #first>
+                            <b-form-select-option :value="null" disabled>-- Pilih Inventaris --</b-form-select-option>
+                        </template>
+                    </b-form-select>
                 </div>
               </div>
               <div class="mb-3 row">
                 <label for="inputName" class="col-sm-2 col-form-label">Kondisi</label>
                 <div class="col-sm-10">
-                    <b-form-select v-model="selected" :options="kondisi">
+                    <b-form-select v-model="selectedKondisi" :options="kondisi">
                     <!-- This slot appears above the options from 'options' prop -->
                         <template #first>
                             <b-form-select-option :value="null" disabled>-- Pilih Kondisi --</b-form-select-option>
@@ -45,7 +50,7 @@
               </div>
           </form>
             <template #modal-footer>
-                <b-button @click="simpan" variant="primary">Simpan</b-button>
+                <b-button @click="addData" variant="primary">Simpan</b-button>
             </template>
         </b-modal>
       </div>
@@ -58,7 +63,7 @@
                  class="text-center"><strong>Data Tidak Ditemukan</strong></h5>
             </template>
             <template #cell(action)="data">
-              <b-button class="btn btn-sm" variant="danger" @click="deletedData('tombol delete')">Delete</b-button>
+              <b-button class="btn btn-sm" variant="danger" @click="deletedData(data.item)">Delete</b-button>
               <b-button v-b-modal.modal-2 class="btn btn-sm" variant="primary" @click="detailData(data.item)">Detail</b-button>
             </template>
         </b-table>
@@ -101,7 +106,7 @@
                       <div class="mb-3 row">
                         <label for="inputName" class="col-sm-2 col-form-label">Kondisi</label>
                         <div class="col-sm-10">
-                            <b-form-select v-model="selected" :options="kondisi">
+                            <b-form-select v-model="selectedKondisi" :options="kondisi">
                             <!-- This slot appears above the options from 'options' prop -->
                                 <template #first>
                                     <b-form-select-option :value="null" disabled>-- Pilih Kondisi --</b-form-select-option>
@@ -132,9 +137,14 @@
   export default {
     data () {
       return {
+        selected: null,
+        selectedKondisi: '',
+        selectedInventaris: '',
+        inventaris: [],
         kondisi: [
-          { value: 'A', text: 'Option A (from options prop)' },
-          { value: 'B', text: 'Option B (from options prop)' }
+          { value: 'A', text: 'Bagus' },
+          { value: 'B', text: 'Kurang Bagus' },
+          { value: 'C', text: 'Rusak' }
         ],
         header: [
           { key: 'tanggal', label: 'Tanggal' },
@@ -144,8 +154,8 @@
           { key: 'action', label: 'Action' }
         ],
         items: [],
+        kode: '',
         date: '',
-        barang: '',
         pengecek: '',
         detail: {}
       }
@@ -170,6 +180,25 @@
             }
           }
         })
+        await this.$axios.get('https://inventaris-yayasan.herokuapp.com/inventaris', {
+          headers: {
+            'Authorization': 'Bearer ' + cookie.get('access_token')
+          }
+        })
+        .then(response => {
+          const data = {}
+          response.data.data.forEach(function callback(item, index) {
+              data[index] = {value: item.kode, text: item.nama}
+          });
+          this.inventaris = data
+          console.log(this.inventaris)
+        }).catch(err => {
+          if (typeof err.response !== "undefined") {
+            if (err.response.status === 404) {
+              this.$bvModal.show('modal-login')
+            }
+          }
+        })
       },
       simpan () {
         const date = new Date()
@@ -183,8 +212,44 @@
       detailData(data){
         this.detail = data
       },
-      deletedData(data){
+      async addData(){
+        await this.$axios.get('https://inventaris-yayasan.herokuapp.com/user', {
+          headers: {
+            'Authorization': 'Bearer ' + cookie.get('access_token')
+          }
+        })
+        .then(response => {
+          this.kode = response.data.data.length + 1
+        })
+        console.log(this.kode)
+        const dataPengecekan = {
+          "kode": this.kode,
+          "inventaris": this.selectedInventaris,
+          "kondisi": this.selectedKondisi,
+          "person_pengecek": this.pengecek,
+          "tanggal": this.date
+        }
+        const data = JSON.stringify(dataPengecekan)
         console.log(data)
+        await this.$axios.post("https://inventaris-yayasan.herokuapp.com/pengecekan", data, {
+          headers: {
+            "content-type": "application/json; charset=utf-8",
+            'Authorization': 'Bearer ' + cookie.get('access_token')
+          }
+        })
+        this.getData()
+        this.$bvModal.hide('modal-1')
+      },
+      async deletedData(data){
+        await this.$axios.delete('https://inventaris-yayasan.herokuapp.com/pengecekan/' + data.kode, {
+          headers: {
+            'Authorization': 'Bearer ' + cookie.get('access_token')
+          }
+        })
+        .then(response => {
+          console.log(response)
+          this.items = response.data.data
+        })
       }
     }
   }

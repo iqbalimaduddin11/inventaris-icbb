@@ -68,20 +68,16 @@
             </template>
             <template #cell(action)="data">
               <b-button class="btn btn-sm" variant="danger" @click="deletedData('tombol delete')">Delete</b-button>
-              <b-button v-b-modal.modal-2 class="btn btn-sm" variant="primary" @click="detailData(data.item)">Detail</b-button>
+              <b-button v-b-modal.modal-2 class="btn btn-sm" variant="primary" @click="modalDetailDivisi(data.item.data_ruangs)">Detail</b-button>
             </template>
         </b-table>
           <b-modal id="modal-2" size="lg" ref="modal-detail" title="Detail">
-            <form action="" method="">
-              <div class="mb-3 row">
-                <p class="col-3">Area Divisi</p>
-                <p class="col-4">: {{detail.data_ruangs}}</p>
-              </div>
-              <div class="mb-5 row">
-                <p class="col-3">Divisi</p>
-                <p class="col-4">: {{detail.nama}}</p>
-              </div>
-            </form>
+            <b-table style="margin-bottom: 80px" outlined no-border-collapse :fields="headerDetailRuang" :items="itemsDetailRuang" show-empty>
+              <template #empty>
+                  <h5
+                  class="text-center"><strong>Data Tidak Ditemukan</strong></h5>
+              </template>
+            </b-table>
             <template #modal-footer>
               <b-button v-b-modal.modal-3 class="btn btn-sm" variant="primary">Edit</b-button>
 
@@ -135,9 +131,13 @@
           { key: 'data_ruangs', label: 'Area' },
           { key: 'action', label: 'Action' }
         ],
+        headerDetailRuang: [
+          { key: 'kode', label: 'Kode' },
+          { key: 'nama', label: 'Ruang' },
+        ],
+        itemsDetailRuang: [],
         items: [],
         ruang: '',
-        detail: {}
       }
     },
     mounted() {
@@ -161,11 +161,12 @@
           }
         })
       },
-      detailData(data){
-        this.detail = data
-      },
       deletedData(data){
         console.log(data)
+      },
+      modalDetailDivisi(data){
+        console.log(data)
+        this.itemsDetailRuang = data
       }
     }
   }

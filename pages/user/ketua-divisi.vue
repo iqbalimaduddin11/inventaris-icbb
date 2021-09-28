@@ -29,7 +29,7 @@
                   <div class="mb-3 row">
                       <label for="inputName" class="col-sm-2 col-form-label">Jabatan</label>
                       <div class="col-sm-10">
-                        <b-form-select v-model="jabatan" :options="jabatan">
+                        <b-form-select v-model="selectedJabatan" :options="jabatan">
                           <!-- This slot appears above the options from 'options' prop -->
                               <template #first>
                                   <b-form-select-option :value="null" disabled>-- Pilih Jabatan --</b-form-select-option>
@@ -40,7 +40,7 @@
                   <div class="mb-3 row">
                       <label for="inputName" class="col-sm-2 col-form-label">Divisi</label>
                       <div class="col-sm-10">
-                          <b-form-select v-model="selected" :options="divisi">
+                          <b-form-select v-model="selectedDivisi" :options="divisi">
                             <!-- This slot appears above the options from 'options' prop -->
                               <template #first>
                                   <b-form-select-option :value="null" disabled>-- Pilih Divisi --</b-form-select-option>
@@ -74,7 +74,7 @@
                   </div>
               </form>
               <template #modal-footer>
-                  <b-button @click="simpan" variant="primary">Simpan</b-button>
+                  <b-button @click="addData" variant="primary">Simpan</b-button>
               </template>
           </b-modal>
       </div>
@@ -87,7 +87,7 @@
                  class="text-center"><strong>Data Tidak Ditemukan</strong></h5>
             </template>
             <template #cell(action)="data">
-              <b-button class="btn btn-sm" variant="danger" @click="deletedData('tombol delete')">Delete</b-button>
+              <b-button class="btn btn-sm" variant="danger" @click="deletedData(data.item)">Delete</b-button>
               <b-button v-b-modal.modal-2 class="btn btn-sm" variant="primary" @click="detailData(data.item)">Detail</b-button>
             </template>
         </b-table>
@@ -142,7 +142,7 @@
                       <div class="mb-3 row">
                           <label for="inputName" class="col-sm-2 col-form-label">Jabatan</label>
                           <div class="col-sm-10">
-                              <b-form-select v-model="selected" :options="jabatan">
+                              <b-form-select v-model="selectedJabatan" :options="jabatan">
                               <!-- This slot appears above the options from 'options' prop -->
                                   <template #first>
                                       <b-form-select-option :value="null" disabled>-- Pilih Jabatan --</b-form-select-option>
@@ -153,7 +153,7 @@
                       <div class="mb-3 row">
                           <label for="inputName" class="col-sm-2 col-form-label">Divisi</label>
                           <div class="col-sm-10">
-                              <b-form-select v-model="selected" :options="divisi">
+                              <b-form-select v-model="selectedDivisi" :options="divisi">
                               <!-- This slot appears above the options from 'options' prop -->
                                   <template #first>
                                       <b-form-select-option :value="null" disabled>-- Pilih Divisi --</b-form-select-option>
@@ -202,15 +202,10 @@
   export default {
     data () {
       return {
-        selected: null,
-        kondisi: [
-          { value: 'A', text: 'Option A (from options prop)' },
-          { value: 'B', text: 'Option B (from options prop)' }
-        ],
-        divisi: [
-          { value: 'A', text: 'Option A (from opselectedtions prop)'},
-          { value: 'B', text: 'Option B (from options prop)' }
-        ],
+        divisi: [],
+        jabatan: [],
+        selectedDivisi: '',
+        selectedJabatan: '',
         header:[
           { key: 'nip', label: 'NIP' },
           { key: 'nama', label: 'Nama' },
@@ -218,15 +213,16 @@
           { key: 'action', label: 'Action' }
         ],
         items: [],
+        kode: '',
         nip: '',
         nama: '',
-        jabatan: '',
         div: '',
-        nomor: '',
+        nomer: '',
         alamat: '',
         email: '',
         password: '',
         judulModal: '',
+        role: '2',
         detail: {}
       }
     },
@@ -242,13 +238,53 @@
         })
         .then(response => {
           const dataUser = response.data.data
-          const admin = []
+          const ketua = []
           dataUser.forEach(item => {
-              if (item.role === 3) {
-                  admin.push(item)
+            console.log(item.role)
+              if (item.role === 2) {
+                  ketua.push(item)
               }
+          })
+          console.log(dataUser)
+          this.items = ketua
+        }).catch(err => {
+          if (typeof err.response !== "undefined") {
+            if (err.response.status === 404) {
+              this.$bvModal.show('modal-login')
+            }
+          }
+        })
+        await this.$axios.get('https://inventaris-yayasan.herokuapp.com/divisi', {
+          headers: {
+            'Authorization': 'Bearer ' + cookie.get('access_token')
+          }
+        })
+        .then(response => {
+          const data = {}
+          response.data.data.forEach(function callback(item, index) {
+              data[index] = {value: item.kode, text: item.nama}
           });
-          this.items = admin
+          this.divisi = data
+          console.log(this.divisi)
+        }).catch(err => {
+          if (typeof err.response !== "undefined") {
+            if (err.response.status === 404) {
+              this.$bvModal.show('modal-login')
+            }
+          }
+        })
+        await this.$axios.get('https://inventaris-yayasan.herokuapp.com/jabatan', {
+          headers: {
+            'Authorization': 'Bearer ' + cookie.get('access_token')
+          }
+        })
+        .then(response => {
+          const data = {}
+          response.data.data.forEach(function callback(item, index) {
+              data[index] = {value: item.kode, text: item.nama}
+          });
+          this.jabatan = data
+          console.log(this.jabatan)
         }).catch(err => {
           if (typeof err.response !== "undefined") {
             if (err.response.status === 404) {
@@ -269,8 +305,50 @@
       detailData(data){
         this.detail = data
       },
-      deletedData(date){
+      async addData(){
+        await this.$axios.get('https://inventaris-yayasan.herokuapp.com/user', {
+          headers: {
+            'Authorization': 'Bearer ' + cookie.get('access_token')
+          }
+        })
+        .then(response => {
+          this.kode = response.data.data.length + 1
+        })
+        console.log(this.kode)
+        const dataKetua = {
+          "kode": this.kode,
+          "nip": this.nip,
+          "nama": this.nama,
+          "jabatan": this.selectedJabatan,
+          "divisi": this.selectedDivisi,
+          "no_hp": this.nomor,
+          "email": this.email,
+          "password": this.password,
+          "alamat": this.alamat,
+          "code": this.code,
+          "role": this.role
+        }
+        const data = JSON.stringify(dataKetua)
         console.log(data)
+        await this.$axios.post("https://inventaris-yayasan.herokuapp.com/user", data, {
+          headers: {
+            "content-type": "application/json; charset=utf-8",
+            'Authorization': 'Bearer ' + cookie.get('access_token')
+          }
+        })
+        this.getData()
+        this.$bvModal.hide('modal-1')
+      },
+      async deletedData(data){
+        await this.$axios.delete('https://inventaris-yayasan.herokuapp.com/user/' + data.kode, {
+          headers: {
+            'Authorization': 'Bearer ' + cookie.get('access_token')
+          }
+        })
+        .then(response => {
+          console.log(response)
+          this.items = response.data.data
+        })
       }
     }
   }

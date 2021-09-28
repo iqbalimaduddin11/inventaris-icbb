@@ -59,7 +59,7 @@
               </template>
               <template #cell(action)="data">
                   <b-button variant="danger">Delete</b-button>
-                  <b-button v-b-modal.detailRuang variant="primary" @click="modalDetailDivisi(data.item.data_ruangs)">Detail</b-button> 
+                  <b-button v-b-modal.detailRuang variant="primary" @click="modalDetailDivisi(data.item.data_ruangs)">Detail</b-button>
               </template>
           </b-table>
           <b-modal id="detailRuang" hide-footer title="Detail Ruang">
@@ -97,7 +97,7 @@ export default {
       itemsDivisi: [],
       itemsDetailRuang: [],
       detailDivisi: []
-      
+
     }
   },
   created () {
@@ -139,7 +139,7 @@ export default {
             console.log(response.data.data)
             this.ruang = response.data.data.length
           })
-      } catch (err) {
+      } catch (err) {d
         if (typeof err.response !== "undefined") {
           if (err.response.status === 404) {
             this.$bvModal.show('modal-login')
