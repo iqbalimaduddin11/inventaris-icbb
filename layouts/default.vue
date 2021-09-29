@@ -59,6 +59,7 @@ export default {
       this.$store.commit("user/SET_TOKEN", token);
       this.$store.commit("user/SET_USER", user);
       this.$store.commit("user/SET_ISADMIN", JSON.parse(user).role);
+      // console.log(localStorage.getItem('user'))
     }
   },
   methods: {
@@ -75,7 +76,7 @@ export default {
         })
         .then(response => {
           // this.$bvModal.hide('modal-login')
-          console.log(response)
+          console.log(response.data.login)
           cookie.set('access_token', response.data.token)
           cookie.set('user', response.data.login)
           this.$store.commit("user/SET_TOKEN", response.data.token);
