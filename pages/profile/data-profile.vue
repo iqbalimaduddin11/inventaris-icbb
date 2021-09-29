@@ -133,10 +133,14 @@ export default {
     },
     methods: {
         getUser (){
-            const profile = JSON.parse(localStorage.getItem('user'))
-            console.log(profile)
-            this.user = JSON.parse(profile.user)
-            console.log(this.user)
+            const profile = JSON.parse(localStorage.getItem('user')).user
+                // console.log(profile)
+            if (typeof profile == "string") {
+                this.user = JSON.parse(profile)
+            } else {
+                // console.log('object')
+                this.user = profile
+            }
             this.jabatan = this.user.app_jabatan
             this.divisi = this.user.data_divisi
             try {    
@@ -188,8 +192,7 @@ export default {
                 "no_hp": profile.no_hp,
                 "alamat": profile.alamat,
             }
-            const data = JSON.stringify(dataProfile)
-            await this.$axios.patch("https://inventaris-yayasan.herokuapp.com/user/" + id, data, {
+            await this.$axios.patch("https://inventaris-yayasan.herokuapp.com/user/"+id, dataProfile, {
             headers: {
                 'Authorization': 'Bearer ' + cookie.get('access_token')
             }
@@ -197,6 +200,10 @@ export default {
                 console.log(response)
                 this.$store.commit("user/SET_USER", response.data.data[0]);
                 cookie.set('user', response.data.data[0])
+                this.user = response.data.data[0]
+                this.jabatan = this.user.app_jabatan
+                this.divisi = this.user.data_divisi
+                this.$bvModal.show('modal-3')
             })
         }
     }

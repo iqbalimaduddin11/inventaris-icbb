@@ -58,17 +58,26 @@
                 <p>{{data.item.data_ruangs.length}}</p>
               </template>
               <template #cell(action)="data">
-                  <b-button variant="danger">Delete</b-button>
                   <b-button v-b-modal.detailRuang variant="primary" @click="modalDetailDivisi(data.item.data_ruangs)">Detail</b-button>
               </template>
           </b-table>
           <b-modal id="detailRuang" hide-footer title="Detail Ruang">
-            <b-table outlined no-border-collapse :fields="headerDetailRuang" :items="itemsDetailRuang" show-empty>
-              <template #empty>
-                  <h5
-                  class="text-center"><strong>Data Tidak Ditemukan</strong></h5>
-              </template>
-            </b-table>
+            <div class="mb-5 row">
+              <p class="col-3">Kode</p>
+              <p class="col-4">: {{detail.code}}</p>
+            </div>
+            <div class="mb-5 row">
+              <p class="col-3">Divisi</p>
+              <p class="col-4">: {{detail.nama}}</p>
+            </div>
+            <div class="mb-5 row">
+              <p class="col-3">Awal Pengecekan Inventaris</p>
+              <p class="col-4">: {{ setTanggal(detail.batas_pengecekan_awal)}}</p>
+            </div>
+            <div class="mb-5 row">
+              <p class="col-3">Akhir Pengecekan Inventaris</p>
+              <p class="col-4">: {{ setTanggal(detail.batas_pengecekan_akhir)}}</p>
+            </div>
           </b-modal>
         </div>
       </div>
@@ -86,8 +95,8 @@ export default {
       ruang: '',
       divisi: '',
       headerDivisi: [
-        { key: 'nama', label: 'Divisi' },
-        { key: 'data_ruangs', label: 'Jumlah Ruang' },
+        { key: 'data_divisi.nama', label: 'Raung' },
+        { key: 'data_ruang.nama', label: 'Divisi' },
         { key: 'action', label: 'Action' },
       ],
       headerDetailRuang: [
@@ -95,8 +104,7 @@ export default {
         { key: 'nama', label: 'Ruang' },
       ],
       itemsDivisi: [],
-      itemsDetailRuang: [],
-      detailDivisi: []
+      detail: []
 
     }
   },
@@ -125,21 +133,21 @@ export default {
           })
           .then(response => {
             console.log(response)
-            this.divisi = response.data.divisi.length
-            this.itemsDivisi = response.data.divisi
+            this.ruang = response.data.data.length
+            this.itemsDivisi = response.data.data
             console.log(this.itemsDivisi)
           })
         await this.$axios
-          .get("https://inventaris-yayasan.herokuapp.com/ruang", {
+          .get("https://inventaris-yayasan.herokuapp.com/divisi", {
             headers: {
               'Authorization': 'Bearer ' + cookie.get('access_token')
             }
           })
           .then(response => {
             console.log(response.data.data)
-            this.ruang = response.data.data.length
+            this.divisi = response.data.data.length
           })
-      } catch (err) {d
+      } catch (err) { 
         if (typeof err.response !== "undefined") {
           if (err.response.status === 404) {
             this.$bvModal.show('modal-login')
@@ -150,7 +158,7 @@ export default {
     },
     modalDetailDivisi(data){
       console.log(data)
-      this.itemsDetailRuang = data
+      this.detail = data
     }
   }
 }
