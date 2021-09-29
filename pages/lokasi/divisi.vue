@@ -163,7 +163,18 @@
         this.getData()
       },
       async addData(){
-        const kode = this.items.length + 1
+        var loop = true
+        let kode = 1
+        while (loop) {
+          const cek = this.items.filter(function (item) {
+            return item.kode == kode
+          })
+          if (cek.length == 0) {
+            loop = false
+          } else {
+            kode++
+          }
+        }
         console.log(kode)
         const dataDivisi = {
           "kode": kode,

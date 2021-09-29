@@ -59,7 +59,7 @@
                     </div>
                 </form>
                 <template #modal-footer>
-                    <b-button @click="simpan" variant="primary">Simpan</b-button>
+                    <b-button @click="editProfile(edit.kode, edit)" variant="primary">Simpan</b-button>
                 </template>
             </b-modal>
         </div>
@@ -115,6 +115,7 @@ export default {
             divisi: {},
             jabatan: {},
             edit: {
+                kode: '',
                 nip: '',
                 nama: '',
                 jabatan: '',
@@ -132,8 +133,10 @@ export default {
     },
     methods: {
         getUser (){
-            this.user = JSON.parse(JSON.parse(localStorage.getItem('user')).user)
-            // console.log(this.user)
+            const profile = JSON.parse(localStorage.getItem('user'))
+            console.log(profile)
+            this.user = JSON.parse(profile.user)
+            console.log(this.user)
             this.jabatan = this.user.app_jabatan
             this.divisi = this.user.data_divisi
             try {    
@@ -168,6 +171,7 @@ export default {
             }
         },
         editData(user, divisi, jabatan){
+            this.edit.kode = user.kode
             this.edit.nip = user.nip
             this.edit.nama = user.nama
             this.edit.no_hp = user.no_hp
@@ -175,8 +179,25 @@ export default {
             this.edit.divisi = divisi.kode
             this.edit.alamat = user.alamat
         },
-        simpan(){
-
+        async editProfile(id, profile){
+            const dataProfile = {
+                "nip": profile.nip,
+                "nama": profile.nama,
+                "jabatan": profile.jabatan,
+                "divisi": profile.divisi,
+                "no_hp": profile.no_hp,
+                "alamat": profile.alamat,
+            }
+            const data = JSON.stringify(dataProfile)
+            await this.$axios.patch("https://inventaris-yayasan.herokuapp.com/user/" + id, data, {
+            headers: {
+                'Authorization': 'Bearer ' + cookie.get('access_token')
+            }
+            }).then(response => {
+                console.log(response)
+                this.$store.commit("user/SET_USER", response.data.data[0]);
+                cookie.set('user', response.data.data[0])
+            })
         }
     }
 }
