@@ -27,15 +27,31 @@
                       </div>
                   </div>
                   <div class="mb-3 row">
-                      <label for="inputName" class="col-sm-2 col-form-label">Jabatan</label>
-                      <div class="col-sm-10">
-                        <b-form-select v-model="selectedJabatan" :options="jabatan">
+                    <label for="inputJabatan" class="col-sm-2 col-form-label">Jabatan</label>
+                    <div class="col-sm-10 row" style="margin-left: 0">
+                        <b-form-select v-model="selectedJabatan" class="col-9" :options="jabatan">
                           <!-- This slot appears above the options from 'options' prop -->
                               <template #first>
                                   <b-form-select-option :value="null" disabled>-- Pilih Jabatan --</b-form-select-option>
                               </template>
-                          </b-form-select>
-                      </div>
+                        </b-form-select>
+                        <b-button v-b-modal.modal-4 class="btn btn-sm col-3" variant="primary">
+                        Tambah</b-button>
+
+                        <b-modal id="modal-4" size='lg' ref="modal-area" title="Tambah Jabatan">
+                            <form action="" method="post" style="margin-bottom: 90px">
+                                <div class="mb-3 row">
+                                <label for="jabatan" class="col-sm-2 col-form-label">Jabatan</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" v-model="jabatan1" id="jabatan">
+                                </div>
+                                </div>
+                            </form>
+                            <template #modal-footer>
+                                <b-button @click="addJabatan" variant="primary">Simpan</b-button>
+                            </template>
+                        </b-modal>
+                    </div>
                   </div>
                   <div class="mb-3 row">
                       <label for="inputName" class="col-sm-2 col-form-label">Divisi</label>
@@ -215,6 +231,7 @@
         items: [],
         kode: '',
         nip: '',
+        jabatan1: '',
         nama: '',
         div: '',
         nomer: '',
@@ -331,6 +348,31 @@
         const data = JSON.stringify(dataKetua)
         console.log(data)
         await this.$axios.post("https://inventaris-yayasan.herokuapp.com/user", data, {
+          headers: {
+            "content-type": "application/json; charset=utf-8",
+            'Authorization': 'Bearer ' + cookie.get('access_token')
+          }
+        })
+        this.getData()
+        this.$bvModal.hide('modal-1')
+      },
+      async addJabatan(){
+        await this.$axios.get('https://inventaris-yayasan.herokuapp.com/user', {
+          headers: {
+            'Authorization': 'Bearer ' + cookie.get('access_token')
+          }
+        })
+        .then(response => {
+          this.kode = response.data.data.length + 1
+        })
+        console.log(this.kode)
+        const dataJabatan = {
+          "kode": this.kode,
+          "nama": this.jabatan1
+        }
+        const data = JSON.stringify(dataJabatan)
+        console.log(data)
+        await this.$axios.post("https://inventaris-yayasan.herokuapp.com/jabatan", data, {
           headers: {
             "content-type": "application/json; charset=utf-8",
             'Authorization': 'Bearer ' + cookie.get('access_token')
