@@ -93,10 +93,48 @@
             <h4 style="margin: 0px"><strong>Akun</strong></h4>
             <button class="btn btn-info btn-sm" data-bs-toggle="dropdown" aria-expanded="false">Edit Akun</button>
             <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                <li><p class="dropdown-item"><a href="" class="link-dark text-decoration-none">Ganti Email</a></p></li>
-                <li><p class="dropdown-item"><a href="" class="link-dark text-decoration-none">Ganti Password</a></p></li>
+                <li><p class="dropdown-item"><a v-b-modal.modal-email class="link-dark text-decoration-none" @click="editEmailData">Ganti Email</a></p></li>
+                <li><p class="dropdown-item"><a v-b-modal.modal-pass class="link-dark text-decoration-none">Ganti Password</a></p></li>
             </ul>
         </div>
+        <b-modal id="modal-email" size='lg' ref="modal-admin" title="Edit Email">
+            <form action="" method="post" style="margin-bottom: 90px">
+                <div class="mb-3 row">
+                    <label for="inputEmail" class="col-sm-3 col-form-label">Email</label>
+                    <div class="col-sm-9">
+                        <input type="email" class="form-control" v-model="editEmail.email" id="inputEmail">
+                    </div>
+                </div>
+                <div class="mb-3 row">
+                    <label for="inputPass" class="col-sm-3 col-form-label">Password</label>
+                    <div class="col-sm-9">
+                        <input type="password" class="form-control" v-model="editEmail.password" id="inputPass">
+                    </div>
+                </div>
+            </form>
+            <template #modal-footer>
+                <b-button @click="addData" variant="primary">Simpan</b-button>
+            </template>
+        </b-modal>
+        <b-modal id="modal-pass" size='lg' ref="modal-admin" title="Edit Password">
+            <form action="" method="post" style="margin-bottom: 90px">
+                <div class="mb-3 row">
+                    <label for="inputPassBaru" class="col-sm-3 col-form-label">Password Baru</label>
+                    <div class="col-sm-9">
+                        <input type="email" class="form-control" v-model="editPassword.passBaru" id="inputPassBaru">
+                    </div>
+                </div>
+                <div class="mb-3 row">
+                    <label for="inputPassLama" class="col-sm-3 col-form-label">Password Lama</label>
+                    <div class="col-sm-9">
+                        <input type="password" class="form-control" v-model="editPassword.passLama" id="inputPassLama">
+                    </div>
+                </div>
+            </form>
+            <template #modal-footer>
+                <b-button @click="addData" variant="primary">Simpan</b-button>
+            </template>
+        </b-modal>
         <div class="container mt-4 pl-4">
             <div class="row">
                 <p class="col-3">Email</p>
@@ -122,6 +160,14 @@ export default {
                 divisi: '',
                 no_hp: '',
                 alamat: ''
+            },
+            editEmail: {
+                email: '',
+                password: '',
+            },
+            editPassword: {
+                passBaru: '',
+                passLama: '',
             },
             optionJabatan: {},
             optionDivisi: {}
@@ -203,8 +249,11 @@ export default {
                 this.user = response.data.data[0]
                 this.jabatan = this.user.app_jabatan
                 this.divisi = this.user.data_divisi
-                this.$bvModal.show('modal-3')
+                this.$bvModal.hide('modal-3')
             })
+        },
+        editEmailData(){
+            this.editEmail.email = this.user.email
         }
     }
 }
