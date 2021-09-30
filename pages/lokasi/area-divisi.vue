@@ -1,5 +1,5 @@
 <template>
-  <div class="container-fluid p-3">
+  <div class="container-fluid p-3 mb-5">
     <nav aria-label="breadcrumb" class="mt-4">
       <ol class="breadcrumb">
         <li class="breadcrumb-item" aria-current="page"><a href="/">Home</a></li>
@@ -15,9 +15,9 @@
         <b-modal id="modal-1" size='lg' ref="modal-area" title="Tambah Area Divisi">
             <form action="" method="post" style="margin-bottom: 90px">
                 <div class="mb-3 row">
-                    <label for="inputAreaDivisi" class="col-sm-2 col-form-label">Area Divisi</label>
-                    <div class="col-sm-10 ml-1 row">
-                      <b-form-select v-model="ruang" class="col-9" :options="ruang">
+                    <label for="inputAreaDivisi" class="col-sm-3 col-form-label">Area Divisi</label>
+                    <div class="col-sm-9 ml-1 row">
+                      <b-form-select v-model="selectedRuang" class="col-9" :options="ruang">
                         <!-- This slot appears above the options from 'options' prop -->
                             <template #first>
                                 <b-form-select-option :value="null" disabled>-- Pilih Area --</b-form-select-option>
@@ -25,26 +25,12 @@
                       </b-form-select>
                       <b-button v-b-modal.modal-4 class="btn btn-sm col-3" variant="primary">
                       <fa :icon="['fas', 'plus']" /> Tambah</b-button>
-
-                      <b-modal id="modal-4" size='lg' ref="modal-area" title="Tambah Area Divisi">
-                        <form action="" method="post" style="margin-bottom: 90px">
-                            <div class="mb-3 row">
-                              <label for="inputAreaDivisi" class="col-sm-2 col-form-label">Area Divisi</label>
-                              <div class="col-sm-10">
-                                  <input type="text" class="form-control" v-model="ruang" id="inputAreaDivisi">
-                              </div>
-                            </div>
-                        </form>
-                        <template #modal-footer>
-                            <b-button @click="simpan" variant="primary">Simpan</b-button>
-                        </template>
-                      </b-modal>
                     </div>
                 </div>
                 <div class="mb-3 row">
-                    <label for="inputDivisi" class="col-sm-2 col-form-label">Divisi</label>
-                    <div class="col-sm-10 ml-1 row">
-                      <b-form-select v-model="divisi" :options="divisi">
+                    <label for="inputDivisi" class="col-sm-3 col-form-label">Divisi</label>
+                    <div class="col-sm-9 ml-1 row">
+                      <b-form-select v-model="selectedDivisi" :options="divisi">
                         <!-- This slot appears above the options from 'options' prop -->
                             <template #first>
                                 <b-form-select-option :value="null" disabled>-- Pilih Divisi --</b-form-select-option>
@@ -52,10 +38,40 @@
                       </b-form-select>
                     </div>
                 </div>
+                <div class="mb-3 row">
+                  <label for="inputPenanggungJawab" class="col-sm-3 col-form-label">Penanggung Jawab</label>
+                  <div class="col-sm-9">
+                      <b-form-select v-model="selectedPenanggungJawab" :options="penanggungJawab">
+                      <!-- This slot appears above the options from 'options' prop -->
+                          <template #first>
+                              <b-form-select-option :value="null" disabled>-- Pilih Divisi --</b-form-select-option>
+                          </template>
+                      </b-form-select>
+                  </div>
+                </div>
             </form>
             <template #modal-footer>
-                <b-button @click="simpan" variant="primary">Simpan</b-button>
+                <b-button @click="addData()" variant="primary">Simpan</b-button>
             </template>
+        </b-modal>
+        <b-modal id="modal-4" size='lg' ref="modal-area" title="Tambah Area Divisi">
+          <form action="" method="post" style="margin-bottom: 90px">
+              <div class="mb-3 row">
+                <label for="inputCodeAreaDivisi" class="col-sm-2 col-form-label">Kode</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" v-model="newRuangCode" id="inputCodeAreaDivisi">
+                </div>
+              </div>
+              <div class="mb-3 row">
+                <label for="inputNewAreaDivisi" class="col-sm-2 col-form-label">Area Divisi</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" v-model="newRuang" id="inputNewAreaDivisi">
+                </div>
+              </div>
+          </form>
+          <template #modal-footer>
+              <b-button @click="addRuang" variant="primary">Simpan</b-button>
+          </template>
         </b-modal>
       </div>
     </div>
@@ -67,47 +83,77 @@
                  class="text-center"><strong>Data Tidak Ditemukan</strong></h5>
             </template>
             <template #cell(action)="data">
-              <b-button class="btn btn-sm" variant="danger" @click="deletedData('tombol delete')">Delete</b-button>
-              <b-button v-b-modal.modal-2 class="btn btn-sm" variant="primary" @click="modalDetailDivisi(data.item.data_ruangs)">Detail</b-button>
+              <b-button class="btn btn-sm" variant="danger" @click="deletedData(data.item.kode)">Delete</b-button>
+              <b-button v-b-modal.modal-2 class="btn btn-sm" variant="primary" @click="modalDetailDivisi(data.item)">Detail</b-button>
             </template>
         </b-table>
           <b-modal id="modal-2" size="lg" ref="modal-detail" title="Detail">
-            <b-table style="margin-bottom: 80px" outlined no-border-collapse :fields="headerDetailRuang" :items="itemsDetailRuang" show-empty>
-              <template #empty>
-                  <h5
-                  class="text-center"><strong>Data Tidak Ditemukan</strong></h5>
-              </template>
-            </b-table>
+            <div class="mb-5 row">
+              <p class="col-3">Divisi</p>
+              <p class="col-4">: {{ detail.data_divisi.nama }}</p>
+            </div>
+            <div class="mb-5 row">
+              <p class="col-3">Ruang</p>
+              <p class="col-4">: {{ detail.data_ruang.nama }}</p>
+            </div>
+            <div class="mb-5 row">
+              <p class="col-12"><strong>Penanggung Jawab</strong></p>
+            </div>
+            <div class="mb-5 row">
+              <p class="col-3">Nama</p>
+              <p class="col-auto">: {{ detail.app_user.nama }}</p>
+            </div>
+            <div class="mb-5 row">
+              <p class="col-3">Email</p>
+              <p class="col-auto">: {{ detail.app_user.email }}</p>
+            </div>
+            <div class="mb-5 row">
+              <p class="col-3">No Hp</p>
+              <p class="col-auto">: {{ detail.app_user.no_hp }}</p>
+            </div>
             <template #modal-footer>
-              <b-button v-b-modal.modal-3 class="btn btn-sm" variant="primary">Edit</b-button>
+              <b-button v-b-modal.modal-3 class="btn btn-sm" variant="primary" @click="editData(detail)">Edit</b-button>
 
               <b-modal id="modal-3" size="lg" ref="modal-admin" title="Edit">
                   <form action="" method="post" style="margin-bottom: 90px">
                     <div class="mb-3 row">
-                      <label for="inputAreaDivisi" class="col-sm-2 col-form-label">Area Divisi</label>
-                      <div class="col-sm-10">
-                        <b-form-select v-model="ruang" :options="ruang">
-                          <!-- This slot appears above the options from 'options' prop -->
-                              <template #first>
-                                  <b-form-select-option :value="null" disabled>-- Pilih Area --</b-form-select-option>
-                              </template>
-                        </b-form-select>
-                      </div>
+                        <label for="inputAreaDivisi" class="col-sm-3 col-form-label">Area Divisi</label>
+                        <div class="col-sm-9 ml-1 row">
+                          <b-form-select v-model="edit.selectedRuang" class="col-9" :options="ruang">
+                            <!-- This slot appears above the options from 'options' prop -->
+                                <template #first>
+                                    <b-form-select-option :value="null" disabled>-- Pilih Area --</b-form-select-option>
+                                </template>
+                          </b-form-select>
+                          <b-button v-b-modal.modal-4 class="btn btn-sm col-3" variant="primary">
+                          <fa :icon="['fas', 'plus']" /> Tambah</b-button>
+                        </div>
                     </div>
-                    <div class="mb-3 row">ruang
-                        <label for="inputDivisi" class="col-sm-2 col-form-label">Divisi</label>
-                        <div class="col-sm-10">
-                            <b-form-select v-model="selected" :options="divisi">
+                    <div class="mb-3 row">
+                        <label for="inputDivisi" class="col-sm-3 col-form-label">Divisi</label>
+                        <div class="col-sm-9 ml-1 row">
+                          <b-form-select v-model="edit.selectedDivisi" :options="divisi">
                             <!-- This slot appears above the options from 'options' prop -->
                                 <template #first>
                                     <b-form-select-option :value="null" disabled>-- Pilih Divisi --</b-form-select-option>
                                 </template>
-                            </b-form-select>
+                          </b-form-select>
                         </div>
+                    </div>
+                    <div class="mb-3 row">
+                      <label for="inputPenanggungJawab" class="col-sm-3 col-form-label">Penanggung Jawab</label>
+                      <div class="col-sm-9">
+                          <b-form-select v-model="edit.selectedPenanggungJawab" :options="penanggungJawab">
+                          <!-- This slot appears above the options from 'options' prop -->
+                              <template #first>
+                                  <b-form-select-option :value="null" disabled>-- Pilih Divisi --</b-form-select-option>
+                              </template>
+                          </b-form-select>
                       </div>
+                    </div>
                   </form>
                   <template #modal-footer>
-                      <b-button @click="simpan" variant="primary">Simpan</b-button>
+                      <b-button @click="postEdit(edit.kode)" variant="primary">Simpan</b-button>
                   </template>
               </b-modal>
             </template>
@@ -122,52 +168,218 @@
   export default {
     data () {
       return {
-        divisi: [
-          { value: 'A', text: 'Option A (from options prop)' },
-          { value: 'B', text: 'Option B (from options prop)' }
-        ],
+        divisi: [],
+        ruang: [],
+        penanggungJawab: [],
         header:[
-          { key: 'nama', label: 'Divisi' },
-          { key: 'data_ruangs', label: 'Area' },
-          { key: 'action', label: 'Action' }
+        { key: 'data_divisi.nama', label: 'Raung' },
+        { key: 'data_ruang.nama', label: 'Divisi' },
+        { key: 'action', label: 'Action' },
         ],
-        headerDetailRuang: [
-          { key: 'kode', label: 'Kode' },
-          { key: 'nama', label: 'Ruang' },
-        ],
-        itemsDetailRuang: [],
         items: [],
-        ruang: '',
+        selectedRuang: '',
+        selectedDivisi: '',
+        selectedPenanggungJawab: '',
+        newRuang: '',
+        kodeRuang: '',
+        newRuangCode: '',
+        detail: {
+          data_divisi: {},
+          data_ruang: {},
+          app_user: {}
+        },
+        edit: {
+          kode: '',
+          selectedDivisi: '',
+          selectedRuang: '',
+          selectedPenanggungJawab: '',
+        }
       }
     },
     mounted() {
       this.getData()
     },
     methods: {
-      async getData() {
-        await this.$axios.get('https://inventaris-yayasan.herokuapp.com/divisi-ruang', {
+      getData() {
+          this.$axios.get('https://inventaris-yayasan.herokuapp.com/divisi-ruang', {
+            headers: {
+              'Authorization': 'Bearer ' + cookie.get('access_token')
+            }
+          }).then(response => {
+            console.log(response)
+            this.items = response.data.data
+          }).catch(err => {
+            if (typeof err.response !== "undefined") {
+              if (err.response.status === 404) {
+                this.$bvModal.show('modal-login')
+              }
+            }
+          })
+          this.$axios.get('https://inventaris-yayasan.herokuapp.com/divisi',{
+            headers: {
+              'Authorization': 'Bearer ' + cookie.get('access_token')
+              }
+          }).then(response => {
+            const data = {}
+              response.data.data.forEach(function callback(item, index) {
+                data[index] = {value: item.kode, text: item.nama}
+              });
+              this.divisi = data
+          }).catch(err => {
+            if (typeof err.response !== "undefined") {
+              if (err.response.status === 404) {
+                this.$bvModal.show('modal-login')
+              }
+            }
+          })
+          this.$axios.get('https://inventaris-yayasan.herokuapp.com/ruang',{
+            headers: {
+              'Authorization': 'Bearer ' + cookie.get('access_token')
+              }
+          }).then(response => {
+            const data = {}
+              response.data.data.forEach(function callback(item, index) {
+                data[index] = {value: item.kode, text: item.nama}
+              });
+              this.ruang = data
+          }).catch(err => {
+            if (typeof err.response !== "undefined") {
+              if (err.response.status === 404) {
+                this.$bvModal.show('modal-login')
+              }
+            }
+          })
+          this.$axios.get('https://inventaris-yayasan.herokuapp.com/user', {
+            headers: {
+              'Authorization': 'Bearer ' + cookie.get('access_token')
+            }
+          })
+          .then(response => {
+          // console.log(response)
+            const dataUser = response.data.data
+            const admin = []
+            dataUser.forEach(item => {
+                if (item.role === 3) {
+                    admin.push({value: item.kode, text: item.nama +" - "+ item.data_divisi.nama})
+                }
+            })
+            this.penanggungJawab = admin
+          }).catch(err => {
+            if (typeof err.response !== "undefined") {
+              if (err.response.status === 404) {
+                this.$bvModal.show('modal-login')
+              }
+            }
+          })
+      },
+      async deletedData(id){
+        console.log(id)
+        await this.$axios.delete("https://inventaris-yayasan.herokuapp.com/divisi-ruang/" + id, {
+          headers: {
+            "content-type": "application/json; charset=utf-8",
+            'Authorization': 'Bearer ' + cookie.get('access_token')
+          }
+        }).then(response => {
+          console.log(response)
+        })
+        this.getData()
+      },
+      modalDetailDivisi(data){
+        // console.log(data)
+        this.detail = data
+      },
+      editData(data){
+        console.log(data)
+        this.edit.kode = data.kode
+        this.edit.selectedDivisi = data.divisi
+        this.edit.selectedRuang = data.ruang
+        this.edit.selectedPenanggungJawab = data.person_penanggung_jawab
+      },
+      async postEdit(id){
+        const dataDivisiRuang = {
+          "divisi": this.edit.selectedDivisi,
+          "ruang": this.edit.selectedRuang,
+          "person_penanggung_jawab": this.edit.selectedPenanggungJawab
+        }
+        await this.$axios.patch('https://inventaris-yayasan.herokuapp.com/divisi-ruang/' + id, dataDivisiRuang, {
           headers: {
             'Authorization': 'Bearer ' + cookie.get('access_token')
           }
-        })
-        .then(response => {
+        }).then(response => {
           console.log(response)
-          this.items = response.data.data
-        }).catch(err => {
-          if (typeof err.response !== "undefined") {
-            if (err.response.status === 404) {
-              this.$bvModal.show('modal-login')
+        })
+        this.getData()
+        this.$bvModal.hide('modal-3')
+        this.$bvModal.hide('modal-2')
+      },
+      async addData(){
+        var loop = true
+        let kode = 1
+        while (loop) {
+          const cek = this.items.filter(function (item) {
+            return item.kode == kode
+          })
+          if (cek.length == 0) {
+            loop = false
+          } else {
+            kode++
+          }
+        }
+        const data = {
+          "kode": kode,
+          "divisi": this.selectedDivisi,
+          "ruang": this.selectedRuang,
+          "person_penanggung_jawab": this.selectedPenanggungJawab
+        }
+        console.log(data)
+        await this.$axios.post("https://inventaris-yayasan.herokuapp.com/divisi-ruang", data, {
+          headers: {
+            "content-type": "application/json; charset=utf-8",
+            'Authorization': 'Bearer ' + cookie.get('access_token')
+          }
+        }).then(response => {
+          console.log(response)
+        })
+        this.getData()
+        this.$bvModal.hide('modal-1')
+      },
+      async addRuang(){
+        await this.$axios.get('https://inventaris-yayasan.herokuapp.com/ruang',{
+          headers: {
+            'Authorization': 'Bearer ' + cookie.get('access_token')
+            }
+        }).then(response => {
+          var loop = true
+          let kode = 1
+          const ruang = response.data.data
+          while (loop) {
+            const cek = ruang.filter(function (item) {
+              return item.kode == kode
+            })
+            if (cek.length == 0) {
+              loop = false
+              this.kodeRuang = kode
+            } else {
+              kode++
             }
           }
         })
-      },
-      deletedData(data){
-        console.log(data)
-      },
-      modalDetailDivisi(data){
-        console.log(data)
-        this.itemsDetailRuang = data
+        console.log(this.kodeRuang)
+        const dataRuang = {
+          "kode": this.kodeRuang,
+          "code": this.newRuangCode,
+          "nama": this.newRuang
+        }
+        await this.$axios.post('https://inventaris-yayasan.herokuapp.com/ruang', dataRuang, {
+          headers: {
+            'Authorization': 'Bearer ' + cookie.get('access_token')
+            }
+        }).then(response => {
+          console.log(response)
+        })
+        this.getData()
+        this.$bvModal.hide('modal-4')
       }
-    }
+    },
   }
 </script>

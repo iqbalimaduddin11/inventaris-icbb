@@ -264,7 +264,7 @@
           }
         })
         .then(response => {
-        console.log(response)
+        // console.log(response)
           const dataUser = response.data.data
           const admin = []
           dataUser.forEach(item => {
@@ -273,7 +273,7 @@
                   admin.push(item)
               }
           })
-          console.log(dataUser)
+        //   console.log(dataUser)
           this.items = admin
         }).catch(err => {
           if (typeof err.response !== "undefined") {
