@@ -58,25 +58,32 @@
                 <p>{{data.item.data_ruangs.length}}</p>
               </template>
               <template #cell(action)="data">
-                  <b-button v-b-modal.detailRuang variant="primary" @click="modalDetailDivisi(data.item.data_ruangs)">Detail</b-button>
+                  <b-button v-b-modal.detailRuang variant="primary" @click="modalDetailDivisi(data.item)">Detail</b-button>
               </template>
           </b-table>
           <b-modal id="detailRuang" hide-footer title="Detail Ruang">
             <div class="mb-5 row">
-              <p class="col-3">Kode</p>
-              <p class="col-4">: {{detail.code}}</p>
-            </div>
-            <div class="mb-5 row">
               <p class="col-3">Divisi</p>
-              <p class="col-4">: {{detail.nama}}</p>
+              <p class="col-4">: {{ detail.data_divisi.nama }}</p>
             </div>
             <div class="mb-5 row">
-              <p class="col-3">Awal Pengecekan Inventaris</p>
-              <p class="col-4">: {{ setTanggal(detail.batas_pengecekan_awal)}}</p>
+              <p class="col-3">Ruang</p>
+              <p class="col-4">: {{ detail.data_ruang.nama }}</p>
             </div>
             <div class="mb-5 row">
-              <p class="col-3">Akhir Pengecekan Inventaris</p>
-              <p class="col-4">: {{ setTanggal(detail.batas_pengecekan_akhir)}}</p>
+              <p class="col-12"><strong>Penanggung Jawab</strong></p>
+            </div>
+            <div class="mb-5 row">
+              <p class="col-3">Nama</p>
+              <p class="col-auto">: {{ detail.app_user.nama }}</p>
+            </div>
+            <div class="mb-5 row">
+              <p class="col-3">Email</p>
+              <p class="col-auto">: {{ detail.app_user.email }}</p>
+            </div>
+            <div class="mb-5 row">
+              <p class="col-3">No Hp</p>
+              <p class="col-auto">: {{ detail.app_user.no_hp }}</p>
             </div>
           </b-modal>
         </div>
@@ -95,16 +102,16 @@ export default {
       ruang: '',
       divisi: '',
       headerDivisi: [
-        { key: 'data_divisi.nama', label: 'Raung' },
-        { key: 'data_ruang.nama', label: 'Divisi' },
+        { key: 'data_divisi.nama', label: 'Divisi' },
+        { key: 'data_ruang.nama', label: 'Ruang' },
         { key: 'action', label: 'Action' },
       ],
-      headerDetailRuang: [
-        { key: 'kode', label: 'Kode' },
-        { key: 'nama', label: 'Ruang' },
-      ],
       itemsDivisi: [],
-      detail: []
+      detail: {
+        data_divisi: {},
+        data_ruang: {},
+        app_user: {}
+      }
 
     }
   },
