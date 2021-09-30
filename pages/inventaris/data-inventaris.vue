@@ -90,13 +90,7 @@
               <div class="mb-3 row">
                   <label for="inputDokumen" class="col-sm-2 col-form-label">Dokumen</label>
                   <div class="col-sm-10">
-                    <b-form-file v-model="dokumen" id="inputDokumen"></b-form-file>
-                  </div>
-              </div>
-              <div class="mb-3 row">
-                  <label for="inputPencatatan" class="col-sm-2 col-form-label">Pencatat</label>
-                  <div class="col-sm-10">
-                    <input type="text" class="form-control" id="inputPencatatan" v-model="pencatat">
+                    <input type="text" class="form-control" id="inputDokumen" v-model="dokumen">
                   </div>
               </div>
             </form>
@@ -282,7 +276,6 @@
         kepemilikan: '',
         harga: '',
         dokumen: '',
-        pencatat: '',
         judulModal: '',
         detail: {}
       }
@@ -397,6 +390,8 @@
         this.detail = data
       },
       async addData(){
+        const user = JSON.parse(JSON.parse(localStorage.getItem('user')).user).kode
+        console.log(user)
         await this.$axios.get('https://inventaris-yayasan.herokuapp.com/user', {
           headers: {
             'Authorization': 'Bearer ' + cookie.get('access_token')
@@ -417,7 +412,7 @@
           "kepemilikan": this.kepemilikan,
           "kondisi": this.selectedKondisi,
           "dokumen": this.dokumen,
-          "person_pencatat": this.pencatat,
+          "person_pencatat": user,
           "tanggal_masuk": this.date
         }
         const data = JSON.stringify(dataInventaris)

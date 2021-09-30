@@ -257,7 +257,6 @@
           const dataUser = response.data.data
           const ketua = []
           dataUser.forEach(item => {
-            console.log(item.role)
               if (item.role === 2) {
                   ketua.push(item)
               }
@@ -329,7 +328,19 @@
           }
         })
         .then(response => {
-          this.kode = response.data.data.length + 1
+          var loop = true
+          let kode = 1
+          while (loop) {
+            const cek = response.data.data.filter(function (item) {
+              return item.kode == kode
+            })
+            if (cek.length == 0) {
+              this.kode = kode
+              loop = false
+            } else {
+              kode++
+            }
+          }
         })
         console.log(this.kode)
         const dataKetua = {
@@ -357,13 +368,25 @@
         this.$bvModal.hide('modal-1')
       },
       async addJabatan(){
-        await this.$axios.get('https://inventaris-yayasan.herokuapp.com/user', {
+        await this.$axios.get('https://inventaris-yayasan.herokuapp.com/jabatan', {
           headers: {
             'Authorization': 'Bearer ' + cookie.get('access_token')
           }
         })
         .then(response => {
-          this.kode = response.data.data.length + 1
+          var loop = true
+          let kode = 1
+          while (loop) {
+            const cek = response.data.data.filter(function (item) {
+              return item.kode == kode
+            })
+            if (cek.length == 0) {
+              this.kode = kode
+              loop = false
+            } else {
+              kode++
+            }
+          }
         })
         console.log(this.kode)
         const dataJabatan = {
@@ -377,9 +400,11 @@
             "content-type": "application/json; charset=utf-8",
             'Authorization': 'Bearer ' + cookie.get('access_token')
           }
+        }).then(response => {
+          console.log(response)
         })
         this.getData()
-        this.$bvModal.hide('modal-1')
+        this.$bvModal.hide('modal-4')
       },
       async deletedData(data){
         await this.$axios.delete('https://inventaris-yayasan.herokuapp.com/user/' + data.kode, {

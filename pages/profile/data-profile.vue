@@ -93,10 +93,38 @@
             <h4 style="margin: 0px"><strong>Akun</strong></h4>
             <button class="btn btn-info btn-sm" data-bs-toggle="dropdown" aria-expanded="false">Edit Akun</button>
             <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                <li><p class="dropdown-item"><a href="" class="link-dark text-decoration-none">Ganti Email</a></p></li>
-                <li><p class="dropdown-item"><a href="" class="link-dark text-decoration-none">Ganti Password</a></p></li>
+                <li><p class="dropdown-item"><a v-b-modal.modal-4 class="link-dark text-decoration-none">Ganti Email</a></p></li>
+                <li><p class="dropdown-item"><a v-b-modal.modal-5 class="link-dark text-decoration-none">Ganti Password</a></p></li>
             </ul>
         </div>
+
+        <b-modal id="modal-4" size='lg' ref="modal-area" title="Edit Email">
+            <form action="" method="post" style="margin-bottom: 90px">
+                <div class="mb-3 row">
+                  <label for="email" class="col-sm-2 col-form-label">Email</label>
+                  <div class="col-sm-10">
+                      <input type="text" class="form-control" v-model="edit.email" id="email">
+                  </div>
+                </div>
+            </form>
+            <template #modal-footer>
+                <b-button @click="editEmail" variant="primary">Simpan</b-button>
+            </template>
+        </b-modal>
+
+        <b-modal id="modal-5" size='lg' ref="modal-area" title="Edit Password">
+            <form action="" method="post" style="margin-bottom: 90px">
+                <div class="mb-3 row">
+                  <label for="passwoed" class="col-sm-2 col-form-label">Password</label>
+                  <div class="col-sm-10">
+                      <input type="password" class="form-control" v-model="passwoed" id="passwoed">
+                  </div>
+                </div>
+            </form>
+            <template #modal-footer>
+                <b-button @click="addJabatan" variant="primary">Simpan</b-button>
+            </template>
+        </b-modal>
         <div class="container mt-4 pl-4">
             <div class="row">
                 <p class="col-3">Email</p>
@@ -121,6 +149,8 @@ export default {
                 jabatan: '',
                 divisi: '',
                 no_hp: '',
+                email: '',
+                password: '',
                 alamat: ''
             },
             optionJabatan: {},
@@ -143,7 +173,7 @@ export default {
             }
             this.jabatan = this.user.app_jabatan
             this.divisi = this.user.data_divisi
-            try {    
+            try {
                 this.$axios.get('https://inventaris-yayasan.herokuapp.com/divisi',{
                     headers: {
                         'Authorization': 'Bearer ' + cookie.get('access_token')
@@ -205,7 +235,7 @@ export default {
                 this.divisi = this.user.data_divisi
                 this.$bvModal.show('modal-3')
             })
-        }
+        },
     }
 }
 </script>
