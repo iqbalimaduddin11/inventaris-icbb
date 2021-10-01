@@ -94,7 +94,7 @@
             <button class="btn btn-info btn-sm" data-bs-toggle="dropdown" aria-expanded="false">Edit Akun</button>
             <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
                 <li><p class="dropdown-item"><a v-b-modal.modal-email class="link-dark text-decoration-none" @click="editEmailData">Ganti Email</a></p></li>
-                <li><p class="dropdown-item"><a v-b-modal.modal-pass class="link-dark text-decoration-none">Ganti Password</a></p></li>
+                <li><p class="dropdown-item"><a v-b-modal.modal-pass class="link-dark text-decoration-none" @click="editPasslData">Ganti Password</a></p></li>
             </ul>
         </div>
         <b-modal id="modal-email" size='lg' ref="modal-admin" title="Edit Email">
@@ -113,15 +113,18 @@
                 </div>
             </form>
             <template #modal-footer>
-                <b-button @click="addData" variant="primary">Simpan</b-button>
+                <b-button @click="postEditEmail(editEmail.kode)" variant="primary">Simpan</b-button>
             </template>
         </b-modal>
         <b-modal id="modal-pass" size='lg' ref="modal-admin" title="Edit Password">
+            <div class="alert alert-danger" v-if="errors">
+            {{ errors }}
+            </div>
             <form action="" method="post" style="margin-bottom: 90px">
                 <div class="mb-3 row">
                     <label for="inputPassBaru" class="col-sm-3 col-form-label">Password Baru</label>
                     <div class="col-sm-9">
-                        <input type="email" class="form-control" v-model="editPassword.passBaru" id="inputPassBaru">
+                        <input type="password" class="form-control" v-model="editPassword.passBaru" id="inputPassBaru">
                     </div>
                 </div>
                 <div class="mb-3 row">
@@ -132,7 +135,7 @@
                 </div>
             </form>
             <template #modal-footer>
-                <b-button @click="addData" variant="primary">Simpan</b-button>
+                <b-button @click="postEditPass(editPassword.kode)" variant="primary">Simpan</b-button>
             </template>
         </b-modal>
         <div class="container mt-4 pl-4">
@@ -149,6 +152,7 @@ import cookie from 'js-cookie'
 export default {
     data(){
         return {
+            errors: '',
             user: {},
             divisi: {},
             jabatan: {},
@@ -162,10 +166,12 @@ export default {
                 alamat: ''
             },
             editEmail: {
+                kode: '',
                 email: '',
                 password: '',
             },
             editPassword: {
+                kode: '',
                 passBaru: '',
                 passLama: '',
             },
@@ -254,6 +260,33 @@ export default {
         },
         editEmailData(){
             this.editEmail.email = this.user.email
+            this.editEmail.kode = this.user.kode
+        },
+        editPasslData(){
+            this.editPassword.kode = this.user.kode
+        },
+        postEditEmail(id){
+            console.log(id)
+        },
+        async postEditPass(id){
+            console.log(id)
+            const data = {
+                "new_password": this.editPassword.passBaru,
+                "password": this.editPassword.passLama
+            }
+            await this.$axios.patch("https://inventaris-yayasan.herokuapp.com/user/"+id+"/password", data, {
+                headers: {
+                    'Authorization': 'Bearer ' + cookie.get('access_token')
+                }
+            }).then(response => {
+                console.log(response)
+                this.$bvModal.hide('modal-pass')
+            }).catch(err => {
+                if (typeof err.response !== "undefined") {
+                    console.log(err.response)
+                    this.errors = err.response.data.message
+                }
+            })
         }
     }
 }
