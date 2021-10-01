@@ -163,6 +163,8 @@ export default {
                 jabatan: '',
                 divisi: '',
                 no_hp: '',
+                email: '',
+                password: '',
                 alamat: ''
             },
             editEmail: {
@@ -195,7 +197,7 @@ export default {
             }
             this.jabatan = this.user.app_jabatan
             this.divisi = this.user.data_divisi
-            try {    
+            try {
                 this.$axios.get('https://inventaris-yayasan.herokuapp.com/divisi',{
                     headers: {
                         'Authorization': 'Bearer ' + cookie.get('access_token')

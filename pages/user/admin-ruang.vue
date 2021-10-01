@@ -36,19 +36,19 @@
                               </template>
                         </b-form-select>
                         <b-button v-b-modal.modal-4 class="btn btn-sm col-3" variant="primary">
-                        <fa :icon="['fas', 'plus']" /> Tambah</b-button>
+                        Tambah</b-button>
 
                         <b-modal id="modal-4" size='lg' ref="modal-area" title="Tambah Jabatan">
                             <form action="" method="post" style="margin-bottom: 90px">
                                 <div class="mb-3 row">
-                                <label for="inputAreaDivisi" class="col-sm-2 col-form-label">Jabatan</label>
+                                <label for="jabatan" class="col-sm-2 col-form-label">Jabatan</label>
                                 <div class="col-sm-10">
-                                    <input type="text" class="form-control" v-model="jabatan1" id="inputAreaDivisi">
+                                    <input type="text" class="form-control" v-model="jabatan1" id="jabatan">
                                 </div>
                                 </div>
                             </form>
                             <template #modal-footer>
-                                <b-button @click="simpan" variant="primary">Simpan</b-button>
+                                <b-button @click="addJabatan" variant="primary">Simpan</b-button>
                             </template>
                         </b-modal>
                     </div>
@@ -79,13 +79,13 @@
                   <div class="mb-3 row">
                       <label for="staticEmail" class="col-sm-2 col-form-label">Email</label>
                       <div class="col-sm-10">
-                      <input type="email" class="form-control" v-model="email" id="staticEmail">
+                        <input type="email" class="form-control" v-model="email" id="staticEmail">
                       </div>
                   </div>
                   <div class="mb-3 row">
                       <label for="inputPassword" class="col-sm-2 col-form-label">Password</label>
                       <div class="col-sm-10">
-                      <input type="password" class="form-control" v-model="password" id="inputPassword">
+                        <input type="password" class="form-control" v-model="password" id="inputPassword">
                       </div>
                   </div>
               </form>
@@ -229,7 +229,7 @@
     data () {
       return {
         selected: null,
-        jabatan1: [],
+        jabatan: [],
         divisi: [],
         selectedJabatan: '',
         selectedDivisi: '',
@@ -241,8 +241,8 @@
         ],
         items: [],
         kode: '',
+        jabatan1: '',
         nip: '',
-        jabatan: '',
         nama: '',
         nomor: '',
         alamat: '',
@@ -339,10 +339,22 @@
           }
         })
         .then(response => {
-          this.kode = response.data.data.length + 1
+          var loop = true
+          let kode = 1
+          while (loop) {
+            const cek = response.data.data.filter(function (item) {
+              return item.kode == kode
+            })
+            if (cek.length == 0) {
+              this.kode = kode
+              loop = false
+            } else {
+              kode++
+            }
+          }
         })
         console.log(this.kode)
-        const dataAdmin = {
+        const dataKetua = {
           "kode": this.kode,
           "nip": this.nip,
           "nama": this.nama,
@@ -355,7 +367,7 @@
           "code": this.code,
           "role": this.role
         }
-        const data = JSON.stringify(dataAdmin)
+        const data = JSON.stringify(dataKetua)
         console.log(data)
         await this.$axios.post("https://inventaris-yayasan.herokuapp.com/user", data, {
           headers: {
@@ -365,6 +377,45 @@
         })
         this.getData()
         this.$bvModal.hide('modal-1')
+      },
+      async addJabatan(){
+        await this.$axios.get('https://inventaris-yayasan.herokuapp.com/jabatan', {
+          headers: {
+            'Authorization': 'Bearer ' + cookie.get('access_token')
+          }
+        })
+        .then(response => {
+          var loop = true
+          let kode = 1
+          while (loop) {
+            const cek = response.data.data.filter(function (item) {
+              return item.kode == kode
+            })
+            if (cek.length == 0) {
+              this.kode = kode
+              loop = false
+            } else {
+              kode++
+            }
+          }
+        })
+        console.log(this.kode)
+        const dataJabatan = {
+          "kode": this.kode,
+          "nama": this.jabatan1
+        }
+        const data = JSON.stringify(dataJabatan)
+        console.log(data)
+        await this.$axios.post("https://inventaris-yayasan.herokuapp.com/jabatan", data, {
+          headers: {
+            "content-type": "application/json; charset=utf-8",
+            'Authorization': 'Bearer ' + cookie.get('access_token')
+          }
+        }).then(response => {
+          console.log(response)
+        })
+        this.getData()
+        this.$bvModal.hide('modal-4')
       },
       async deletedData(data){
         await this.$axios.delete('https://inventaris-yayasan.herokuapp.com/user/' + data.kode, {
