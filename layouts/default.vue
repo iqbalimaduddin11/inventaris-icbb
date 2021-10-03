@@ -1,10 +1,10 @@
 <template>
   <div id="wrapper" class="row">
-    <LayoutsSidebar />
+    <LayoutsSidebar :role="role" />
     <div id="content-wrapper" class="col d-flex flex-column">
       <div id="content">
         <LayoutsNavbar :username="username" />
-        <Nuxt @loginUlang="relogin()" />
+        <Nuxt />
         <LayoutsFooter />
       </div>
     </div>
@@ -42,7 +42,8 @@ export default {
         password: ''
       },
       errors: '',
-      username: ''
+      username: '',
+      role: ''
     }
   },
   mounted() {
@@ -56,6 +57,7 @@ export default {
       this.$bvModal.hide('modal-login')
       const user = cookie.get('user')
       this.username = JSON.parse(user).nama
+      this.role = JSON.parse(user).role
       this.$store.commit("user/SET_TOKEN", token);
       this.$store.commit("user/SET_USER", user);
       this.$store.commit("user/SET_ISADMIN", JSON.parse(user).role);
@@ -85,6 +87,7 @@ export default {
           this.username = response.data.login.nama
           // console.log(JSON.parse(localStorage.getItem('user')).user)
           location.reload(true)
+          this.$router.push('/')
           this.$bvModal.hide('modal-login')
         })
       } catch (err) {
@@ -97,13 +100,6 @@ export default {
           }
         }
       }
-    },
-    relogin() {
-      console.log('relogin')
-      // const user = JSON.parse(JSON.parse(localStorage.getItem('user')).user)
-      // this.login.email = user.email
-      // this.login.password = user.password
-      // this.userLogin()
     }
   },
 }

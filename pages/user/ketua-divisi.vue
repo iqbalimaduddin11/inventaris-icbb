@@ -247,6 +247,10 @@
       }
     },
     mounted() {
+      const role = JSON.parse(localStorage.getItem('user')).isAdmin
+      if (role != 1) {
+        this.$router.push('/')
+      }
       this.getData()
     },
     methods: {
@@ -311,15 +315,6 @@
             }
           }
         })
-      },
-      simpan () {
-        const date = new Date()
-        console.log(this.$moment(date).format('YYYY-M-D'))
-        console.log(this.nama)
-        const cek = false
-        if (cek) {
-            this.$refs['modal-admin'].show()
-        }
       },
       detailData(data){
         this.detail = data
@@ -417,7 +412,7 @@
         })
         .then(response => {
           console.log(response)
-          this.items = response.data.data
+          this.getData()
         })
       }
     }
