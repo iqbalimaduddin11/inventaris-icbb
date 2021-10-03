@@ -15,6 +15,12 @@
           <b-modal id="modal-1" size='lg' ref="modal-inventaris" title="Tambah Inventaris">
             <form action="" method="post" style="margin-bottom: 90px">
               <div class="mb-3 row">
+                  <label for="code" class="col-sm-2 col-form-label">Code</label>
+                  <div class="col-sm-10">
+                    <input type="text" class="form-control" id="code" v-model="code">
+                  </div>
+              </div>
+              <div class="mb-3 row">
                   <label for="example-datepicker" class="col-sm-2 col-form-label">Tanggal</label>
                 <div class="col-sm-10">
                   <b-form-datepicker id="tanggal" v-model="date" class="mb-2"></b-form-datepicker>
@@ -71,9 +77,14 @@
                   </div>
               </div>
               <div class="mb-3 row">
-                  <label for="inputKepemilikan" class="col-sm-2 col-form-label">Kepemilikan</label>
+                  <label for="inputName" class="col-sm-2 col-form-label">Kepemilikan</label>
                   <div class="col-sm-10">
-                    <input type="text" class="form-control" id="inputKepemilikan" v-model="kepemilikan">
+                      <b-form-select v-model="selectedKepemilikan" :options="divisi">
+                      <!-- This slot appears above the options from 'options' prop -->
+                          <template #first>
+                              <b-form-select-option :value="null" disabled>-- Pilih Kepemilikan --</b-form-select-option>
+                          </template>
+                      </b-form-select>
                   </div>
               </div>
               <div class="mb-3 row">
@@ -255,13 +266,15 @@
         lokasi: [],
         selectedBarang: '',
         selectedDonatur: '',
+        selectedKepemilikan: '',
         selectedDivisi: '',
         selectedLokasi: '',
         selectedKondisi: '',
         kondisi: [
-          { value: 'A', text: 'Bagus' },
-          { value: 'B', text: 'Kurang Bagus' },
-          { value: 'C', text: 'Rusak' }
+          { value: 'Bagus', text: 'Bagus' },
+          { value: 'Cukup', text: 'Cukup' },
+          { value: 'Kurang Bagus', text: 'Kurang Bagus' },
+          { value: 'Rusak', text: 'Rusak' }
         ],
         header: [
           { key: 'tanggal_masuk', label: 'Tanggal' },
@@ -272,8 +285,8 @@
         ],
         items: [],
         kode: '',
+        code: '',
         date: '',
-        kepemilikan: '',
         harga: '',
         dokumen: '',
         judulModal: '',
@@ -409,7 +422,7 @@
           "person_donatur": this.selectedDonatur,
           "divisi": this.selectedDivisi,
           "lokasi": this.selectedLokasi,
-          "kepemilikan": this.kepemilikan,
+          "kepemilikan": this.selectedDivisi,
           "kondisi": this.selectedKondisi,
           "dokumen": this.dokumen,
           "person_pencatat": user,
