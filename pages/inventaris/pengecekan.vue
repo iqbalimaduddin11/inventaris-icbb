@@ -80,7 +80,7 @@
               </div>
               <div class="mb-3 row">
                 <p class="col-3">Barang</p>
-                <p class="col-4">: {{detail.inventaris}}</p>
+                <p class="col-4">: {{detail.data_inventari.data_barang.nama}}</p>
               </div>
               <div class="mb-3 row">
                 <p class="col-3">Kondisi</p>
@@ -88,7 +88,7 @@
               </div>
               <div class="mb-5 row">
                 <p class="col-3">Pengecek</p>
-                <p class="col-4">: {{detail.person_pengecek}}</p>
+                <p class="col-4">: {{detail.data_person.nama}}</p>
               </div>
             </form>
             <template #modal-footer>
@@ -149,15 +149,16 @@
         selectedInventaris: '',
         selectedPengecek: '',
         kondisi: [
-          { value: 'A', text: 'Bagus' },
-          { value: 'B', text: 'Kurang Bagus' },
-          { value: 'C', text: 'Rusak' }
+          { value: 'Bagus', text: 'Bagus' },
+          { value: 'Cukup', text: 'Cukup' },
+          { value: 'Kurang Bagus', text: 'Kurang Bagus' },
+          { value: 'Rusak', text: 'Rusak' }
         ],
         header: [
           { key: 'tanggal', label: 'Tanggal' },
-          { key: 'inventaris', label: 'Barang' },
+          { key: 'data_inventari.data_barang.nama', label: 'Barang' },
           { key: 'kondisi', label: 'Kondisi' },
-          { key: 'person_pengecek', label: 'Pengecek' },
+          { key: 'data_person.nama', label: 'Pengecek' },
           { key: 'action', label: 'Action' }
         ],
         items: [],
@@ -276,6 +277,7 @@
           console.log(response)
           this.items = response.data.data
         })
+        this.getData()
       }
     }
   }

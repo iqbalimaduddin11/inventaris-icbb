@@ -52,6 +52,22 @@
                               <b-form-select-option :value="null" disabled>-- Pilih Donatur --</b-form-select-option>
                           </template>
                       </b-form-select>
+                      <b-button v-b-modal.modal-4 class="btn btn-sm col-3" variant="primary">
+                        Tambah</b-button>
+
+                      <b-modal id="modal-4" size='lg' ref="modal-area" title="Tambah Donatur">
+                          <form action="" method="post" style="margin-bottom: 90px">
+                              <div class="mb-3 row">
+                              <label for="donatur" class="col-sm-2 col-form-label">Donatur</label>
+                              <div class="col-sm-10">
+                                  <input type="text" class="form-control" v-model="donatur1" id="donatur">
+                              </div>
+                              </div>
+                          </form>
+                          <template #modal-footer>
+                              <b-button @click="addDonatur" variant="primary">Simpan</b-button>
+                          </template>
+                      </b-modal>
                   </div>
               </div>
               <div class="mb-3 row">
@@ -131,7 +147,7 @@
                   </div>
                   <div class="mb-3 row">
                       <p class="col-3">Barang</p>
-                      <p class="col-4">: {{detail.barang}}</p>
+                      <p class="col-4">: {{detail.data_barang.nama}}</p>
                   </div>
                   <div class="mb-3 row">
                       <p class="col-3">Harga</p>
@@ -139,15 +155,15 @@
                   </div>
                   <div class="mb-3 row">
                       <p class="col-3">Donatur</p>
-                      <p class="col-4">: {{detail.person_donatur}}</p>
+                      <p class="col-4">: {{detail.donatur.nama}}</p>
                   </div>
                   <div class="mb-3 row">
                       <p class="col-3">Divisi</p>
-                      <p class="col-4">: {{detail.divisi}}</p>
+                      <p class="col-4">: {{detail.data_divisi.nama}}</p>
                   </div>
                   <div class="mb-3 row">
                       <p class="col-3">Kepemilikan</p>
-                      <p class="col-4">: {{detail.kepemilikan}}</p>
+                      <p class="col-4">: {{detail.pemilik.nama}}</p>
                   </div>
                   <div class="mb-3 row">
                       <p class="col-3">Kondisi</p>
@@ -159,7 +175,7 @@
                   </div>
                   <div class="mb-5 row">
                       <p class="col-3">Pencatat</p>
-                      <p class="col-4">: {{detail.person_pencatat}}</p>
+                      <p class="col-4">: {{detail.app_user.nama}}</p>
                   </div>
                 </form>
                 <template #modal-footer>
@@ -278,13 +294,14 @@
         ],
         header: [
           { key: 'tanggal_masuk', label: 'Tanggal' },
-          { key: 'barang', label: 'Barang' },
-          { key: 'person_donatur', label: 'Donatur' },
-          { key: 'divisi', label: 'Divisi' },
+          { key: 'data_barang.nama', label: 'Barang' },
+          { key: 'donatur.nama', label: 'Donatur' },
+          { key: 'data_divisi.nama', label: 'Divisi' },
           { key: 'action', label: 'Action' }
         ],
         items: [],
         kode: '',
+        donatur1: '',
         code: '',
         date: '',
         harga: '',
@@ -438,6 +455,45 @@
         })
         this.getData()
         this.$bvModal.hide('modal-1')
+      },
+      async addDonatur(){
+        await this.$axios.get('https://inventaris-yayasan.herokuapp.com/person', {
+          headers: {
+            'Authorization': 'Bearer ' + cookie.get('access_token')
+          }
+        })
+        .then(response => {
+          var loop = true
+          let kode = 1
+          while (loop) {
+            const cek = response.data.data.filter(function (item) {
+              return item.kode == kode
+            })
+            if (cek.length == 0) {
+              this.kode = kode
+              loop = false
+            } else {
+              kode++
+            }
+          }
+        })
+        console.log(this.kode)
+        const dataDonatur = {
+          "kode": this.kode,
+          "nama": this.donatur1
+        }
+        const data = JSON.stringify(dataDonatur)
+        console.log(data)
+        await this.$axios.post("https://inventaris-yayasan.herokuapp.com/person", data, {
+          headers: {
+            "content-type": "application/json; charset=utf-8",
+            'Authorization': 'Bearer ' + cookie.get('access_token')
+          }
+        }).then(response => {
+          console.log(response)
+        })
+        this.getData()
+        this.$bvModal.hide('modal-4')
       },
       async deletedData(data){
         await this.$axios.delete('https://inventaris-yayasan.herokuapp.com/inventaris/' + data.kode, {
