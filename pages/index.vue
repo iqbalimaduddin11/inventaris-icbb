@@ -121,6 +121,7 @@ export default {
   methods: {
     async getUser () {
       this.loading = true
+      try {
         await this.$axios
           .get("https://inventaris-yayasan.herokuapp.com/user", {
             headers: {
@@ -131,7 +132,6 @@ export default {
             console.log(response.data.data)
             this.karyawan = response.data.data.length
           })
-      try {
         await this.$axios
           .get("https://inventaris-yayasan.herokuapp.com/divisi-ruang", {
             headers: {

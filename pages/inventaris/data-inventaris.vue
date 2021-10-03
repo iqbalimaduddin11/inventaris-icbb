@@ -1,5 +1,5 @@
 <template>
-  <div class="container-fluid">
+  <div class="container-fluid mb-5">
     <nav aria-label="breadcrumb" class="mt-4">
       <ol class="breadcrumb">
         <li class="breadcrumb-item" aria-current="page"><a href="/">Home</a></li>
