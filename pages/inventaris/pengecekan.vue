@@ -45,7 +45,12 @@
               <div class="mb-3 row">
                 <label for="InputPengecek" class="col-sm-2 col-form-label">Pengecek</label>
                 <div class="col-sm-10">
-                  <input type="textarea" class="form-control" v-model="pengecek" id="InputPengecek">
+                    <b-form-select v-model="selectedPengecek" :options="pengecek">
+                    <!-- This slot appears above the options from 'options' prop -->
+                        <template #first>
+                            <b-form-select-option :value="null" disabled>-- Pilih Pengecek --</b-form-select-option>
+                        </template>
+                    </b-form-select>
                 </div>
               </div>
           </form>
@@ -138,9 +143,11 @@
     data () {
       return {
         selected: null,
+        inventaris: {},
+        pengecek: [],
         selectedKondisi: '',
         selectedInventaris: '',
-        inventaris: [],
+        selectedPengecek: '',
         kondisi: [
           { value: 'A', text: 'Bagus' },
           { value: 'B', text: 'Kurang Bagus' },
@@ -188,10 +195,29 @@
         .then(response => {
           const data = {}
           response.data.data.forEach(function callback(item, index) {
-              data[index] = {value: item.kode, text: item.nama}
+              data[index] = {value: item.kode, text: item.data_barang.nama}
           });
           this.inventaris = data
           console.log(this.inventaris)
+        }).catch(err => {
+          if (typeof err.response !== "undefined") {
+            if (err.response.status === 404) {
+              this.$bvModal.show('modal-login')
+            }
+          }
+        })
+        await this.$axios.get('https://inventaris-yayasan.herokuapp.com/person', {
+          headers: {
+            'Authorization': 'Bearer ' + cookie.get('access_token')
+          }
+        })
+        .then(response => {
+          const data = {}
+          response.data.data.forEach(function callback(item, index) {
+              data[index] = {value: item.kode, text: item.nama}
+          });
+          this.pengecek = data
+          console.log(this.pengecek)
         }).catch(err => {
           if (typeof err.response !== "undefined") {
             if (err.response.status === 404) {
@@ -226,7 +252,7 @@
           "kode": this.kode,
           "inventaris": this.selectedInventaris,
           "kondisi": this.selectedKondisi,
-          "person_pengecek": this.pengecek,
+          "person_pengecek": this.selectedPengecek,
           "tanggal": this.date
         }
         const data = JSON.stringify(dataPengecekan)
