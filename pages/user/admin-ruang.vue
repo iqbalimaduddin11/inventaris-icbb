@@ -118,11 +118,11 @@
               </div>
               <div class="mb-3 row">
                   <p class="col-3">Jabatan</p>
-                  <p class="col-4">: {{detail.jabatan}}</p>
+                  <p class="col-4">: {{detail.app_jabatan.nama}}</p>
               </div>
               <div class="mb-3 row">
                   <p class="col-3">Divisi</p>
-                  <p class="col-4">: {{detail.divisi}}</p>
+                  <p class="col-4">: {{detail.data_divisi.nama}}</p>
               </div>
               <div class="mb-3 row">
                   <p class="col-3">Nomor Hp</p>
@@ -236,7 +236,7 @@
         header: [
           { key: 'nip', label: 'NIP' },
           { key: 'nama', label: 'Nama' },
-          { key: 'divisi', label: 'Divisi' },
+          { key: 'data_divisi.nama', label: 'Divisi' },
           { key: 'action', label: 'Action' },
         ],
         items: [],
@@ -249,7 +249,10 @@
         email: '',
         password: '',
         role: '3',
-        detail: {}
+        detail: {
+          app_jabatan: {},
+          data_divisi: {}
+        }
 
       }
     },

@@ -99,6 +99,12 @@
                     Admin Ruang
                 </a>
               </li>
+              <li class="nav-item">
+                <a href="/user/jabatan" class="nav-link link-light">
+                    <fa :icon="['fas', 'angle-double-right']" />
+                    Data Jabatan
+                </a>
+              </li>
             </ul>
           </div>
         </div>
@@ -125,6 +131,12 @@
                 <a href="/inventaris/pengecekan" class="nav-link link-light">
                     <fa :icon="['fas', 'angle-double-right']" />
                     Pengecekan
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="/inventaris/data-donatur" class="nav-link link-light">
+                    <fa :icon="['fas', 'angle-double-right']" />
+                    Data Donatur
                 </a>
               </li>
             </ul>
