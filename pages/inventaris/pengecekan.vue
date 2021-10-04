@@ -251,7 +251,19 @@
           }
         })
         .then(response => {
-          this.kode = response.data.data.length + 1
+          var loop = true
+          let kode = 1
+          while (loop) {
+            const cek = response.data.data.filter(function (item) {
+              return item.kode == kode
+            })
+            if (cek.length == 0) {
+              this.kode = kode
+              loop = false
+            } else {
+              kode++
+            }
+          }
         })
         console.log(this.kode)
         const dataPengecekan = {
