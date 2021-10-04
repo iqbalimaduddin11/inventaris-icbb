@@ -61,7 +61,7 @@
         <div class="collapse" id="collapseLokasi">
           <div class="card card-body">
             <ul class="nav nav-pills flex-column mb-auto">
-              <li class="nav-item">
+              <li class="nav-item" v-if="role != 3">
                 <a href="/lokasi/divisi" class="nav-link link-light">
                     <fa :icon="['fas', 'angle-double-right']" />
                     Divisi
@@ -77,7 +77,7 @@
           </div>
         </div>
       </li>
-      <li class="nav-item">
+      <li class="nav-item" v-if="role != 3">
         <a class="nav-link link-light" data-bs-toggle="collapse" href="#collapsePengguna"
         role="button" aria-expanded="false" aria-controls="collapsePengguna" @click="rotation">
           <fa :icon="['fas', 'users']" />
@@ -87,7 +87,7 @@
         <div class="collapse" id="collapsePengguna">
           <div class="card card-body">
             <ul class="nav nav-pills flex-column mb-auto">
-              <li class="nav-item">
+              <li class="nav-item" v-if="role==1">
                 <a href="/user/ketua-divisi" class="nav-link link-light">
                     <fa :icon="['fas', 'angle-double-right']" />
                     Ketua Divisi
@@ -154,6 +154,9 @@ export default {
 
     }
   },
+  props: [
+      'role'
+  ],
   methods: {
     rotation (event) {
       const arrow = event.target.childNodes[2]

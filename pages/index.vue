@@ -20,21 +20,18 @@
           <div class="card-body">
             <h2 class="card-title text-light">{{ ruang }}</h2>
             <b-card-text class="text-light">Data Ruang</b-card-text>
-            <b-button variant="light">Detail</b-button>
           </div>
         </b-card>
         <b-card class="mr-2 ml-2" bg-variant="warning" style="width: 31%">
           <div class="card-body">
             <h2 class="card-title text-light">{{ divisi }}</h2>
             <b-card-text class="text-light">Data Divisi</b-card-text>
-            <b-button variant="light">Detail</b-button>
           </div>
         </b-card>
         <b-card class="mr-2 ml-2" bg-variant="danger" style="width: 31%">
           <div class="card-body">
             <h2 class="card-title text-light">{{ karyawan }}</h2>
             <b-card-text class="text-light">Data Karyawan</b-card-text>
-            <b-button variant="light">Detail</b-button>
           </div>
         </b-card>
       </div>
@@ -43,7 +40,6 @@
           <div class="card-body">
             <h2 class="card-title text-light">3</h2>
             <b-card-text class="text-light">Data Inventaris</b-card-text>
-            <b-button variant="light">Detail</b-button>
           </div>
         </b-card>
       </div>

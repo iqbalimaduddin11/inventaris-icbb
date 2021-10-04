@@ -1,5 +1,5 @@
 <template>
-  <div class="container-fluid">
+  <div class="container-fluid mb-5">
     <nav aria-label="breadcrumb" class="mt-4">
       <ol class="breadcrumb">
         <li class="breadcrumb-item" aria-current="page"><a href="/">Home</a></li>
@@ -165,13 +165,24 @@
         kode: '',
         date: '',
         pengecek: '',
-        detail: {}
+        detail: {
+          data_inventari: {
+            data_barang: ''
+          },
+          data_person: {
+            nama: ''
+          }
+        }
       }
     },
     mounted() {
       this.getData()
     },
     methods: {
+      setTanggal(date){
+        // console.log(this.$moment(date).format('DD-M-YYYY'))
+        return this.$moment(date).format('dddd, D MMMM YYYY')
+      },
       async getData() {
         await this.$axios.get('https://inventaris-yayasan.herokuapp.com/pengecekan', {
           headers: {
@@ -226,15 +237,6 @@
             }
           }
         })
-      },
-      simpan () {
-        const date = new Date()
-        console.log(this.$moment(date).format('YYYY-M-D'))
-        console.log(this.nama)
-        const cek = false
-        if (cek) {
-            this.$refs['modal-admin'].show()
-        }
       },
       detailData(data){
         this.detail = data

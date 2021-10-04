@@ -257,6 +257,10 @@
       }
     },
     mounted() {
+      const role = JSON.parse(localStorage.getItem('user')).isAdmin
+      if (role == 3) {
+        this.$router.push('/')
+      }
       this.getData()
     },
     methods: {
@@ -271,13 +275,22 @@
           const dataUser = response.data.data
           const admin = []
           dataUser.forEach(item => {
-            console.log(item.role)
               if (item.role === 3) {
                   admin.push(item)
               }
           })
+          const role = JSON.parse(localStorage.getItem('user')).isAdmin
+          const divisi = JSON.parse(JSON.parse(localStorage.getItem('user')).user).divisi
+          if (role != 1) {
+            const cek = admin.filter(function (item) {
+              return item.divisi == divisi
+            })
+            console.log(cek)
+            this.items = cek
+          }else{
+            this.items = admin
+          }
         //   console.log(dataUser)
-          this.items = admin
         }).catch(err => {
           if (typeof err.response !== "undefined") {
             if (err.response.status === 404) {
@@ -323,14 +336,6 @@
             }
           }
         })
-      },
-      simpan () {
-        const date = new Date()
-        console.log(this.$moment(date).format('YYYY-M-D'))
-        const cek = false
-        if (cek) {
-            this.$refs['modal-admin'].hide()
-        }
       },
       detailData(data){
         this.detail = data

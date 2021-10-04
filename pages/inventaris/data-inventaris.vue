@@ -134,6 +134,9 @@
             <template #empty>
                 <h5 class="text-center"><strong>Data Tidak Ditemukan</strong></h5>
             </template>
+            <template #cell(tanggal_masuk)="data">
+              {{setTanggal(data.tanggal_masuk)}}
+            </template>
             <template #cell(action)="data">
               <b-button class="btn btn-sm" variant="danger" @click="deletedData(data.item)">Delete</b-button>
               <b-button v-b-modal.modal-2 class="btn btn-sm" variant="primary" @click="detailData(data.item)">Detail</b-button>
@@ -143,7 +146,7 @@
                 <form action="" method="">
                   <div class="mb-3 row">
                       <p class="col-3">Tanggal</p>
-                      <p class="col-4">: {{detail.tanggal_masuk}}</p>
+                      <p class="col-4">: {{setTanggal(detail.tanggal_masuk)}}</p>
                   </div>
                   <div class="mb-3 row">
                       <p class="col-3">Barang</p>
@@ -307,13 +310,33 @@
         harga: '',
         dokumen: '',
         judulModal: '',
-        detail: {}
+        detail: {
+          data_barang: {
+            nama: ''
+          },
+          donatur: {
+            nama: ''
+          },
+          data_divisi: {
+            nama: ''
+          },
+          pemilik: {
+            nama: ''
+          },
+          app_user: {
+            nama: ''
+          },
+        }
       }
     },
     mounted() {
       this.getData()
     },
     methods: {
+      setTanggal(date){
+        // console.log(this.$moment(date).format('DD-M-YYYY'))
+        return this.$moment(date).format('dddd, D MMMM YYYY')
+      },
       async getData() {
         await this.$axios.get('https://inventaris-yayasan.herokuapp.com/inventaris', {
           headers: {
@@ -422,14 +445,27 @@
       async addData(){
         const user = JSON.parse(JSON.parse(localStorage.getItem('user')).user).kode
         console.log(user)
-        await this.$axios.get('https://inventaris-yayasan.herokuapp.com/user', {
+        await this.$axios.get('https://inventaris-yayasan.herokuapp.com/inventaris', {
           headers: {
             'Authorization': 'Bearer ' + cookie.get('access_token')
           }
         })
         .then(response => {
-          this.kode = response.data.data.length + 1
+          var loop = true
+          let kode = 1
+          while (loop) {
+            const cek = response.data.data.filter(function (item) {
+              return item.kode == kode
+            })
+            if (cek.length == 0) {
+              this.kode = kode
+              loop = false
+            } else {
+              kode++
+            }
+          }
         })
+
         console.log(this.kode)
         const dataInventaris = {
           "kode": this.kode,
@@ -439,7 +475,7 @@
           "person_donatur": this.selectedDonatur,
           "divisi": this.selectedDivisi,
           "lokasi": this.selectedLokasi,
-          "kepemilikan": this.selectedDivisi,
+          "kepemilikan": this.selectedKepemilikan,
           "kondisi": this.selectedKondisi,
           "dokumen": this.dokumen,
           "person_pencatat": user,

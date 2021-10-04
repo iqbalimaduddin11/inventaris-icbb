@@ -207,7 +207,16 @@
             }
           }).then(response => {
             console.log(response)
-            this.items = response.data.data
+            const role = JSON.parse(localStorage.getItem('user')).isAdmin
+            const divisi = JSON.parse(JSON.parse(localStorage.getItem('user')).user).divisi
+            if (role != 1) {
+              const cek = response.data.data.filter(function (item) {
+                return item.divisi == divisi
+              })
+              this.items = cek
+            }else{
+              this.items = response.data.data
+            }
           }).catch(err => {
             if (typeof err.response !== "undefined") {
               if (err.response.status === 404) {
