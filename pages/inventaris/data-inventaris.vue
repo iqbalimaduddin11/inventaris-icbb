@@ -44,31 +44,31 @@
                   </div>
               </div>
               <div class="mb-3 row">
-                  <label for="inputName" class="col-sm-2 col-form-label">Donatur</label>
-                  <div class="col-sm-10">
-                      <b-form-select v-model="selectedDonatur" :options="donatur">
-                      <!-- This slot appears above the options from 'options' prop -->
-                          <template #first>
-                              <b-form-select-option :value="null" disabled>-- Pilih Donatur --</b-form-select-option>
-                          </template>
-                      </b-form-select>
-                      <b-button v-b-modal.modal-4 class="btn btn-sm col-3" variant="primary">
-                        Tambah</b-button>
+                <label for="inputDonatur" class="col-sm-2 col-form-label">Donatur</label>
+                <div class="col-sm-10 row" style="margin-left: 0">
+                  <b-form-select v-model="selectedDonatur" class="col-9" :options="donatur">
+                    <!-- This slot appears above the options from 'options' prop -->
+                        <template #first>
+                            <b-form-select-option :value="null" disabled>-- Pilih Donatur --</b-form-select-option>
+                        </template>
+                  </b-form-select>
+                  <b-button v-b-modal.modal-4 class="btn btn-sm col-3" variant="primary">
+                  Tambah</b-button>
 
-                      <b-modal id="modal-4" size='lg' ref="modal-area" title="Tambah Donatur">
-                          <form action="" method="post" style="margin-bottom: 90px">
-                              <div class="mb-3 row">
-                              <label for="donatur" class="col-sm-2 col-form-label">Donatur</label>
-                              <div class="col-sm-10">
-                                  <input type="text" class="form-control" v-model="donatur1" id="donatur">
-                              </div>
-                              </div>
-                          </form>
-                          <template #modal-footer>
-                              <b-button @click="addDonatur" variant="primary">Simpan</b-button>
-                          </template>
-                      </b-modal>
-                  </div>
+                  <b-modal id="modal-4" size='lg' ref="modal-area" title="Tambah Donatur">
+                      <form action="" method="post" style="margin-bottom: 90px">
+                          <div class="mb-3 row">
+                            <label for="donatur" class="col-sm-2 col-form-label">Donatur</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" v-model="donatur1" id="donatur">
+                            </div>
+                          </div>
+                      </form>
+                      <template #modal-footer>
+                          <b-button @click="addJabatan" variant="primary">Simpan</b-button>
+                      </template>
+                  </b-modal>
+                </div>
               </div>
               <div class="mb-3 row">
                   <label for="inputName" class="col-sm-2 col-form-label">Divisi</label>

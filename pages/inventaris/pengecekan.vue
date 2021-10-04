@@ -80,7 +80,7 @@
               </div>
               <div class="mb-3 row">
                 <p class="col-3">Barang</p>
-                <p class="col-4">: {{detail.data_inventari.data_barang.nama}}</p>
+                <p class="col-4">: {{detail.data_inventari.nama}}</p>
               </div>
               <div class="mb-3 row">
                 <p class="col-3">Kondisi</p>
@@ -156,7 +156,7 @@
         ],
         header: [
           { key: 'tanggal', label: 'Tanggal' },
-          { key: 'data_inventari.data_barang.nama', label: 'Barang' },
+          { key: 'data_inventar.nama', label: 'Barang' },
           { key: 'kondisi', label: 'Kondisi' },
           { key: 'data_person.nama', label: 'Pengecek' },
           { key: 'action', label: 'Action' }
@@ -196,7 +196,7 @@
         .then(response => {
           const data = {}
           response.data.data.forEach(function callback(item, index) {
-              data[index] = {value: item.kode, text: item.data_barang.nama}
+              data[index] = {value: item.kode, text: ite.nama}
           });
           this.inventaris = data
           console.log(this.inventaris)
