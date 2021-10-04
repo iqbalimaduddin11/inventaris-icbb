@@ -142,132 +142,136 @@
               <b-button v-b-modal.modal-2 class="btn btn-sm" variant="primary" @click="detailData(data.item)">Detail</b-button>
             </template>
         </b-table>
-            <b-modal id="modal-2" size="lg" ref="modal-detail" title="Detail">
-                <form action="" method="">
-                  <div class="mb-3 row">
-                      <p class="col-3">Tanggal</p>
-                      <p class="col-4">: {{setTanggal(detail.tanggal_masuk)}}</p>
-                  </div>
-                  <div class="mb-3 row">
-                      <p class="col-3">Barang</p>
-                      <p class="col-4">: {{detail.data_barang.nama}}</p>
-                  </div>
-                  <div class="mb-3 row">
-                      <p class="col-3">Harga</p>
-                      <p class="col-4">: {{detail.harga}}</p>
-                  </div>
-                  <div class="mb-3 row">
-                      <p class="col-3">Donatur</p>
-                      <p class="col-4">: {{detail.donatur.nama}}</p>
-                  </div>
-                  <div class="mb-3 row">
-                      <p class="col-3">Divisi</p>
-                      <p class="col-4">: {{detail.data_divisi.nama}}</p>
-                  </div>
-                  <div class="mb-3 row">
-                      <p class="col-3">Kepemilikan</p>
-                      <p class="col-4">: {{detail.pemilik.nama}}</p>
-                  </div>
-                  <div class="mb-3 row">
-                      <p class="col-3">Kondisi</p>
-                      <p class="col-4">: {{detail.kondisi}}</p>
-                  </div>
-                  <div class="mb-3 row">
-                      <p class="col-3">Dokumen</p>
-                      <p class="col-4">: {{detail.dokumen}}</p>
-                  </div>
-                  <div class="mb-5 row">
-                      <p class="col-3">Pencatat</p>
-                      <p class="col-4">: {{detail.app_user.nama}}</p>
-                  </div>
-                </form>
-                <template #modal-footer>
-                  <b-button v-b-modal.modal-3 class="btn btn-sm" variant="primary">Edit</b-button>
+          <b-modal id="modal-2" size="lg" ref="modal-detail" title="Detail">
+              <form action="" method="">
+                <div class="mb-3 row">
+                    <p class="col-3">Tanggal</p>
+                    <p class="col-4">: {{setTanggal(detail.tanggal_masuk)}}</p>
+                </div>
+                <div class="mb-3 row">
+                    <p class="col-3">Kode</p>
+                    <p class="col-4">: {{detail.code}}</p>
+                </div>
+                <div class="mb-3 row">
+                    <p class="col-3">Barang</p>
+                    <p class="col-4">: {{detail.data_barang.nama}}</p>
+                </div>
+                <div class="mb-3 row">
+                    <p class="col-3">Harga</p>
+                    <p class="col-4">: {{detail.harga}}</p>
+                </div>
+                <div class="mb-3 row">
+                    <p class="col-3">Donatur</p>
+                    <p class="col-4">: {{detail.donatur.nama}}</p>
+                </div>
+                <div class="mb-3 row">
+                    <p class="col-3">Divisi</p>
+                    <p class="col-4">: {{detail.data_divisi.nama}}</p>
+                </div>
+                <div class="mb-3 row">
+                    <p class="col-3">Kepemilikan</p>
+                    <p class="col-4">: {{detail.pemilik.nama}}</p>
+                </div>
+                <div class="mb-3 row">
+                    <p class="col-3">Kondisi</p>
+                    <p class="col-4">: {{detail.kondisi}}</p>
+                </div>
+                <div class="mb-3 row">
+                    <p class="col-3">Dokumen</p>
+                    <p class="col-4">: {{detail.dokumen}}</p>
+                </div>
+                <div class="mb-5 row">
+                    <p class="col-3">Pencatat</p>
+                    <p class="col-4">: {{detail.app_user.nama}}</p>
+                </div>
+              </form>
+              <template #modal-footer>
+                <b-button v-b-modal.modal-3 class="btn btn-sm" variant="primary">Edit</b-button>
 
-                  <b-modal id="modal-3" size="lg" ref="modal-admin" title="Edit">
-                      <form action="" method="post" style="margin-bottom: 90px">
-                          <div class="mb-3 row">
-                            <label for="example-datepicker" class="col-sm-2 col-form-label">Tanggal</label>
+                <b-modal id="modal-3" size="lg" ref="modal-admin" title="Edit">
+                    <form action="" method="post" style="margin-bottom: 90px">
+                        <div class="mb-3 row">
+                          <label for="example-datepicker" class="col-sm-2 col-form-label">Tanggal</label>
+                          <div class="col-sm-10">
+                            <b-form-datepicker id="tanggal" v-model="date" class="mb-2"></b-form-datepicker>
+                          </div>
+                        </div>
+                        <div class="mb-3 row">
+                          <label for="inputName" class="col-sm-2 col-form-label">Barang</label>
+                          <div class="col-sm-10">
+                            <input type="text" class="form-control" id="inputName">
+                          </div>
+                        </div>
+                        <div class="mb-3 row">
+                          <label for="inputName" class="col-sm-2 col-form-label">Harga</label>
+                          <div class="col-sm-10">
+                            <input type="text" class="form-control" id="inputName">
+                          </div>
+                        </div>
+                        <div class="mb-3 row">
+                          <label for="inputName" class="col-sm-2 col-form-label">Donatur</label>
+                          <div class="col-sm-10">
+                            <input type="text" class="form-control" id="inputName">
+                          </div>
+                        </div>
+                        <div class="mb-3 row">
+                            <label for="inputName" class="col-sm-2 col-form-label">Divisi</label>
                             <div class="col-sm-10">
-                              <b-form-datepicker id="tanggal" v-model="date" class="mb-2"></b-form-datepicker>
-                            </div>
-                          </div>
-                          <div class="mb-3 row">
-                            <label for="inputName" class="col-sm-2 col-form-label">Barang</label>
-                            <div class="col-sm-10">
-                              <input type="text" class="form-control" id="inputName">
-                            </div>
-                          </div>
-                          <div class="mb-3 row">
-                            <label for="inputName" class="col-sm-2 col-form-label">Harga</label>
-                            <div class="col-sm-10">
-                              <input type="text" class="form-control" id="inputName">
-                            </div>
-                          </div>
-                          <div class="mb-3 row">
-                            <label for="inputName" class="col-sm-2 col-form-label">Donatur</label>
-                            <div class="col-sm-10">
-                              <input type="text" class="form-control" id="inputName">
-                            </div>
-                          </div>
-                          <div class="mb-3 row">
-                              <label for="inputName" class="col-sm-2 col-form-label">Divisi</label>
-                              <div class="col-sm-10">
-                                  <b-form-select v-model="selectedDivisi" :options="divisi">
-                                  <!-- This slot appears above the options from 'options' prop -->
-                                      <template #first>
-                                          <b-form-select-option :value="null" disabled>-- Pilih Divisi --</b-form-select-option>
-                                      </template>
-                                  </b-form-select>
-                              </div>
-                          </div>
-                          <div class="mb-3 row">
-                              <label for="inputKepemilikan" class="col-sm-2 col-form-label">Kepemilikan</label>
-                              <div class="col-sm-10">
-                                <input type="password" class="form-control" id="inputKepemilikan">
-                              </div>
-                          </div>
-                          <div class="mb-3 row">
-                            <label for="inputName" class="col-sm-2 col-form-label">Kondisi</label>
-                            <div class="col-sm-10">
-                                <b-form-select v-model="selectedKondisi" :options="kondisi">
+                                <b-form-select v-model="selectedDivisi" :options="divisi">
                                 <!-- This slot appears above the options from 'options' prop -->
                                     <template #first>
-                                        <b-form-select-option :value="null" disabled>-- Pilih Kondisi --</b-form-select-option>
+                                        <b-form-select-option :value="null" disabled>-- Pilih Divisi --</b-form-select-option>
                                     </template>
                                 </b-form-select>
                             </div>
-                          </div>
-                          <div class="mb-3 row">
-                            <label for="inputName" class="col-sm-2 col-form-label">Status</label>
+                        </div>
+                        <div class="mb-3 row">
+                            <label for="inputKepemilikan" class="col-sm-2 col-form-label">Kepemilikan</label>
                             <div class="col-sm-10">
-                                <b-form-select v-model="selected" :options="status">
-                                  <!-- This slot appears above the options from 'options' prop -->
-                                    <template #first>
-                                        <b-form-select-option :value="null" disabled>-- Pilih Status --</b-form-select-option>
-                                    </template>
-                                </b-form-select>
+                              <input type="password" class="form-control" id="inputKepemilikan">
                             </div>
+                        </div>
+                        <div class="mb-3 row">
+                          <label for="inputName" class="col-sm-2 col-form-label">Kondisi</label>
+                          <div class="col-sm-10">
+                              <b-form-select v-model="selectedKondisi" :options="kondisi">
+                              <!-- This slot appears above the options from 'options' prop -->
+                                  <template #first>
+                                      <b-form-select-option :value="null" disabled>-- Pilih Kondisi --</b-form-select-option>
+                                  </template>
+                              </b-form-select>
                           </div>
-                          <div class="mb-3 row">
-                              <label for="inputDokumen" class="col-sm-2 col-form-label">Dokumen</label>
-                              <div class="col-sm-10">
-                                <b-form-file v-model="dokumen" id="inputDokumen"></b-form-file>
-                              </div>
+                        </div>
+                        <div class="mb-3 row">
+                          <label for="inputName" class="col-sm-2 col-form-label">Status</label>
+                          <div class="col-sm-10">
+                              <b-form-select v-model="selected" :options="status">
+                                <!-- This slot appears above the options from 'options' prop -->
+                                  <template #first>
+                                      <b-form-select-option :value="null" disabled>-- Pilih Status --</b-form-select-option>
+                                  </template>
+                              </b-form-select>
                           </div>
-                          <div class="mb-3 row">
-                              <label for="inputPencatat" class="col-sm-2 col-form-label">Pencatat</label>
-                              <div class="col-sm-10">
-                              <input type="password" class="form-control" id="inputPencatat">
-                              </div>
-                          </div>
-                      </form>
-                      <template #modal-footer>
-                          <b-button @click="simpan" variant="primary">Simpan</b-button>
-                      </template>
-                  </b-modal>
-                </template>
-            </b-modal>
+                        </div>
+                        <div class="mb-3 row">
+                            <label for="inputDokumen" class="col-sm-2 col-form-label">Dokumen</label>
+                            <div class="col-sm-10">
+                              <b-form-file v-model="dokumen" id="inputDokumen"></b-form-file>
+                            </div>
+                        </div>
+                        <div class="mb-3 row">
+                            <label for="inputPencatat" class="col-sm-2 col-form-label">Pencatat</label>
+                            <div class="col-sm-10">
+                            <input type="password" class="form-control" id="inputPencatat">
+                            </div>
+                        </div>
+                    </form>
+                    <template #modal-footer>
+                        <b-button @click="simpan" variant="primary">Simpan</b-button>
+                    </template>
+                </b-modal>
+              </template>
+          </b-modal>
       </div>
     </div>
   </div>
@@ -345,7 +349,16 @@
         })
         .then(response => {
           console.log(response)
-          this.items = response.data.data
+          const role = JSON.parse(localStorage.getItem('user')).isAdmin
+          const divisi = JSON.parse(JSON.parse(localStorage.getItem('user')).user).divisi
+          if (role != 1) {
+            const cek = response.data.data.filter(function (item) {
+              return item.kepemilikan == divisi
+            })
+            this.items = cek
+          }else{
+            this.items = response.data.data
+          }
         }).catch(err => {
           if (typeof err.response !== "undefined") {
             if (err.response.status === 404) {
@@ -530,7 +543,6 @@
         })
         .then(response => {
           console.log(response)
-          this.items = response.data.data
         })
         this.getData()
       }
