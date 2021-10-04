@@ -67,6 +67,12 @@
                     Divisi
                 </a>
               </li>
+              <li class="nav-item" v-if="role != 3">
+                <a href="/lokasi/ruang" class="nav-link link-light">
+                    <fa :icon="['fas', 'angle-double-right']" />
+                    Ruang
+                </a>
+              </li>
               <li class="nav-item">
                 <a href="/lokasi/area-divisi" class="nav-link link-light">
                     <fa :icon="['fas', 'angle-double-right']" />
