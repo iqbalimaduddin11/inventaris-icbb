@@ -67,6 +67,9 @@
                 <h5
                  class="text-center"><strong>Data Tidak Ditemukan</strong></h5>
             </template>
+            <template #cell(tanggal)="data">
+              {{setTanggal(data.tanggal)}}
+            </template>
             <template #cell(action)="data">
               <b-button class="btn btn-sm" variant="danger" @click="deletedData(data.item)">Delete</b-button>
               <b-button v-b-modal.modal-2 class="btn btn-sm" variant="primary" @click="detailData(data.item)">Detail</b-button>
@@ -76,7 +79,7 @@
             <form action="" method="">
               <div class="mb-3 row">
                 <p class="col-3">Tanggal</p>
-                <p class="col-4">: {{detail.tanggal}}</p>
+                <p class="col-4">: {{setTanggal(detail.tanggal)}}</p>
               </div>
               <div class="mb-3 row">
                 <p class="col-3">Barang</p>
@@ -207,7 +210,7 @@
         .then(response => {
           const data = {}
           response.data.data.forEach(function callback(item, index) {
-              data[index] = {value: item.kode, text: ite.nama}
+              data[index] = {value: item.kode, text: item.data_barang.nama +" - "+ item.data_divisi.nama}
           });
           this.inventaris = data
           console.log(this.inventaris)

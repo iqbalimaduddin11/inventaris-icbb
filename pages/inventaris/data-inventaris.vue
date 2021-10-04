@@ -430,15 +430,6 @@
           }
         })
       },
-      simpan () {
-        const date = new Date()
-        console.log(this.$moment(date).format('YYYY-M-D'))
-        console.log(this.nama)
-        const cek = false
-        if (cek) {
-            this.$refs['modal-admin'].show()
-        }
-      },
       detailData(data){
         this.detail = data
       },
