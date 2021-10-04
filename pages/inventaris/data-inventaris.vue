@@ -310,7 +310,23 @@
         harga: '',
         dokumen: '',
         judulModal: '',
-        detail: {}
+        detail: {
+          data_barang: {
+            nama: ''
+          },
+          donatur: {
+            nama: ''
+          },
+          data_divisi: {
+            nama: ''
+          },
+          pemilik: {
+            nama: ''
+          },
+          app_user: {
+            nama: ''
+          },
+        }
       }
     },
     mounted() {
