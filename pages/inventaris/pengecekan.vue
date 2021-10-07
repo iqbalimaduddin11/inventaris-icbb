@@ -324,29 +324,20 @@
         this.edit = this.detail
       },
       async addData(){
-        await this.$axios.get('https://inventaris-yayasan.herokuapp.com/user', {
-          headers: {
-            'Authorization': 'Bearer ' + cookie.get('access_token')
+        var loop = true
+        let kode = 1
+        while (loop) {
+          const cek = this.items.filter(function (item) {
+            return item.kode == kode
+          })
+          if (cek.length == 0) {
+            loop = false
+          } else {
+            kode++
           }
-        })
-        .then(response => {
-          var loop = true
-          let kode = 1
-          while (loop) {
-            const cek = response.data.data.filter(function (item) {
-              return item.kode == kode
-            })
-            if (cek.length == 0) {
-              this.kode = kode
-              loop = false
-            } else {
-              kode++
-            }
-          }
-        })
-        console.log(this.kode)
+        }
         const dataPengecekan = {
-          "kode": this.kode,
+          "kode": kode,
           "inventaris": this.selectedInventaris,
           "kondisi": this.selectedKondisi,
           "person_pengecek": this.selectedPengecek,
@@ -391,6 +382,7 @@
         })
         this.getData()
         this.$bvModal.hide('modal-3')
+        this.$bvModal.hide('modal-2')
       }
     }
   }
