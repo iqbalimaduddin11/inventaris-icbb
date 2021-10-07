@@ -172,7 +172,7 @@
         ruang: [],
         penanggungJawab: [],
         header:[
-        { key: 'data_divisi.nama', label: 'Raung' },
+        { key: 'data_divisi.nama', label: 'Ruang' },
         { key: 'data_ruang.nama', label: 'Divisi' },
         { key: 'action', label: 'Action' },
         ],

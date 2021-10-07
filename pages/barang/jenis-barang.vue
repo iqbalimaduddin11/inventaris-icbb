@@ -58,34 +58,34 @@
               </div>
               <div class="mb-5 row">
                 <p class="col-3">Golongan Barang</p>
-                <p class="col-4">: {{detail.golongan}}</p>
+                <p class="col-4">: {{detail.data_barang_golongan.nama}}</p>
               </div>
             </form>
             <template #modal-footer>
-              <b-button v-b-modal.modal-3 class="btn btn-sm" variant="primary">Edit</b-button>
+              <b-button v-b-modal.modal-3 class="btn btn-sm" @click="editData" variant="primary">Edit</b-button>
 
               <b-modal id="modal-3" size="lg" ref="modal-admin" title="Edit">
                   <form action="" method="post" style="margin-bottom: 90px">
                     <div class="mb-3 row">
                         <label for="inputNamaBarang" class="col-sm-3 col-form-label">Nama Barang</label>
                         <div class="col-sm-9">
-                          <input type="text" class="form-control" v-model="jenis" id="inputNamaBarang">
+                          <input type="text" class="form-control" v-model="edit.nama" id="inputNamaBarang">
                         </div>
                     </div>
                     <div class="mb-3 row">
                         <label for="inputName" class="col-sm-3 col-form-label">Golongan Barang</label>
                         <div class="col-sm-9">
-                            <b-form-select v-model="selectedGolongan" :options="golongan">
+                            <b-form-select v-model="edit.golongan" :options="golongan">
                             <!-- This slot appears above the options from 'options' prop -->
                                 <template #first>
-                                    <b-form-select-option :value="null" disabled>-- Pilih Divisi --</b-form-select-option>
+                                    <b-form-select-option :value="null" disabled>-- Pilih Golongan --</b-form-select-option>
                                 </template>
                             </b-form-select>
                         </div>
                       </div>
                   </form>
                   <template #modal-footer>
-                      <b-button variant="primary">Simpan</b-button>
+                      <b-button @click="postEdit(edit.kode)" variant="primary">Simpan</b-button>
                   </template>
               </b-modal>
             </template>
@@ -109,7 +109,16 @@
         ],
         items: [],
         jenis: '',
-        detail: {}
+        detail: {
+          data_barang_golongan: {
+            nama: ''
+          }
+        },
+        edit: {
+          data_barang_golongan: {
+            nama: ''
+          }
+        }
       }
     },
     mounted() {
@@ -168,6 +177,26 @@
         })
         this.getData()
         this.$bvModal.hide('modal-1')
+      },
+      editData(){
+        this.edit = this.detail
+      },
+      async postEdit(id){
+        const data = {
+          "jenis": this.edit.nama,
+          "golongan": this.edit.data_barang_golongan
+        }
+
+        await this.$axios.patch('https://inventaris-yayasan.herokuapp.com/barang/' + id, data, {
+          headers: {
+            'Authorization': 'Bearer ' + cookie.get('access_token')
+          }
+        })
+        .then(response => {
+          console.log(response)
+        })
+        this.getData()
+        this.$bvModal.hide('modal-3')
       },
       async deletedData(data){
         await this.$axios.delete('https://inventaris-yayasan.herokuapp.com/barang/' + data.kode, {
