@@ -114,11 +114,7 @@
             nama: ''
           }
         },
-        edit: {
-          data_barang_golongan: {
-            nama: ''
-          }
-        }
+        edit: {}
       }
     },
     mounted() {
@@ -184,7 +180,7 @@
       async postEdit(id){
         const data = {
           "jenis": this.edit.nama,
-          "golongan": this.edit.data_barang_golongan
+          "golongan": this.edit.golongan
         }
 
         await this.$axios.patch('https://inventaris-yayasan.herokuapp.com/barang/' + id, data, {

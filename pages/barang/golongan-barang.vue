@@ -63,7 +63,7 @@
                   <form action="" method="post" style="margin-bottom: 90px">
                     <div class="mb-3 row">
                         <label for="inputCode" class="col-sm-3 col-form-label">Code</label>
-                        <div class="col-sm-9">code
+                        <div class="col-sm-9">
                           <input type="text" class="form-control" v-model="edit.code" id="inputCode">
                         </div>
                     </div>
@@ -160,6 +160,7 @@
         })
         .then(response => {
           console.log(response)
+          this.detail = response.data.data
         })
         this.getData()
         this.$bvModal.hide('modal-3')
