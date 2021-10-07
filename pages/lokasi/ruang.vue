@@ -42,26 +42,42 @@
             </template>
             <template #cell(action)="data">
               <b-button class="btn btn-sm" variant="danger" @click="deletedData(data.item)">Delete</b-button>
-              <b-button v-b-modal.modal-2 class="btn btn-sm" variant="primary" @click="editData(data.item)">Edit</b-button>
+              <b-button v-b-modal.modal-2 class="btn btn-sm" variant="primary" @click="detailData(data.item)">Detail</b-button>
             </template>
         </b-table>
           <b-modal id="modal-2" size="lg" ref="modal-detail" title="Detail">
             <form action="" method="post" style="margin-bottom: 90px">
-              <div class="mb-3 row">
-                <label for="kode" class="col-sm-2 col-form-label">Kode</label>
-                <div class="col-sm-10">
-                  <input type="text" class="form-control" v-model="edit.code" id="kode">
-                </div>
+              <div class="mb-5 row">
+                <p class="col-3">Code</p>
+                <p class="col-4">: {{detail.code}}</p>
               </div>
               <div class="mb-5 row">
-                <label for="ruang" class="col-sm-2 col-form-label">Ruang</label>
-                <div class="col-sm-10">
-                  <input type="text" class="form-control" v-model="edit.nama" id="ruang">
-                </div>
+                <p class="col-3">Ruang</p>
+                <p class="col-4">: {{detail.nama}}</p>
               </div>
             </form>
             <template #modal-footer>
-                <b-button @click="postEdit(edit.kode)" variant="primary">Simpan</b-button>
+              <b-button v-b-modal.modal-3 class="btn btn-sm" @click="editData" variant="primary">Edit</b-button>
+
+              <b-modal id="modal-3" size="lg" ref="modal-admin" title="Edit">
+                <form action="" method="post" style="margin-bottom: 90px">
+                  <div class="mb-3 row">
+                      <label for="inputCode" class="col-sm-3 col-form-label">Code</label>
+                      <div class="col-sm-9">
+                        <input type="text" class="form-control" v-model="edit.code" id="inputCode">
+                      </div>
+                  </div>
+                  <div class="mb-3 row">
+                      <label for="inputRuang" class="col-sm-3 col-form-label">Ruang</label>
+                      <div class="col-sm-9">
+                        <input type="text" class="form-control" v-model="edit.nama" id="inputRuang">
+                      </div>
+                  </div>
+                </form>
+                <template #modal-footer>
+                    <b-button @click="postEdit(edit.kode)" variant="primary">Simpan</b-button>
+                </template>
+              </b-modal>
             </template>
         </b-modal>
       </div>
@@ -110,6 +126,9 @@
             }
           }
         })
+      },
+      detailData(data){
+        this.detail = data
       },
       async deletedData(data){
         await this.$axios.delete("https://inventaris-yayasan.herokuapp.com/ruang/" + data.kode, {

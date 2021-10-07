@@ -15,6 +15,12 @@
           <b-modal id="modal-1" size='lg' ref="modal-admin" title="Tambah Golongan Barang">
             <form action="" method="post" style="margin-bottom: 90px">
                 <div class="mb-3 row">
+                    <label for="inputCode" class="col-sm-3 col-form-label">Code</label>
+                    <div class="col-sm-9">
+                      <input type="text" class="form-control" v-model="code" id="inputCode">
+                    </div>
+                </div>
+                <div class="mb-3 row">
                     <label for="inputGolonganBarang" class="col-sm-3 col-form-label">Golongan Barang</label>
                     <div class="col-sm-9">
                       <input type="text" class="form-control" v-model="golongan" id="inputGolonganBarang">
@@ -42,24 +48,34 @@
           <b-modal id="modal-2" size="lg" ref="modal-detail" title="Detail">
             <form action="" method="">
               <div class="mb-5 row">
+                <p class="col-3">Code</p>
+                <p class="col-4">: {{detail.code}}</p>
+              </div>
+              <div class="mb-5 row">
                 <p class="col-3">Golongan Barang</p>
                 <p class="col-4">: {{detail.nama}}</p>
               </div>
             </form>
             <template #modal-footer>
-              <b-button v-b-modal.modal-3 class="btn btn-sm" variant="primary">Edit</b-button>
+              <b-button v-b-modal.modal-3 class="btn btn-sm" @click="editData" variant="primary">Edit</b-button>
 
               <b-modal id="modal-3" size="lg" ref="modal-admin" title="Edit">
                   <form action="" method="post" style="margin-bottom: 90px">
                     <div class="mb-3 row">
+                        <label for="inputCode" class="col-sm-3 col-form-label">Code</label>
+                        <div class="col-sm-9">code
+                          <input type="text" class="form-control" v-model="edit.code" id="inputCode">
+                        </div>
+                    </div>
+                    <div class="mb-3 row">
                         <label for="inputGolonganBarang" class="col-sm-3 col-form-label">Golongan Barang</label>
                         <div class="col-sm-9">
-                          <input type="text" class="form-control" v-model="golongan" id="inputGolonganBarang">
+                          <input type="text" class="form-control" v-model="edit.nama" id="inputGolonganBarang">
                         </div>
                     </div>
                   </form>
                   <template #modal-footer>
-                      <b-button @click="simpan" variant="primary">Simpan</b-button>
+                      <b-button @click="postEdit(edit.kode)" variant="primary">Simpan</b-button>
                   </template>
               </b-modal>
             </template>
@@ -75,12 +91,15 @@
     data () {
       return {
         header: [
+          { key: 'code', label: 'Code' },
           { key: 'nama', label: 'Golongan Barang' },
           { key: 'action', label: 'Action' }
         ],
         items: [],
+        code: '',
         golongan: '',
-        detail: {}
+        detail: {},
+        edit: {}
       }
     },
     mounted() {
@@ -104,6 +123,9 @@
           }
         })
       },
+      detailData(data) {
+        this.detail = data
+      },
       async addData(){
         const kode = this.items.length + 1
         console.log(kode)
@@ -121,6 +143,26 @@
         })
         this.getData()
         this.$bvModal.hide('modal-1')
+      },
+      editData(){
+        this.edit = this.detail
+      },
+      async postEdit(id){
+        const data = {
+          "code": this.edit.code,
+          "nama": this.edit.nama
+        }
+
+        await this.$axios.patch('https://inventaris-yayasan.herokuapp.com/barang-golongan/' + id, data, {
+          headers: {
+            'Authorization': 'Bearer ' + cookie.get('access_token')
+          }
+        })
+        .then(response => {
+          console.log(response)
+        })
+        this.getData()
+        this.$bvModal.hide('modal-3')
       },
       async deletedData(data){
         await this.$axios.delete('https://inventaris-yayasan.herokuapp.com/barang-golongan/' + data.kode, {
