@@ -16,11 +16,18 @@ export default {
       {
         href: "https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css",
         rel: "stylesheet"
+      },
+      {
+        href: "vue-search-select/dist/VueSearchSelect.css",
+        rel: "stylesheet"
       }
     ],
     script: [
       {
         src: 'https://code.jquery.com/jquery-3.6.0.js'
+      },
+      {
+        src: 'vue-search-select/dist/VueSearchSelect.umd.js'
       },
       {
         src: 'https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js'
@@ -30,11 +37,12 @@ export default {
 
   // Global CSS: https://go.nuxtjs.dev/config-css
   css: [
+    'vue-search-select/dist/VueSearchSelect.css'
   ],
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
-    { src: './plugin/bootstrap-plugin.js' }
+    { src: 'plugin/bootstrap-plugin.js' }
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components

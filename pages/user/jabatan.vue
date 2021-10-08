@@ -29,7 +29,28 @@
     </div>
     <div class="row">
       <div class="mt-4">
-        <b-table outlined no-border-collapse :fields="header" :items="items" show-empty class="mt-4">
+        <div class="d-flex justify-content-between">
+          <div class="w-50 d-flex">
+            <label for="per-page-select" class="mr-2 col-form-label">Per Page</label>
+            <b-form-select class="col-sm-2" id="per-page-select" v-model="perPage" :options="pageOptions"></b-form-select>
+            <b-input-group class="col-5">
+              <b-form-input
+                id="filter-input"
+                v-model="filter"
+                type="search"
+                placeholder="Type to Search"
+              ></b-form-input>
+
+              <b-input-group-append>
+                <b-button size="sm" :disabled="!filter" @click="filter = ''">Clear</b-button>
+              </b-input-group-append>
+            </b-input-group>
+          </div>
+          <div>
+            <b-pagination v-model="currentPage" :total-rows="totalRows" :per-page="perPage" align="fill" class="my-0"></b-pagination>
+          </div>
+        </div>
+        <b-table outlined no-border-collapse :filter="filter" :per-page="perPage" @filtered="onFiltered" :fields="header" :items="items" show-empty class="mt-2">
             <template #empty>
                 <h5
                  class="text-center"><strong>Data Tidak Ditemukan</strong></h5>
@@ -62,6 +83,10 @@
   export default {
     data () {
       return {
+        filter: null,
+        pageOptions: [5, 10, 15, { value: 100, text: "Show a lot" }],
+        perPage: 5,
+        totalRows: 1,
         header:[
           { key: 'nama', label: 'Jabatan' },
           { key: 'action', label: 'Action' }
@@ -76,6 +101,11 @@
       this.getData()
     },
     methods: {
+      onFiltered(filteredItems) {
+        // Trigger pagination to update the number of buttons/pages due to filtering
+        this.totalRows = filteredItems.length
+        this.currentPage = 1
+      },
       async getData(){
         await this.$axios.get('https://inventaris-yayasan.herokuapp.com/jabatan', {
           headers: {
@@ -85,6 +115,7 @@
         .then(response => {
           console.log(response)
           this.items = response.data.data
+          this.totalRows = this.items.length
         }).catch(err => {
           if (typeof err.response !== "undefined") {
             if (err.response.status === 404) {
