@@ -210,7 +210,7 @@
       },
       async postEdit(id){
         const data = {
-          "jenis": this.edit.nama,
+          "nama": this.edit.nama,
           "golongan": this.edit.golongan
         }
 

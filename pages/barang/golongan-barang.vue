@@ -191,8 +191,8 @@
         })
         .then(response => {
           console.log(response)
-          this.detail = response.data.data
         })
+        this.detail = data
         this.getData()
         this.$bvModal.hide('modal-3')
       },
