@@ -50,7 +50,7 @@
             <b-pagination v-model="currentPage" :total-rows="totalRows" :per-page="perPage" align="fill" class="my-0"></b-pagination>
           </div>
         </div>
-        <b-table outlined no-border-collapse :filter="filter" :per-page="perPage" @filtered="onFiltered" :fields="header" :items="items" show-empty class="mt-2">
+        <b-table outlined no-border-collapse :current-page="currentPage" :filter="filter" :per-page="perPage" @filtered="onFiltered" :fields="header" :items="items" show-empty class="mt-2">
             <template #empty>
                 <h5
                  class="text-center"><strong>Data Tidak Ditemukan</strong></h5>
@@ -86,6 +86,7 @@
         filter: null,
         pageOptions: [5, 10, 15, { value: 100, text: "Show a lot" }],
         perPage: 5,
+        currentPage: 1,
         totalRows: 1,
         header:[
           { key: 'nama', label: 'Jabatan' },
