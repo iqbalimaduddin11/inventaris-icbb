@@ -140,11 +140,11 @@
               </div>
               <div class="mb-3 row">
                 <p class="col-3">Divisi</p>
-                <p class="col-4">: {{detail.divisi}}</p>
+                <p class="col-4">: {{detail.data_divisi.nama}}</p>
               </div>
               <div class="mb-3 row">
                 <p class="col-3">Jabatan</p>
-                <p class="col-4">: {{detail.jabatan}}</p>
+                <p class="col-4">: {{detail.app_jabatan.nama}}</p>
               </div>
               <div class="mb-3 row">
                 <p class="col-3">Nomor Hp</p>
@@ -159,75 +159,6 @@
                   <p class="col-4">: {{detail.email}}</p>
               </div>
             </form>
-            <template #modal-footer>
-              <b-button v-b-modal.modal-3 class="btn btn-sm" variant="primary">Edit</b-button>
-
-              <b-modal id="modal-3" size="lg" ref="modal-admin" title="Edit Admin Ruang">
-                  <form action="" method="post" style="margin-bottom: 90px">
-                      <div class="mb-3 row">
-                          <label for="inputNip" class="col-sm-2 col-form-label">NIP</label>
-                          <div class="col-sm-10">
-                          <input type="text" class="form-control" id="inputNip">
-                          </div>
-                      </div>
-                      <div class="mb-3 row">
-                          <label for="inputName" class="col-sm-2 col-form-label">Nama</label>
-                          <div class="col-sm-10">
-                          <input type="text" class="form-control" id="inputName">
-                          </div>
-                      </div>
-                      <div class="mb-3 row">
-                          <label for="inputName" class="col-sm-2 col-form-label">Jabatan</label>
-                          <div class="col-sm-10">
-                              <b-form-select v-model="selectedJabatan" :options="jabatan">
-                              <!-- This slot appears above the options from 'options' prop -->
-                                  <template #first>
-                                      <b-form-select-option :value="null" disabled>-- Pilih Jabatan --</b-form-select-option>
-                                  </template>
-                              </b-form-select>
-                          </div>
-                      </div>
-                      <div class="mb-3 row">
-                          <label for="inputName" class="col-sm-2 col-form-label">Divisi</label>
-                          <div class="col-sm-10">
-                              <b-form-select v-model="selectedDivisi" :options="divisi">
-                              <!-- This slot appears above the options from 'options' prop -->
-                                  <template #first>
-                                      <b-form-select-option :value="null" disabled>-- Pilih Divisi --</b-form-select-option>
-                                  </template>
-                              </b-form-select>
-                          </div>
-                      </div>
-                      <div class="mb-3 row">
-                          <label for="inputHp" class="col-sm-2 col-form-label">Nomor Hp</label>
-                          <div class="col-sm-10">
-                              <input type="text" class="form-control" id="inputHp">
-                          </div>
-                      </div>
-                      <div class="mb-3 row">
-                          <label for="inputAlamat" class="col-sm-2 col-form-label">Alamat</label>
-                          <div class="col-sm-10">
-                              <textarea class="form-control" id="inputAlamat" rows="3"></textarea>
-                          </div>
-                      </div>
-                      <div class="mb-3 row">
-                          <label for="staticEmail" class="col-sm-2 col-form-label">Email</label>
-                          <div class="col-sm-10">
-                          <input type="email" class="form-control" id="staticEmail">
-                          </div>
-                      </div>
-                      <div class="mb-3 row">
-                          <label for="inputPassword" class="col-sm-2 col-form-label">Password</label>
-                          <div class="col-sm-10">
-                          <input type="password" class="form-control" id="inputPassword">
-                          </div>
-                      </div>
-                  </form>
-                  <template #modal-footer>
-                      <b-button @click="simpan" variant="primary">Simpan</b-button>
-                  </template>
-              </b-modal>
-            </template>
           </b-modal>
       </div>
     </div>
@@ -250,7 +181,7 @@
         header:[
           { key: 'nip', label: 'NIP' },
           { key: 'nama', label: 'Nama' },
-          { key: 'divisi', label: 'Divisi' },
+          { key: 'data_divisi.nama', label: 'Divisi' },
           { key: 'action', label: 'Action' }
         ],
         items: [],
@@ -265,7 +196,14 @@
         password: '',
         judulModal: '',
         role: '2',
-        detail: {}
+        detail: {
+          data_divisi: {
+            nama: ''
+          },
+          app_jabatan: {
+            nama: ''
+          }
+        }
       }
     },
     mounted() {
