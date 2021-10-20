@@ -199,8 +199,8 @@
         this.getData()
         this.$bvModal.hide('modal-1')
       },
-      editData(data){
-        this.edit = data
+      editData(){
+        this.edit = this.detail
       },
       async postEdit(id){
         const dataruang = {

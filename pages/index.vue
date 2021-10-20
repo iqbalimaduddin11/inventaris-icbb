@@ -38,7 +38,7 @@
       <div class="row mt-3">
         <b-card class="mr-2 ml-2" bg-variant="success" style="width: 31%">
           <div class="card-body">
-            <h2 class="card-title text-light">3</h2>
+            <h2 class="card-title text-light">{{ inventaris }}</h2>
             <b-card-text class="text-light">Data Inventaris</b-card-text>
           </div>
         </b-card>
@@ -96,6 +96,7 @@ export default {
       loading: false,
       karyawan: "",
       ruang: '',
+      inventaris: '',
       divisi: '',
       headerDivisi: [
         { key: 'data_divisi.nama', label: 'Divisi' },
@@ -149,6 +150,16 @@ export default {
           .then(response => {
             console.log(response.data.data)
             this.divisi = response.data.data.length
+          })
+        await this.$axios
+          .get("https://inventaris-yayasan.herokuapp.com/inventaris", {
+            headers: {
+              'Authorization': 'Bearer ' + cookie.get('access_token')
+            }
+          })
+          .then(response => {
+            console.log(response.data.data)
+            this.inventaris = response.data.data.length
           })
       } catch (err) { 
         if (typeof err.response !== "undefined") {

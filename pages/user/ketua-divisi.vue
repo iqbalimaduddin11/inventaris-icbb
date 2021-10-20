@@ -314,7 +314,7 @@
           "nama": this.nama,
           "jabatan": this.selectedJabatan,
           "divisi": this.selectedDivisi,
-          "no_hp": this.nomor,
+          "no_hp": this.nomer,
           "email": this.email,
           "password": this.password,
           "alamat": this.alamat,

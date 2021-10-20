@@ -267,8 +267,24 @@ export default {
         editPasslData(){
             this.editPassword.kode = this.user.kode
         },
-        postEditEmail(id){
-            console.log(id)
+        async postEditEmail(id){
+            const dataEmail = {
+                "email": this.editEmail.email,
+                "password": this.editEmail.password,
+            }
+            await this.$axios.patch("https://inventaris-yayasan.herokuapp.com/user/"+id+"/email", dataEmail, {
+            headers: {
+                'Authorization': 'Bearer ' + cookie.get('access_token')
+            }
+            }).then(response => {
+                console.log(response)
+                this.$store.commit("user/SET_USER", response.data.data[0]);
+                cookie.set('user', response.data.data[0])
+                this.user = response.data.data[0]
+                this.jabatan = this.user.app_jabatan
+                this.divisi = this.user.data_divisi
+                this.$bvModal.hide('modal-email')
+            })
         },
         async postEditPass(id){
             console.log(id)
